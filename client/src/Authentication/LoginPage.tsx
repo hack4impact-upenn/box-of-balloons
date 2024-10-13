@@ -11,15 +11,102 @@ import { loginUser } from './api.ts';
 import AlertDialog from '../components/AlertDialog.tsx';
 import PrimaryButton from '../components/buttons/PrimaryButton.tsx';
 import ScreenGrid from '../components/ScreenGrid.tsx';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import styled from '@emotion/styled';
 
-/**
- * A page allowing users to input their email and password to login. The default
- * starting page of the application
- */
+import PrimaryLogo from '../assets/Logos/BoxOfBalloonsPrimaryLogo.png';
+import SupportingElement1 from '../assets/Logos/boxBalloonsSupportingEl.png';
+import SupportingElement2 from '../assets/Logos/balloonBox.png';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF3F73', // Box of Balloons Pink
+    },
+    secondary: {
+      main: '#54C2B9', // Box of Balloons Teal
+    },
+    warning: {
+      main: '#FEE761', // Box of Balloons Yellow
+    },
+  },
+  typography: {
+    fontFamily: 'Open Sans Condensed Light, sans-serif',
+    h2: {
+      fontFamily: 'Janda Safe And Sound, sans-serif',
+      color: '#FF3F73', // Primary Pink
+    },
+  },
+});
+
+const StyledScreenGrid = styled(ScreenGrid)`
+  background-color: #FEE761;
+  background-image: radial-gradient(#F28F8A 10%, transparent 11%),
+                    radial-gradient(#54C2B9 10%, transparent 11%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  background-repeat: repeat;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledFormGrid = styled(FormGrid)`
+  background-color: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+`;
+
+const Logo = styled.img`
+  width: 250px;
+  margin-bottom: 1rem;
+`;
+
+const StyledTextField = styled(TextField)`
+  margin-bottom: 1rem;
+  .MuiOutlinedInput-root {
+    border-radius: 25px;
+    &:hover fieldset {
+      border-color: ${theme.palette.primary.main};
+    }
+  }
+`;
+
+const StyledPrimaryButton = styled(PrimaryButton)`
+  background-color: ${theme.palette.primary.main};
+  color: white;
+  font-family: 'Open Sans Bold', sans-serif;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 16px;
+  &:hover {
+    background-color: #F28F8A;
+  }
+`;
+
+const SupportingElements = styled.div`
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+`;
+
+const SupportingIcon = styled.img`
+  width: 60px;
+  margin: 0 10px;
+`;
+
 function LoginPage() {
   const navigate = useNavigate();
 
-  // Default values for state
   const defaultValues = {
     email: '',
     password: '',
@@ -36,12 +123,10 @@ function LoginPage() {
   };
   type ValueType = keyof typeof values;
 
-  // State values and hooks
   const [values, setValueState] = useState(defaultValues);
   const [showError, setShowErrorState] = useState(defaultShowErrors);
   const [errorMessage, setErrorMessageState] = useState(defaultErrorMessages);
 
-  // Helper functions for changing only one field in a state object
   const setValue = (field: string, value: string) => {
     setValueState((prevState) => ({
       ...prevState,
@@ -85,7 +170,6 @@ function LoginPage() {
     clearErrorMessages();
     let isValid = true;
 
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const valueTypeString in values) {
       const valueType = valueTypeString as ValueType;
       if (!values[valueType]) {
@@ -131,72 +215,80 @@ function LoginPage() {
   }
 
   return (
-    <ScreenGrid>
-      <FormGrid>
-        <FormCol>
-          <Grid item container justifyContent="center">
-            <Typography variant="h2" textAlign="center">
-              Welcome to Boilerplate
-            </Typography>
-          </Grid>
-          <Grid item width="1">
-            <TextField
-              fullWidth
-              error={showError.email}
-              helperText={errorMessage.email}
-              type="email"
-              required
-              label="Email"
-              value={values.email}
-              onChange={(e) => setValue('email', e.target.value)}
-            />
-          </Grid>
-          <Grid item width="1">
-            <TextField
-              fullWidth
-              error={showError.password}
-              helperText={errorMessage.password}
-              type="password"
-              required
-              label="Password"
-              value={values.password}
-              onChange={(e) => setValue('password', e.target.value)}
-            />
-          </Grid>
-          <Grid item container justifyContent="center">
-            <PrimaryButton
-              fullWidth
-              type="submit"
-              variant="contained"
-              onClick={() => handleSubmit()}
-            >
-              Login
-            </PrimaryButton>
-          </Grid>
-          <FormRow>
-            <Grid item>
-              <Link component={RouterLink} to="/email-reset">
-                Forgot password?
-              </Link>
+    <ThemeProvider theme={theme}>
+      <StyledScreenGrid>
+        <StyledFormGrid>
+          <FormCol>
+            <Grid item container justifyContent="center">
+              <Logo src={PrimaryLogo} alt="Box of Balloons Logo" />
             </Grid>
-            <Grid item>
-              <Link component={RouterLink} to="/register">
-                Sign up
-              </Link>
+            <Grid item container justifyContent="center">
+              <Typography variant="h2" textAlign="center" color="primary">
+                Welcome Back!
+              </Typography>
             </Grid>
-          </FormRow>
-        </FormCol>
-      </FormGrid>
-      {/* The alert that pops up */}
-      <Grid item>
-        <AlertDialog
-          showAlert={showError.alert}
-          title={alertTitle}
-          message={errorMessage.alert}
-          onClose={handleAlertClose}
-        />
-      </Grid>
-    </ScreenGrid>
+            <Grid item width="1">
+              <StyledTextField
+                fullWidth
+                error={showError.email}
+                helperText={errorMessage.email}
+                type="email"
+                required
+                label="Email"
+                value={values.email}
+                onChange={(e) => setValue('email', e.target.value)}
+              />
+            </Grid>
+            <Grid item width="1">
+              <StyledTextField
+                fullWidth
+                error={showError.password}
+                helperText={errorMessage.password}
+                type="password"
+                required
+                label="Password"
+                value={values.password}
+                onChange={(e) => setValue('password', e.target.value)}
+              />
+            </Grid>
+            <Grid item container justifyContent="center">
+              <StyledPrimaryButton
+                fullWidth
+                type="submit"
+                variant="contained"
+                onClick={() => handleSubmit()}
+              >
+                Login
+              </StyledPrimaryButton>
+            </Grid>
+            <FormRow>
+              <Grid item>
+                <Link component={RouterLink} to="/email-reset" color="secondary">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link component={RouterLink} to="/register" color="secondary">
+                  Sign up
+                </Link>
+              </Grid>
+            </FormRow>
+            <SupportingElements>
+              <SupportingIcon src={SupportingElement1} alt="Box Balloons Supporting Element" />
+              <SupportingIcon src={SupportingElement2} alt="Balloon Box" />
+            </SupportingElements>
+          </FormCol>
+        </StyledFormGrid>
+        <Grid item>
+          <AlertDialog
+            showAlert={showError.alert}
+            title={alertTitle}
+            message={errorMessage.alert}
+            onClose={handleAlertClose}
+          />
+        </Grid>
+      </StyledScreenGrid>
+    </ThemeProvider>
   );
 }
 
