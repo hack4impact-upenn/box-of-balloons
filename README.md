@@ -195,4 +195,10 @@ If you see an error message similar to this one:
 The engine "node" is incompatible with this module. Expected version ">=12.0.0". Got "11.15.0"
 ```
 
-This means you are using the wrong node version. This boilerplate relies on using node version 14.8. If you are using any other version of node, please use `nvm` to set node version to `14.8.3` as referenced [here](https://blog.logrocket.com/how-switch-node-js-versions-nvm/).
+or this one:
+
+```
+error dd-trace@5.23.0: The engine "node" is incompatible with this module. Expected version ">=18". Got "16.20.2"
+```
+
+This means you are using the wrong node version. This boilerplate relies on using node version 18.18.2. If you are using any other version of node, please use `nvm` to set node version to `18.18.2` as referenced [here](https://blog.logrocket.com/how-switch-node-js-versions-nvm/).
