@@ -1,93 +1,128 @@
-import React, { useState } from 'react';
-import { Typography, Grid, Switch, Button, Checkbox, Modal } from '@mui/material';
-import ScreenGrid from '../components/ScreenGrid.tsx';
-// You may need to create this BirthdayRequestTable component based on UserTable
-import BirthdayRequestTable from './BirthdayRequestTable.tsx'; 
-import { useEffect } from 'react';
+import React from 'react';
+import { Typography, Grid, Button, Card, CardContent, Box } from '@mui/material';
 
-// Temporary hardcoded data (replace with schema and real API later)
 const birthdayRequests = [
-  { id: 1, childName: "Danny", birthday: "10/21/2024", agency: "Agency 1", delivered: false },
-  { id: 2, childName: "Alice", birthday: "12/25/2024", agency: "Agency 2", delivered: false },
-  { id: 3, childName: "Anna", birthday: "01/13/2025", agency: "Agency 3", delivered: false },
-  { id: 4, childName: "Ethan", birthday: "02/28/2025", agency: "Agency 4", delivered: false },
-  { id: 5, childName: "Steven", birthday: "08/28/2024", agency: "Agency 4", delivered: true },
+  { id: 1, childName: 'Danny', birthday: '10/21/2024', agency: 'Agency 1', delivered: false },
+  { id: 2, childName: 'Alice', birthday: '12/25/2024', agency: 'Agency 2', delivered: false },
+  { id: 3, childName: 'Anna', birthday: '01/13/2025', agency: 'Agency 3', delivered: false },
+  { id: 4, childName: 'Ethan', birthday: '02/28/2025', agency: 'Agency 4', delivered: false },
+  { id: 5, childName: 'Steven', birthday: '08/28/2024', agency: 'Agency 4', delivered: true },
 ];
 
 function ChapterDashboardPage() {
-  const [requests, setRequests] = useState(birthdayRequests);
-  const [chapterStatus, setChapterStatus] = useState(true); // Whether chapter is accepting requests
-  const [selectedRequest, setSelectedRequest] = useState(null); // For modal
-
-  // Toggle chapter status (receiving requests)
-  const handleChapterStatusToggle = () => {
-    setChapterStatus(!chapterStatus);
-    // Make API call to update the chapter's document in the db
-  };
-
-  // Toggle delivery status
-  const handleDeliveryToggle = (id) => {
-    setRequests(requests.map(req =>
-      req.id === id ? { ...req, delivered: !req.delivered } : req
-    ));
-    // Make API call to update the delivery status in the db
-  };
-
-  // Open modal for request details
-  const handleRequestClick = (request) => {
-    setSelectedRequest(request);
-  };
-
-  // Close the modal
-  const handleCloseModal = () => {
-    setSelectedRequest(null);
-  };
-
   return (
-    <ScreenGrid>
-      {/* Chapter Welcome Message */}
-      <Grid item>
-        <Typography variant="h2">Welcome California!</Typography>
-      </Grid>
+    <Box sx={{ padding: 2, width: '100%', maxWidth: '900px', margin: 'auto' }}>
+      {/* Header */}
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        <Typography variant="h4" fontWeight="bold" mb={1}>
+          Welcome California!
+        </Typography>
+      </Box>
 
-      {/* Toggle for Chapter Status */}
-      <Grid item container width="60vw" justifyContent="flex-end">
-        <Typography>Accepting Requests: </Typography>
-        <Switch
-          checked={chapterStatus}
-          onChange={handleChapterStatusToggle}
-          color="primary"
-        />
-      </Grid>
+      {/* Active Requests */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h6" fontWeight="bold" mb={1}>
+          Active Requests
+        </Typography>
 
-      {/* Birthday Request Table */}
-      <Grid item>
-        <div style={{ height: '60vh', width: '60vw' }}>
-          <BirthdayRequestTable
-            requests={requests}
-            onRequestClick={handleRequestClick}
-            onDeliveryToggle={handleDeliveryToggle}
-          />
-        </div>
-      </Grid>
+        {/* Table Header */}
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid item xs={3}>
+            <Typography variant="body1" fontWeight="bold">
+              Child Name
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="body1" fontWeight="bold">
+              Birthday
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="body1" fontWeight="bold">
+              Agency Name
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            {/* Empty for View Button */}
+          </Grid>
+        </Grid>
 
-      {/* Request Details Modal */}
-      {selectedRequest && (
-        <Modal
-          open={!!selectedRequest}
-          onClose={handleCloseModal}
-        >
-          <div style={{ padding: '20px', backgroundColor: '#fff', margin: '20px auto', width: '50%' }}>
-            <Typography variant="h4">Request Details</Typography>
-            <Typography>Child Name: {selectedRequest.childName}</Typography>
-            <Typography>Birthday: {selectedRequest.birthday}</Typography>
-            <Typography>Agency: {selectedRequest.agency}</Typography>
-            {/* Add more request information based on the Task 3 Birthday Box Request Form */}
-            <Button onClick={handleCloseModal}>Close</Button>
-          </div>
-        </Modal>
-      )}
-    </ScreenGrid>
+        {/* Active Requests Rows */}
+        <Grid container direction="column" spacing={2}>
+          {birthdayRequests
+            .filter((request) => !request.delivered)
+            .map((request) => (
+              <Grid item key={request.id}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Grid container alignItems="center">
+                      {/* Child Name */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.childName}</Typography>
+                      </Grid>
+                      {/* Birthday */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.birthday}</Typography>
+                      </Grid>
+                      {/* Agency Name */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.agency}</Typography>
+                      </Grid>
+                      {/* View Button */}
+                      <Grid item xs={3} textAlign="right">
+                        <Button variant="contained" size="small">
+                          View
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+      </Box>
+
+      {/* Completed Requests */}
+      <Box>
+        <Typography variant="h6" fontWeight="bold" mb={1}>
+          Completed Requests
+        </Typography>
+
+        {/* Completed Requests Rows */}
+        <Grid container direction="column" spacing={2}>
+          {birthdayRequests
+            .filter((request) => request.delivered)
+            .map((request) => (
+              <Grid item key={request.id}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Grid container alignItems="center">
+                      {/* Child Name */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.childName}</Typography>
+                      </Grid>
+                      {/* Birthday */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.birthday}</Typography>
+                      </Grid>
+                      {/* Agency Name */}
+                      <Grid item xs={3}>
+                        <Typography variant="body1">{request.agency}</Typography>
+                      </Grid>
+                      {/* View Button */}
+                      <Grid item xs={3} textAlign="right">
+                        <Button variant="contained" size="small">
+                          View
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+      </Box>
+    </Box>
   );
 }
 
