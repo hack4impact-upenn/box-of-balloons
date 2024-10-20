@@ -13,7 +13,7 @@ function ChapterDashboardPage() {
   return (
     <Box sx={{ padding: 2, width: '100%', maxWidth: '900px', margin: 'auto' }}>
       {/* Header */}
-      <Box sx={{ textAlign: 'center', mb: 2 }}>
+      <Box sx={{ textAlign: 'left', mb: 2 }}>
         <Typography variant="h4" fontWeight="bold" mb={1}>
           Welcome California!
         </Typography>
@@ -48,13 +48,13 @@ function ChapterDashboardPage() {
         </Grid>
 
         {/* Active Requests Rows */}
-        <Grid container direction="column" spacing={2}>
+        <Grid container direction="column" spacing={1}>
           {birthdayRequests
             .filter((request) => !request.delivered)
             .map((request) => (
               <Grid item key={request.id}>
-                <Card variant="outlined">
-                  <CardContent>
+                <Card variant="outlined" sx={{ backgroundColor: '#F6F6F6', width: '100%'}}>
+                  <CardContent >
                     <Grid container alignItems="center">
                       {/* Child Name */}
                       <Grid item xs={3}>
@@ -89,12 +89,12 @@ function ChapterDashboardPage() {
         </Typography>
 
         {/* Completed Requests Rows */}
-        <Grid container direction="column" spacing={2}>
+        <Grid container direction="column" spacing={1}>
           {birthdayRequests
             .filter((request) => request.delivered)
             .map((request) => (
               <Grid item key={request.id}>
-                <Card variant="outlined">
+                <Card variant="outlined" sx={{ backgroundColor: '#D9D9D9', width: '100%'}}>
                   <CardContent>
                     <Grid container alignItems="center">
                       {/* Child Name */}
