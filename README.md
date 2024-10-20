@@ -171,12 +171,12 @@ npm install --save dd-trace
 npm install winston
 ```
 
-4. The configDatadog.ts file exports three variables: `logger_info`, `logger_warn `, and `logger_error`. These variables represent different log statuses. Simply add one of these log variables within each function in the format below.
+4. The configDatadog.ts file exports three variables: `loggerInfo`, `loggerWarn `, and `loggerError`. These variables represent different log statuses. Simply add one of these log variables within each function in the format below.
 
 ```
-logger_info.log('Account Verified');
-logger_warn.warn('Logger Initialized');
-logger_error.error('Logout');
+loggerInfo.log('Account Verified');
+loggerWarn.warn('Logger Initialized');
+loggerError.error('Logout');
 ```
 
 Some examples are shown in login() and logout() functions in auth.controller.ts.

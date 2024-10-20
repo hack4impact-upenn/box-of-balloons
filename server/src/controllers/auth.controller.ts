@@ -3,10 +3,10 @@
  * user's authentication such as login, logout, and registration.
  */
 import express from 'express';
-import { logger_info } from '../config/configDatadog.ts';
 import passport from 'passport';
 import crypto from 'crypto';
 import { hash } from 'bcrypt';
+import { loggerInfo } from '../config/configDatadog.ts';
 import { IUser } from '../models/user.model.ts';
 import StatusCode from '../util/statusCode.ts';
 import {
@@ -76,7 +76,7 @@ const login = async (
         });
 
         // Datadog login
-        logger_info.info('Login');
+        loggerInfo.info('Login');
         res.status(StatusCode.OK).send(user);
       });
     },
@@ -108,7 +108,7 @@ const logout = async (
       });
     }
     // Datadog logout
-    logger_info.log('Logout');
+    loggerInfo.log('Logout');
 
     // Mixpanel logout tracking
     mixpanel.track('Logout', {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Link, Typography, Grid } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import styled from '@emotion/styled';
 import { useAppDispatch } from '../util/redux/hooks.ts';
 import { login as loginRedux } from '../util/redux/userSlice.ts';
 import FormGrid from '../components/form/FormGrid.tsx';
@@ -11,9 +13,6 @@ import { loginUser } from './api.ts';
 import AlertDialog from '../components/AlertDialog.tsx';
 import PrimaryButton from '../components/buttons/PrimaryButton.tsx';
 import ScreenGrid from '../components/ScreenGrid.tsx';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import styled from '@emotion/styled';
 
 import PrimaryLogo from '../assets/Logos/BoxOfBalloonsPrimaryLogo.png';
 import SupportingElement1 from '../assets/Logos/boxBalloonsSupportingEl.png';
@@ -41,9 +40,9 @@ const theme = createTheme({
 });
 
 const StyledScreenGrid = styled(ScreenGrid)`
-  background-color: #FEE761;
-  background-image: radial-gradient(#F28F8A 10%, transparent 11%),
-                    radial-gradient(#54C2B9 10%, transparent 11%);
+  background-color: #fee761;
+  background-image: radial-gradient(#f28f8a 10%, transparent 11%),
+    radial-gradient(#54c2b9 10%, transparent 11%);
   background-size: 60px 60px;
   background-position: 0 0, 30px 30px;
   background-repeat: repeat;
@@ -86,7 +85,7 @@ const StyledPrimaryButton = styled(PrimaryButton)`
   padding: 10px 20px;
   font-size: 16px;
   &:hover {
-    background-color: #F28F8A;
+    background-color: #f28f8a;
   }
 `;
 
@@ -170,14 +169,14 @@ function LoginPage() {
     clearErrorMessages();
     let isValid = true;
 
-    for (const valueTypeString in values) {
+    Object.keys(values).forEach((valueTypeString) => {
       const valueType = valueTypeString as ValueType;
       if (!values[valueType]) {
         setErrorMessage(valueTypeString, InputErrorMessage.MISSING_INPUT);
         setShowError(valueTypeString, true);
         isValid = false;
       }
-    }
+    });
 
     if (!values.email.match(emailRegex)) {
       setErrorMessage('email', InputErrorMessage.INVALID_EMAIL);
@@ -263,7 +262,11 @@ function LoginPage() {
             </Grid>
             <FormRow>
               <Grid item>
-                <Link component={RouterLink} to="/email-reset" color="secondary">
+                <Link
+                  component={RouterLink}
+                  to="/email-reset"
+                  color="secondary"
+                >
                   Forgot password?
                 </Link>
               </Grid>
@@ -274,7 +277,10 @@ function LoginPage() {
               </Grid>
             </FormRow>
             <SupportingElements>
-              <SupportingIcon src={SupportingElement1} alt="Box Balloons Supporting Element" />
+              <SupportingIcon
+                src={SupportingElement1}
+                alt="Box Balloons Supporting Element"
+              />
               <SupportingIcon src={SupportingElement2} alt="Balloon Box" />
             </SupportingElements>
           </FormCol>

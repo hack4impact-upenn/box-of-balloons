@@ -14,7 +14,7 @@ console.log('Datadog tracer installed');
 
 // console.log(winston);
 
-const logger_info = winston.createLogger({
+const loggerInfo = winston.createLogger({
   level: 'info',
   exitOnError: false,
   format: winston.format.combine(
@@ -24,7 +24,7 @@ const logger_info = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
-const logger_warn = winston.createLogger({
+const loggerWarn = winston.createLogger({
   level: 'warn',
   exitOnError: false,
   format: winston.format.combine(
@@ -34,7 +34,7 @@ const logger_warn = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
-const logger_error = winston.createLogger({
+const loggerError = winston.createLogger({
   level: 'error',
   exitOnError: false,
   format: winston.format.combine(
@@ -44,6 +44,6 @@ const logger_error = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
-logger_info.info('Logger Initialized');
+loggerInfo.info('Logger Initialized');
 
-export { tracer, logger_info, logger_warn, logger_error };
+export { tracer, loggerInfo, loggerWarn, loggerError };
