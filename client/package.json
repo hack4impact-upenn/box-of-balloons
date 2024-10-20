@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "@emotion/styled": "^11.13.0",
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.5.3",
     "@mui/system": "^5.5.2",

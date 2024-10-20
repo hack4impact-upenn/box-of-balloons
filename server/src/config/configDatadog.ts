@@ -1,6 +1,5 @@
 import tracer from 'dd-trace';
-
-const winston = require('winston');
+import winston from 'winston';
 
 tracer.init({
   service: 'service1',
