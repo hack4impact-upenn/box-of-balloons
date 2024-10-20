@@ -22,6 +22,7 @@ import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage.tsx'
 import ResetPasswordPage from './Authentication/ResetPasswordPage.tsx';
 import AlertPopup from './components/AlertPopup.tsx';
 import InviteRegisterPage from './Authentication/InviteRegisterPage.tsx';
+import ChapterDashboardPage from './Chapters/ChapterDashboardPage.tsx';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/chapterDash" element={<ChapterDashboardPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
