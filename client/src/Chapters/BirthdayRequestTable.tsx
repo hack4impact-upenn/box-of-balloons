@@ -5,7 +5,7 @@ function BirthdayRequestTable({ requests, onRequestClick, onDeliveryToggle }) {
   return (
     <Table>
       <TableHead>
-        <TableRow>
+        <TableRow sx={{ '& > *': { padding: '2px 4px' } }}>
           <TableCell>Child Name</TableCell>
           <TableCell>Birthday</TableCell>
           <TableCell>Agency</TableCell>
@@ -15,7 +15,7 @@ function BirthdayRequestTable({ requests, onRequestClick, onDeliveryToggle }) {
       </TableHead>
       <TableBody>
         {requests.map((request) => (
-          <TableRow key={request.id}>
+          <TableRow key={request.id} sx={{ '& > *': { padding: '2px 4px' } }}>
             <TableCell>{request.childName}</TableCell>
             <TableCell>{request.birthday}</TableCell>
             <TableCell>{request.agency}</TableCell>
