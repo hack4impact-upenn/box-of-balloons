@@ -213,6 +213,19 @@ function BirthdayBoxRequestForm() {
               )}
             </Grid>
           </FormRow>
+          <Grid item width=".5">
+            <TextField
+              fullWidth
+              error={showError.childName}
+              helperText={errorMessage.childName}
+              size="small"
+              type="text"
+              required
+              label="How old will the child be turning"
+              value={values.childName}
+              onChange={(e) => setValue('childName', e.target.value)}
+            />
+          </Grid>
           {/* Text field */}
           <Grid item width=".5">
             <TextField
@@ -261,6 +274,11 @@ function BirthdayBoxRequestForm() {
                     control={<Radio />}
                     label="Prefer not to say"
                   />
+                  <FormControlLabel
+                    value="Other"
+                    control={<Radio />}
+                    label="Other"
+                  />
                   <FormHelperText>{errorMessage.childGender}</FormHelperText>
                 </RadioGroup>
               </FormControl>
@@ -276,9 +294,14 @@ function BirthdayBoxRequestForm() {
                   onChange={(e) => setValue('childRace', e.target.value)}
                 >
                   <FormControlLabel
-                    value="White"
+                    value="American Indian or Alaska Native"
                     control={<Radio />}
-                    label="White"
+                    label="American Indian or Alaska Native"
+                  />
+                  <FormControlLabel
+                    value="Asian"
+                    control={<Radio />}
+                    label="Asian"
                   />
                   <FormControlLabel
                     value="Black or African American"
@@ -291,19 +314,24 @@ function BirthdayBoxRequestForm() {
                     label="Hispanic or Latino"
                   />
                   <FormControlLabel
-                    value="Native American or American Indian"
+                    value="Middle Eastern or North African (MENA)"
                     control={<Radio />}
-                    label="Native American or American Indian"
+                    label="Middle Eastern or North African (MENA)"
                   />
                   <FormControlLabel
-                    value="Asian/Pacific Islander"
+                    value="Native Hawaiian or Pacific Islander"
                     control={<Radio />}
-                    label="Asian/Pacific Islander"
+                    label="Native Hawaiian or Pacific Islander"
                   />
                   <FormControlLabel
-                    value="Not Sure"
+                    value="White"
                     control={<Radio />}
-                    label="Not Sure"
+                    label="White"
+                  />
+                  <FormControlLabel
+                    value="Other"
+                    control={<Radio />}
+                    label="Other"
                   />
                   <FormHelperText>{errorMessage.childRace}</FormHelperText>
                 </RadioGroup>
@@ -318,9 +346,22 @@ function BirthdayBoxRequestForm() {
               size="small"
               type="text"
               required
-              label="Every great party begins with a great theme! Tell us what the child likes; General ideas are fine but specifics are great."
+              label="Every great party begins with a great theme! Tell us what the child likes;General ideas are fine but specifics are great."
               value={values.childInterests}
               onChange={(e) => setValue('childInterests', e.target.value)}
+            />
+          </Grid>
+          <Grid item width=".5">
+            <TextField
+              fullWidth
+              error={showError.giftSuggestions}
+              helperText={errorMessage.giftSuggestions}
+              size="small"
+              type="text"
+              required
+              label="Suggested birthday gift to be given by the parent or caregiver, please keep this suggestion under or around $30.00 value"
+              value={values.giftSuggestions}
+              onChange={(e) => setValue('giftSuggestions', e.target.value)}
             />
           </Grid>
           <FormRow>
@@ -367,19 +408,6 @@ function BirthdayBoxRequestForm() {
           <Grid item width=".5">
             <TextField
               fullWidth
-              error={showError.giftSuggestions}
-              helperText={errorMessage.giftSuggestions}
-              size="small"
-              type="text"
-              required
-              label="Any suggestions for a birthday gift?"
-              value={values.giftSuggestions}
-              onChange={(e) => setValue('giftSuggestions', e.target.value)}
-            />
-          </Grid>
-          <Grid item width=".5">
-            <TextField
-              fullWidth
               error={showError.additionalInfo}
               helperText={errorMessage.additionalInfo}
               size="small"
@@ -391,19 +419,6 @@ function BirthdayBoxRequestForm() {
             />
           </Grid>
           {/* Text field */}
-          <Grid item width=".5">
-            <TextField
-              fullWidth
-              error={showError.childName}
-              helperText={errorMessage.childName}
-              size="small"
-              type="text"
-              required
-              label="Child First Name"
-              value={values.childName}
-              onChange={(e) => setValue('childName', e.target.value)}
-            />
-          </Grid>
           <Grid item container justifyContent="center" spacing={0}>
             <Typography variant="h2">Agency Information</Typography>
           </Grid>
@@ -428,6 +443,21 @@ function BirthdayBoxRequestForm() {
             <Grid item width=".5">
               <TextField
                 fullWidth
+                error={showError.agencyWorkerName}
+                helperText={errorMessage.agencyWorkerName}
+                size="small"
+                type="text"
+                required
+                label="Your first and last name"
+                value={values.agencyWorkerName}
+                onChange={(e) => setValue('agencyWorkerName', e.target.value)}
+              />
+            </Grid>
+          </FormRow>
+          <FormRow>
+            <Grid item width=".5">
+              <TextField
+                fullWidth
                 error={showError.agencyOrganization}
                 helperText={errorMessage.agencyOrganization}
                 size="small"
@@ -436,6 +466,21 @@ function BirthdayBoxRequestForm() {
                 label="Agency Worker Organization"
                 value={values.agencyOrganization}
                 onChange={(e) => setValue('agencyOrganization', e.target.value)}
+              />
+            </Grid>
+          </FormRow>
+          <FormRow>
+            <Grid item width=".5">
+              <TextField
+                fullWidth
+                error={showError.agencyAddress}
+                helperText={errorMessage.agencyAddress}
+                size="small"
+                type="text"
+                required
+                label="Your organization's physical address"
+                value={values.agencyAddress}
+                onChange={(e) => setValue('agencyAddress', e.target.value)}
               />
             </Grid>
           </FormRow>
