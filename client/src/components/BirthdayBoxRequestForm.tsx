@@ -13,6 +13,7 @@ import {
   Checkbox,
   RadioGroup,
   Radio,
+  Button,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -22,6 +23,7 @@ import { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
 import FormCol from './form/FormCol';
 import FormRow from './form/FormRow';
+import { postData } from '../util/api';
 
 interface BirthdayBoxRequestFormValues {
   // general info
@@ -31,47 +33,50 @@ interface BirthdayBoxRequestFormValues {
   // child info
   childBirthday: Dayjs | null;
   childAge: number | null;
-  childFirstName: string | null;
+  childName: string | null;
   childGender: string | null;
   childRace: string | null;
   childInterests: string | null;
-  childAllergies: string;
-  childGiftSuggestions: string;
-  childAdditionalInfo: string;
+  childAllergies: boolean;
+  allergyDetails: string;
+  giftSuggestions: string;
+  additionalInfo: string;
 
   // agency info
   agencyWorkerName: string | null;
-  agencyWorkerOrganization: string | null;
-  agencyWorkerPhoneNumber: string | null;
+  agencyOrganization: string | null;
+  agencyWorkerPhone: string | null;
   agencyWorkerEmail: string | null;
-  agencyFirstTimeReferral: string | null;
-  agencyFeedbackAgreement: boolean;
+  isFirstReferral: string | null;
+  agreeFeedback: boolean;
 }
 
 function BirthdayBoxRequestForm() {
   const [values, setValues] = useState<BirthdayBoxRequestFormValues>({
     // general info
     stateName: '',
+    chapterId: '67156b8f624d2639a91ee518',
     deadlineDate: null,
 
     // child info
     childBirthday: null,
     childAge: null,
-    childFirstName: null,
+    childName: null,
     childGender: null,
     childRace: null,
     childInterests: null,
-    childAllergies: '',
-    childGiftSuggestions: '',
-    childAdditionalInfo: '',
+    childAllergies: null,
+    allergyDetails: '',
+    giftSuggestions: '',
+    additionalInfo: '',
 
     // agency info
     agencyWorkerName: null,
-    agencyWorkerOrganization: null,
-    agencyWorkerPhoneNumber: null,
+    agencyOrganization: null,
+    agencyWorkerPhone: null,
     agencyWorkerEmail: null,
-    agencyFirstTimeReferral: null,
-    agencyFeedbackAgreement: false,
+    isFirstReferral: null,
+    agreeFeedback: false,
   });
 
   const [showError, setShowError] = useState({
@@ -80,20 +85,21 @@ function BirthdayBoxRequestForm() {
 
     childBirthday: false,
     childAge: false,
-    childFirstName: false,
+    childName: false,
     childGender: false,
     childRace: false,
     childInterests: false,
     childAllergies: false,
-    childGiftSuggestions: false,
-    childAdditionalInfo: false,
+    allergyDetails: false,
+    giftSuggestions: false,
+    additionalInfo: false,
 
     agencyWorkerName: false,
-    agencyWorkerOrganization: false,
-    agencyWorkerPhoneNumber: false,
+    agencyOrganization: false,
+    agencyWorkerPhone: false,
     agencyWorkerEmail: false,
-    agencyFirstTimeReferral: false,
-    agencyFeedbackAgreement: false,
+    isFirstReferral: false,
+    agreeFeedback: false,
   });
 
   const [errorMessage, setErrorMessage] = useState({
@@ -102,21 +108,22 @@ function BirthdayBoxRequestForm() {
 
     childBirthday: '',
     childAge: '',
-    childFirstName: '',
+    childName: '',
     childGender: '',
     childRace: '',
     childInterests: '',
     childAllergies: '',
-    childGiftSuggestions: '',
+    allergyDetails: '',
+    giftSuggestions: '',
     childGift: '',
-    childAdditionalInfo: '',
+    additionalInfo: '',
 
     agencyWorkerName: '',
-    agencyWorkerOrganization: '',
-    agencyWorkerPhoneNumber: '',
+    agencyOrganization: '',
+    agencyWorkerPhone: '',
     agencyWorkerEmail: '',
-    agencyFirstTimeReferral: '',
-    agencyFeedbackAgreement: '',
+    isFirstReferral: '',
+    agreeFeedback: '',
   });
 
   const setValue = (field: string, value: any) => {
@@ -124,6 +131,11 @@ function BirthdayBoxRequestForm() {
       ...prevState,
       ...{ [field]: value },
     }));
+  };
+
+  const onSubmit = () => {
+    const data = postData('birthday-request', values);
+    console.log(data);
   };
 
   return (
@@ -225,14 +237,29 @@ function BirthdayBoxRequestForm() {
                   onChange={(e) => setValue('childGender', e.target.value)}
                 >
                   <FormControlLabel
-                    value="true"
+                    value="Boy"
                     control={<Radio />}
                     label="Boy"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Girl"
                     control={<Radio />}
                     label="Girl"
+                  />
+                  <FormControlLabel
+                    value="Transgender"
+                    control={<Radio />}
+                    label="Transgender"
+                  />
+                  <FormControlLabel
+                    value="Non-binary/non-conforming"
+                    control={<Radio />}
+                    label="Non-binary/non-conforming"
+                  />
+                  <FormControlLabel
+                    value="Prefer not to say"
+                    control={<Radio />}
+                    label="Prefer not to say"
                   />
                   <FormHelperText>{errorMessage.childGender}</FormHelperText>
                 </RadioGroup>
@@ -249,32 +276,32 @@ function BirthdayBoxRequestForm() {
                   onChange={(e) => setValue('childRace', e.target.value)}
                 >
                   <FormControlLabel
-                    value="true"
+                    value="White"
                     control={<Radio />}
                     label="White"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Black or African American"
                     control={<Radio />}
                     label="Black or African American"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Hispanic or Latino"
                     control={<Radio />}
                     label="Hispanic or Latino"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Native American or American Indian"
                     control={<Radio />}
                     label="Native American or American Indian"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Asian/Pacific Islander"
                     control={<Radio />}
                     label="Asian/Pacific Islander"
                   />
                   <FormControlLabel
-                    value="false"
+                    value="Not Sure"
                     control={<Radio />}
                     label="Not Sure"
                   />
@@ -304,8 +331,10 @@ function BirthdayBoxRequestForm() {
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="childAllergies"
-                  value={values.childAllergies || ''}
-                  onChange={(e) => e.target.value === 'Yes'}
+                  value={values.childAllergies && 'true'}
+                  onChange={(e) =>
+                    setValue('childAllergies', e.target.value === 'true')
+                  }
                 >
                   <FormControlLabel
                     value="true"
@@ -325,54 +354,54 @@ function BirthdayBoxRequestForm() {
           <Grid item width=".5">
             <TextField
               fullWidth
-              error={showError.childAllergies}
-              helperText={errorMessage.childAllergies}
+              error={showError.allergyDetails}
+              helperText={errorMessage.allergyDetails}
               size="small"
               type="text"
               required
               label="If yes, please list:?"
-              value={values.childAllergies}
-              onChange={(e) => setValue('childAllergies', e.target.value)}
+              value={values.allergyDetails}
+              onChange={(e) => setValue('allergyDetails', e.target.value)}
             />
           </Grid>
           <Grid item width=".5">
             <TextField
               fullWidth
-              error={showError.childGiftSuggestions}
-              helperText={errorMessage.childGiftSuggestions}
+              error={showError.giftSuggestions}
+              helperText={errorMessage.giftSuggestions}
               size="small"
               type="text"
               required
               label="Any suggestions for a birthday gift?"
-              value={values.childGiftSuggestions}
-              onChange={(e) => setValue('childGiftSuggestions', e.target.value)}
+              value={values.giftSuggestions}
+              onChange={(e) => setValue('giftSuggestions', e.target.value)}
             />
           </Grid>
           <Grid item width=".5">
             <TextField
               fullWidth
-              error={showError.childAdditionalInfo}
-              helperText={errorMessage.childAdditionalInfo}
+              error={showError.additionalInfo}
+              helperText={errorMessage.additionalInfo}
               size="small"
               type="text"
               required
               label="Anything else you would like us to know about the child?"
-              value={values.childAdditionalInfo}
-              onChange={(e) => setValue('childAdditionalInfo', e.target.value)}
+              value={values.additionalInfo}
+              onChange={(e) => setValue('additionalInfo', e.target.value)}
             />
           </Grid>
           {/* Text field */}
           <Grid item width=".5">
             <TextField
               fullWidth
-              error={showError.childFirstName}
-              helperText={errorMessage.childFirstName}
+              error={showError.childName}
+              helperText={errorMessage.childName}
               size="small"
               type="text"
               required
               label="Child First Name"
-              value={values.childFirstName}
-              onChange={(e) => setValue('childFirstName', e.target.value)}
+              value={values.childName}
+              onChange={(e) => setValue('childName', e.target.value)}
             />
           </Grid>
           <Grid item container justifyContent="center" spacing={0}>
@@ -384,7 +413,7 @@ function BirthdayBoxRequestForm() {
               <TextField
                 fullWidth
                 error={showError.agencyWorkerName}
-                helperText={errorMessage.agencyFeedbackAgreement}
+                helperText={errorMessage.agreeFeedback}
                 size="small"
                 type="text"
                 required
@@ -399,16 +428,14 @@ function BirthdayBoxRequestForm() {
             <Grid item width=".5">
               <TextField
                 fullWidth
-                error={showError.agencyWorkerOrganization}
-                helperText={errorMessage.agencyWorkerOrganization}
+                error={showError.agencyOrganization}
+                helperText={errorMessage.agencyOrganization}
                 size="small"
                 type="text"
                 required
                 label="Agency Worker Organization"
-                value={values.agencyWorkerName}
-                onChange={(e) =>
-                  setValue('agencyWorkerOrganization', e.target.value)
-                }
+                value={values.agencyOrganization}
+                onChange={(e) => setValue('agencyOrganization', e.target.value)}
               />
             </Grid>
           </FormRow>
@@ -417,16 +444,14 @@ function BirthdayBoxRequestForm() {
             <Grid item width=".5">
               <TextField
                 fullWidth
-                error={showError.agencyWorkerPhoneNumber}
-                helperText={errorMessage.agencyWorkerPhoneNumber}
+                error={showError.agencyWorkerPhone}
+                helperText={errorMessage.agencyWorkerPhone}
                 size="small"
                 type="text"
                 required
                 label="Agency Worker Phone Number"
-                value={values.agencyWorkerPhoneNumber}
-                onChange={(e) =>
-                  setValue('agencyWorkerPhoneNumber', e.target.value)
-                }
+                value={values.agencyWorkerPhone}
+                onChange={(e) => setValue('agencyWorkerPhone', e.target.value)}
               />
             </Grid>
           </FormRow>
@@ -449,16 +474,14 @@ function BirthdayBoxRequestForm() {
           {/* Radio buttons */}
           <FormRow>
             <Grid item container width="1">
-              <FormControl error={showError.agencyFirstTimeReferral}>
+              <FormControl error={showError.isFirstReferral}>
                 <FormLabel id="first-time-referral">
                   Is this the first time you have been referred?
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="first-time-referral"
-                  value={values.agencyFirstTimeReferral || ''}
-                  onChange={(e) =>
-                    setValue('agencyFirstTimeReferral', e.target.value)
-                  }
+                  value={values.isFirstReferral || ''}
+                  onChange={(e) => setValue('isFirstReferral', e.target.value)}
                 >
                   <FormControlLabel
                     value="true"
@@ -471,7 +494,7 @@ function BirthdayBoxRequestForm() {
                     label="No"
                   />
                   <FormHelperText>
-                    {errorMessage.agencyFirstTimeReferral}
+                    {errorMessage.isFirstReferral}
                   </FormHelperText>
                 </RadioGroup>
               </FormControl>
@@ -480,9 +503,9 @@ function BirthdayBoxRequestForm() {
           <FormRow>
             {/* <Grid item container width="1">
               <CheckBox
-                value={values.agencyFeedbackAgreement}
+                value={values.agreeFeedback}
                 onChange={(e) =>
-                  setValue('agencyFeedbackAgreement', e.target.value)
+                  setValue('agreeFeedback', e.target.value)
                 }
               />
               <FormLabel id="feedback-agreement">
@@ -491,6 +514,9 @@ function BirthdayBoxRequestForm() {
             </Grid> */}
           </FormRow>
         </FormCol>
+      </Grid>
+      <Grid item width="1">
+        <Button onClick={onSubmit}>Submit</Button>
       </Grid>
     </Grid>
   );

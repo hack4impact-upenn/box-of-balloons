@@ -24,24 +24,19 @@ const BirthdayRequestSchema = new mongoose.Schema({
   },
   childGender: {
     type: String,
-    enum: ['Boy', 'Girl'],
     required: true,
   },
   childRace: {
     type: String,
-    enum: [
-      'White',
-      'Black or African American',
-      'Hispanic or Latino',
-      'Native American or American Indian',
-      'Asian / Pacific Islander',
-      'Not Sure',
-    ],
     required: true,
   },
   childInterests: {
     type: String,
     required: true,
+  },
+  giftSuggestions: {
+    type: String,
+    required: false,
   },
   childAllergies: {
     type: Boolean,
@@ -51,19 +46,30 @@ const BirthdayRequestSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  giftSuggestions: {
-    type: String,
-    required: false,
-  },
   additionalInfo: {
     type: String,
     required: false,
+  },
+  childSituation: {
+    type: String,
+    enum: [
+      'Foster Care',
+      'Homelessness',
+      'Domestic Violence',
+      'Medical Treatment',
+      'Financial Insecurity',
+    ],
+    required: true,
   },
   agencyWorkerName: {
     type: String,
     required: true,
   },
   agencyOrganization: {
+    type: String,
+    required: true,
+  },
+  agencyAddress: {
     type: String,
     required: true,
   },
@@ -109,21 +115,22 @@ interface IBirthdayRequest extends mongoose.Document {
   childBirthday: Date;
   childAge: number;
   childName: string;
-  childGender: 'Boy' | 'Girl';
-  childRace:
-    | 'White'
-    | 'Black or African American'
-    | 'Hispanic or Latino'
-    | 'Native American or American Indian'
-    | 'Asian / Pacific Islander'
-    | 'Not Sure';
+  childGender: string;
+  childRace: string;
   childInterests: string;
+  giftSuggestions: string;
   childAllergies: boolean;
   allergyDetails: string;
-  giftSuggestions: string;
   additionalInfo: string;
+  childSituation:
+    | 'Foster Care'
+    | 'Homelessness'
+    | 'Domestic Violence'
+    | 'Medical Treatment'
+    | 'Financial Insecurity';
   agencyWorkerName: string;
   agencyOrganization: string;
+  agencyAddress: string;
   agencyWorkerPhone: string;
   agencyWorkerEmail: string;
   isFirstReferral: boolean;

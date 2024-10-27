@@ -216,6 +216,10 @@ const createRequest = async (
     next(ApiError.notFound(`childAge does not exist or is invalid`));
     return;
   }
+  if (missingParams) {
+    next(ApiError.missingFields(missingParams));
+    return;
+  }
 
   if (!childInterests || typeof childInterests !== 'string') {
     next(ApiError.notFound(`childInterests does not exist or is invalid`));
