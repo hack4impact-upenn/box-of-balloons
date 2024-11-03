@@ -8,6 +8,7 @@ import {
   updateRequestStatusByID,
   getRequestById,
   deleteRequestByID,
+  createBirthdayRequestByID,
 } from '../services/birthdayRequest.service.ts';
 import { getChapterById } from '../services/chapter.service.ts';
 import {
@@ -156,4 +157,78 @@ const deleteRequest = async (
   );
 };
 
-export { getAllRequests, updateRequestStatus, deleteRequest };
+const createRequest = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { chapterId, deadlineDate, childBirthday, childAge, childName, childGender, 
+    childRace, childInterests, childAllergies, allergyDetails, giftSuggestions, additionalInfo, 
+    agencyWorkerName, agencyOrganization, agencyWorkerPhone, agencyWorkerEmail, isFirstReferral, 
+    agreeFeedback, requestedDate, status, deliveryDate } = req.body;
+    if (!chapterId  || !deadlineDate || !childBirthday || !childAge || !childName || !childGender ||
+      !childRace || !childInterests || !childAllergies || !allergyDetails || !giftSuggestions || !additionalInfo ||
+      !agencyWorkerName || !agencyOrganization || !agencyWorkerPhone || !agencyWorkerEmail || !isFirstReferral ||
+      !agreeFeedback || !requestedDate || !status || !deliveryDate
+    ) {
+      next(
+        ApiError.missingFields([
+          'chapterId',
+          'deadlineDate',
+          'childBirthday',
+          'childAge',
+          'childName',
+          'childGender',
+          'childRace',
+          'childInterests',
+          'childAllergies',
+          'allergyDetails',
+          'giftSuggestions',
+          'additionalInfo',
+          'agencyWorkerName',
+          'agencyOrganization',
+          'agencyWorkerPhone',
+          'agencyWorkerEmail',
+          'isFirstReferral',
+          'agreeFeedback',
+          'requestedDate',
+          'status',
+          'deliveryDate',
+        ]),
+      );
+      return;
+    }
+  try {
+    const user = await createBirthdayRequestByID(
+      chapterId,
+      deadlineDate,
+      childBirthday,
+      childAge,
+      childName,
+      childGender,
+      childRace,
+      childInterests,
+      childAllergies,
+      allergyDetails,
+      giftSuggestions,
+      additionalInfo,
+      agencyWorkerName,
+      agencyOrganization,
+      agencyWorkerPhone,
+      agencyWorkerEmail,
+      isFirstReferral,
+      agreeFeedback,
+      requestedDate,
+      status,
+      deliveryDate,
+    );
+    // user!.verified = true;
+    // await user?.save();
+    // await removeInviteByToken(inviteToken);
+    res.sendStatus(StatusCode.CREATED);
+  } catch (err) {
+    next(ApiError.internal('Unable to register user.'));
+  }
+};
+
+export { getAllRequests, updateRequestStatus, deleteRequest, createRequest };

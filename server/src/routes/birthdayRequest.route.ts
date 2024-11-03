@@ -5,6 +5,7 @@ import {
   getAllRequests,
   updateRequestStatus,
   deleteRequest,
+  createRequest,
 } from '../controllers/birthdayRequest.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import 'dotenv/config';
@@ -17,5 +18,7 @@ router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
 
 router.delete('/deleterequest/:id', deleteRequest);
 // isAuthenticated, isAdmin,
+
+router.post('/createrequest/:id', createRequest);
 
 export default router;
