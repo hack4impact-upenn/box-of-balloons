@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
 import express from 'express';
@@ -162,42 +163,139 @@ const createRequest = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { chapterId, deadlineDate, childBirthday, childAge, childName, childGender, 
-    childRace, childInterests, childAllergies, allergyDetails, giftSuggestions, additionalInfo, 
-    agencyWorkerName, agencyOrganization, agencyWorkerPhone, agencyWorkerEmail, isFirstReferral, 
-    agreeFeedback, requestedDate, status, deliveryDate } = req.body;
-    if (!chapterId  || !deadlineDate || !childBirthday || !childAge || !childName || !childGender ||
-      !childRace || !childInterests || !childAllergies || !allergyDetails || !giftSuggestions || !additionalInfo ||
-      !agencyWorkerName || !agencyOrganization || !agencyWorkerPhone || !agencyWorkerEmail || !isFirstReferral ||
-      !agreeFeedback || !requestedDate || !status || !deliveryDate
-    ) {
-      next(
-        ApiError.missingFields([
-          'chapterId',
-          'deadlineDate',
-          'childBirthday',
-          'childAge',
-          'childName',
-          'childGender',
-          'childRace',
-          'childInterests',
-          'childAllergies',
-          'allergyDetails',
-          'giftSuggestions',
-          'additionalInfo',
-          'agencyWorkerName',
-          'agencyOrganization',
-          'agencyWorkerPhone',
-          'agencyWorkerEmail',
-          'isFirstReferral',
-          'agreeFeedback',
-          'requestedDate',
-          'status',
-          'deliveryDate',
-        ]),
-      );
-      return;
-    }
+  const {
+    chapterId,
+    deadlineDate,
+    childBirthday,
+    childAge,
+    childName,
+    childGender,
+    childRace,
+    childInterests,
+    childAllergies,
+    allergyDetails,
+    giftSuggestions,
+    additionalInfo,
+    agencyWorkerName,
+    agencyOrganization,
+    agencyWorkerPhone,
+    agencyWorkerEmail,
+    isFirstReferral,
+    agreeFeedback,
+    requestedDate,
+    status,
+    deliveryDate,
+  } = req.body;
+  if (!chapterId || typeof chapterId === 'string') {
+    next(ApiError.notFound(`chapterId does not exist or is invalid`));
+    return;
+  }
+  if (!deadlineDate || !(deadlineDate instanceof Date)) {
+    next(ApiError.notFound(`deadlineDate does not exist or is invalid`));
+    return;
+  }
+  if (!childBirthday || !(childBirthday instanceof Date)) {
+    next(ApiError.notFound(`childBirthday does not exist or is invalid`));
+    return;
+  }
+  if (!childAge || typeof childAge !== 'number') {
+    next(ApiError.notFound(`childAge does not exist or is invalid`));
+    return;
+  }
+  if (!childName || typeof childName === 'string') {
+    next(ApiError.notFound(`childName does not exist or is invalid`));
+    return;
+  }
+  if (!childGender || typeof childGender === 'string') {
+    next(ApiError.notFound(`childGender does not exist or is invalid`));
+    return;
+  }
+  if (childGender !== 'Boy' && childGender !== 'Girl') {
+    next(ApiError.notFound(`childGender is invalid`));
+    return;
+  }
+  if (!childRace || typeof childRace === 'string') {
+    next(ApiError.notFound(`childRace does not exist or is invalid`));
+    return;
+  }
+  if (
+    childRace !== 'White' &&
+    childRace !== 'Black or African American' &&
+    childRace !== 'Hispanic or Latino' &&
+    childRace !== 'Native American or American Indian' &&
+    childRace !== 'Asian / Pacific Islander' &&
+    childRace !== 'Not Sure'
+  ) {
+    next(ApiError.notFound(`childRace is invalid`));
+    return;
+  }
+  if (!childInterests || typeof childInterests === 'string') {
+    next(ApiError.notFound(`childInterests does not exist or is invalid`));
+    return;
+  }
+  if (childAllergies !== true && childAllergies !== false) {
+    next(ApiError.notFound(`childAllergies does not exist or is invalid`));
+    return;
+  }
+  if (!allergyDetails || typeof allergyDetails === 'string') {
+    next(ApiError.notFound(`allergyDetails does not exist or is invalid`));
+    return;
+  }
+  if (!giftSuggestions || typeof giftSuggestions === 'string') {
+    next(ApiError.notFound(`giftSuggestions does not exist or is invalid`));
+    return;
+  }
+  if (!additionalInfo || typeof additionalInfo === 'string') {
+    next(ApiError.notFound(`additionalInfo does not exist or is invalid`));
+    return;
+  }
+  if (!agencyWorkerName || typeof agencyWorkerName === 'string') {
+    next(ApiError.notFound(`agencyWorkerName does not exist or is invalid`));
+    return;
+  }
+  if (!agencyOrganization || typeof agencyOrganization === 'string') {
+    next(ApiError.notFound(`agencyOrganization does not exist or is invalid`));
+    return;
+  }
+  if (!agencyWorkerPhone || typeof agencyWorkerPhone === 'string') {
+    next(ApiError.notFound(`agencyWorkerPhone does not exist or is invalid`));
+    return;
+  }
+  if (!agencyWorkerEmail || typeof agencyWorkerEmail === 'string') {
+    next(ApiError.notFound(`agencyWorkerEmail does not exist or is invalid`));
+    return;
+  }
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+  if (!agencyWorkerEmail.match(emailRegex)) {
+    next(ApiError.badRequest('Invalid email'));
+    return;
+  }
+
+  if (isFirstReferral !== true && isFirstReferral !== false) {
+    next(ApiError.notFound(`isFirstReferral does not exist or is invalid`));
+    return;
+  }
+  if (agreeFeedback !== true && agreeFeedback !== false) {
+    next(ApiError.notFound(`agreeFeedback does not exist or is invalid`));
+    return;
+  }
+  if (!requestedDate || !(requestedDate instanceof Date)) {
+    next(ApiError.notFound(`requestedDate does not exist or is invalid`));
+    return;
+  }
+  if (!status || typeof status === 'string') {
+    next(ApiError.notFound(`status does not exist or is invalid`));
+    return;
+  }
+  if (status !== 'Pending' && status !== 'Approved' && status !== 'Delivered') {
+    next(ApiError.notFound(`status is invalid`));
+    return;
+  }
+  if (!deliveryDate || !(deliveryDate instanceof Date)) {
+    next(ApiError.notFound(`deliveryDate does not exist or is invalid`));
+    return;
+  }
   try {
     const user = await createBirthdayRequestByID(
       chapterId,
@@ -222,9 +320,6 @@ const createRequest = async (
       status,
       deliveryDate,
     );
-    // user!.verified = true;
-    // await user?.save();
-    // await removeInviteByToken(inviteToken);
     res.sendStatus(StatusCode.CREATED);
   } catch (err) {
     next(ApiError.internal('Unable to register user.'));
