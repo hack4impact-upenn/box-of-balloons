@@ -29,4 +29,9 @@ const getChapterById = async (id: string) => {
   return chapter;
 };
 
-export { toggleRequestByID, getAllChaptersFromDB, getChapterById };
+const deleteChapterByID = async (id: string) => {
+  const chapter = await Chapter.findByIdAndDelete(id).exec();
+  return chapter;
+}
+
+export { toggleRequestByID, getAllChaptersFromDB, getChapterById, deleteChapterByID };
