@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const ChapterSchema = new mongoose.Schema({
-  username: {
+  city: {
     type: String,
     required: true,
     unique: true,
   },
-  location: {
+  state: {
     type: String,
     required: true,
   },
@@ -56,8 +56,8 @@ const ChapterSchema = new mongoose.Schema({
 
 interface IChapter extends mongoose.Document {
   _id: string;
-  username: string;
-  location: string;
+  city: string;
+  state: string;
   isAcceptingRequests: boolean;
   email: string;
   password: string;

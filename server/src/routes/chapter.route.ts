@@ -4,7 +4,7 @@ import { isAdmin } from '../controllers/admin.middleware.ts';
 import {
   toggleRequest,
   getAllChapters,
-  //createChapter,
+  createChapter,
   deleteChapter,
 } from '../controllers/chapter.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
@@ -16,8 +16,8 @@ router.put('/toggleRequests/:id', isAuthenticated, isAdmin, toggleRequest);
 
 router.get('/all', isAuthenticated, isAdmin, getAllChapters);
 
-//router.post('/create', isAuthenticated, isAdmin, createChapter);
-
-router.delete('/delete/:id', isAuthenticated, isAdmin, deleteChapter);
-
+router.post('/create/', createChapter);
+//, isAuthenticated, isAdmin
+router.delete('/delete/:id', deleteChapter);
+//, isAuthenticated, isAdmin
 export default router;
