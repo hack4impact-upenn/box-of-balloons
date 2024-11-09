@@ -60,20 +60,19 @@ const deleteChapter = async (
     next(ApiError.missingFields(['id']));
     return;
   }
-  // get chapter email by chapter ID
+  // get chapter by chapter ID
   const chapter: IChapter | null = await getChapterById(id);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
   }
-  await deleteChapterByID(id);
-  res.sendStatus(StatusCode.OK);
-  try {
-    res.sendStatus(StatusCode.CREATED);
-  }
-  catch (err) {
-    next(ApiError.internal('Unable to delete chapter.'));
-  }
+
+  deleteChapterByID(id)
+    .then(() => res.sendStatus(StatusCode.OK))
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Failed to delete chapter.'));
+    });
 };
 
 const createChapter = async (
@@ -93,11 +92,11 @@ const createChapter = async (
     resetPasswordTokenExpiryDate,
     isAdmin,
   } = req.body;
-  if (!city || !(typeof city == 'string')) {
+  if (!city || !(typeof city === 'string')) {
     next(ApiError.notFound(`city does not exist or is invalid`));
     return;
   }
-  if (!state || !(typeof state == 'string')) {
+  if (!state || !(typeof state === 'string')) {
     next(ApiError.notFound(`state does not exist or is invalid`));
     return;
   }
@@ -105,11 +104,11 @@ const createChapter = async (
     next(ApiError.notFound(`isAcceptingRequests does not exist or is invalid`));
     return;
   }
-  if (!email || !(typeof email == 'string')) {
+  if (!email || !(typeof email === 'string')) {
     next(ApiError.notFound(`email does not exist or is invalid`));
     return;
   }
-  if (!password || !(typeof password == 'string')) {
+  if (!password || !(typeof password === 'string')) {
     next(ApiError.notFound(`password does not exist or is invalid`));
     return;
   }
@@ -118,22 +117,47 @@ const createChapter = async (
     return;
   }
   // not sure if this is right, it was chat gpt'ed lol
-  if (verificationToken !== undefined && verificationToken !== null && typeof verificationToken !== 'string') {
-    next(ApiError.notFound(`verificationToken must be a string, null, or undefined`));
+  if (
+    verificationToken !== undefined &&
+    verificationToken !== null &&
+    typeof verificationToken !== 'string'
+  ) {
+    next(
+      ApiError.notFound(
+        `verificationToken must be a string, null, or undefined`,
+      ),
+    );
     return;
   }
-  
-  if (resetPasswordToken !== undefined && resetPasswordToken !== null && typeof resetPasswordToken !== 'string') {
-    next(ApiError.notFound(`resetPasswordToken must be a string, null, or undefined`));
+
+  if (
+    resetPasswordToken !== undefined &&
+    resetPasswordToken !== null &&
+    typeof resetPasswordToken !== 'string'
+  ) {
+    next(
+      ApiError.notFound(
+        `resetPasswordToken must be a string, null, or undefined`,
+      ),
+    );
     return;
   }
-  
-  if (resetPasswordTokenExpiryDate !== undefined && resetPasswordTokenExpiryDate !== null) {
+
+  if (
+    resetPasswordTokenExpiryDate !== undefined &&
+    resetPasswordTokenExpiryDate !== null
+  ) {
     try {
       // Convert the string to a Date object
-      req.body.resetPasswordTokenExpiryDate = new Date(resetPasswordTokenExpiryDate);
+      req.body.resetPasswordTokenExpiryDate = new Date(
+        resetPasswordTokenExpiryDate,
+      );
     } catch (e) {
-      next(ApiError.notFound(`resetPasswordTokenExpiryDate must be a valid date string, null, or undefined`));
+      next(
+        ApiError.notFound(
+          `resetPasswordTokenExpiryDate must be a valid date string, null, or undefined`,
+        ),
+      );
       return;
     }
   }
@@ -142,6 +166,7 @@ const createChapter = async (
     return;
   }
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = await createChapterByID(
       city,
       state,
@@ -155,12 +180,15 @@ const createChapter = async (
       isAdmin,
     );
     res.sendStatus(StatusCode.CREATED);
-  } catch (err : any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     // Add better error handling
-    console.error('Chapter creation error:', err);
+    // console.error('Chapter creation error:', err);
     if (err.code === 11000) {
       // MongoDB duplicate key error
-      next(ApiError.badRequest('A chapter with this city or email already exists'));
+      next(
+        ApiError.badRequest('A chapter with this city or email already exists'),
+      );
     } else {
       next(ApiError.internal(`Unable to register chapter: ${err.message}`));
     }

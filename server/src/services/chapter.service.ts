@@ -32,7 +32,7 @@ const getChapterById = async (id: string) => {
 const deleteChapterByID = async (id: string) => {
   const chapter = await Chapter.findByIdAndDelete(id).exec();
   return chapter;
-}
+};
 
 /**
  * Creates a new chapter in the database.
@@ -76,4 +76,10 @@ const createChapterByID = async (
   return returnedChapter;
 };
 
-export { toggleRequestByID, getAllChaptersFromDB, getChapterById, deleteChapterByID, createChapterByID };
+export {
+  toggleRequestByID,
+  getAllChaptersFromDB,
+  getChapterById,
+  deleteChapterByID,
+  createChapterByID,
+};

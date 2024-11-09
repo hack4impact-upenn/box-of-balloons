@@ -16,8 +16,8 @@ router.put('/toggleRequests/:id', isAuthenticated, isAdmin, toggleRequest);
 
 router.get('/all', isAuthenticated, isAdmin, getAllChapters);
 
-router.post('/create/', createChapter);
-//, isAuthenticated, isAdmin
-router.delete('/delete/:id', deleteChapter);
-//, isAuthenticated, isAdmin
+router.post('/create/', isAuthenticated, isAdmin, createChapter);
+
+router.delete('/delete/:id', isAuthenticated, isAdmin, deleteChapter);
+
 export default router;
