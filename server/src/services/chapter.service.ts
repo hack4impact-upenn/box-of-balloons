@@ -22,4 +22,16 @@ const getAllChaptersFromDB = async () => {
   return userList;
 };
 
-export { toggleRequestByID, getAllChaptersFromDB };
+const getChapterById = async (id: string) => {
+  const chapter = await Chapter.findById(id)
+    .select(removeSensitiveDataQuery)
+    .exec();
+  return chapter;
+};
+
+const deleteChapterByID = async (id: string) => {
+  const chapter = await Chapter.findByIdAndDelete(id).exec();
+  return chapter;
+}
+
+export { toggleRequestByID, getAllChaptersFromDB, getChapterById, deleteChapterByID };
