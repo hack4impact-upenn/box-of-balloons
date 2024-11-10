@@ -11,6 +11,7 @@ import adminRouter from './admin.route.ts';
 import authRouter from './auth.route.ts';
 import chapterRouter from './chapter.route.ts';
 import birthdayRequestRouter from './birthdayRequest.route.ts';
+import birthdayRequestRoutes from './birthdayRequestRoutes.ts';
 
 const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
@@ -28,6 +29,10 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
     prefix: '/api/birthdayrequest',
     router: birthdayRequestRouter,
+  },
+  {
+    prefix: '/api/requests',
+    router: birthdayRequestRoutes,
   },
 ];
 

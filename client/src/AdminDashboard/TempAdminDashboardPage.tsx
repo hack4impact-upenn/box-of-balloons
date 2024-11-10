@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Grid,
@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import axios from 'axios';
 
 function DashboardHeader() {
   return (
@@ -44,114 +45,47 @@ function DashboardHeader() {
   );
 }
 
-function OverviewTable({ color }: { color: string }) {
+type OverviewData = {
+  age: string;
+  ageCount: number;
+  race: string;
+  raceCount: number;
+  identity: string;
+  identityCount: number;
+  situation: string;
+  situationCount: number;
+};
+
+function OverviewTable({
+  color,
+  data,
+}: {
+  color: string;
+  data: OverviewData[];
+}) {
   return (
     <Box sx={{ mb: 3, backgroundColor: '#F5F5F5', p: 0, borderRadius: 1 }}>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 'bold', color }}>Age</TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }} />
+            <TableCell sx={{ fontWeight: 'bold', color }}>Count</TableCell>
             <TableCell sx={{ fontWeight: 'bold', color }}>
               Race/ethnicity
             </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }} />
+            <TableCell sx={{ fontWeight: 'bold', color }}>Count</TableCell>
             <TableCell sx={{ fontWeight: 'bold', color }}>
               Sexual Identity
             </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }} />
-            <TableCell sx={{ fontWeight: 'bold', color }}>
-              Situation Being Faced
-            </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }} />
+            <TableCell sx={{ fontWeight: 'bold', color }}>Count</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', color }}>Situation</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', color }}>Count</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {[
-            {
-              age: '1-5',
-              ageCount: 55,
-              race: 'American Indian or Alaska Native',
-              raceCount: 55,
-              identity: 'Girl',
-              identityCount: 55,
-              situation: 'Foster care',
-              situationCount: 55,
-            },
-            {
-              age: '6-9',
-              ageCount: 20,
-              race: 'Asian',
-              raceCount: 20,
-              identity: 'Boy',
-              identityCount: 20,
-              situation: 'Homelessness',
-              situationCount: 20,
-            },
-            {
-              age: '9-12',
-              ageCount: 31,
-              race: 'Black or African American',
-              raceCount: 31,
-              identity: 'Transgender',
-              identityCount: 31,
-              situation: 'Domestic Violence',
-              situationCount: 31,
-            },
-            {
-              age: '',
-              ageCount: '',
-              race: 'Hispanic or Latino',
-              raceCount: 55,
-              identity: 'Non-binary/non-conforming',
-              identityCount: 55,
-              situation: 'Medical Treatment',
-              situationCount: 55,
-            },
-            {
-              age: '',
-              ageCount: '',
-              race: 'Middle Eastern or North African',
-              raceCount: 20,
-              identity: 'Prefer not to say',
-              identityCount: 20,
-              situation: 'Financial insecurity',
-              situationCount: 20,
-            },
-            {
-              age: '',
-              ageCount: '',
-              race: 'Native Hawaiian or Pacific Islander',
-              raceCount: 31,
-              identity: 'Other',
-              identityCount: 31,
-              situation: '',
-              situationCount: '',
-            },
-            {
-              age: '',
-              ageCount: '',
-              race: 'White',
-              raceCount: 55,
-              identity: '',
-              identityCount: '',
-              situation: '',
-              situationCount: '',
-            },
-            {
-              age: '',
-              ageCount: '',
-              race: 'Other',
-              raceCount: 20,
-              identity: '',
-              identityCount: '',
-              situation: '',
-              situationCount: '',
-            },
-          ].map((row, index) => (
-            <TableRow
-              key={index} /* eslint-disable-line react/no-array-index-key */
-            >
+          {data.map((row, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <TableRow key={index}>
               <TableCell>{row.age}</TableCell>
               <TableCell sx={{ color }}>{row.ageCount}</TableCell>
               <TableCell>{row.race}</TableCell>
@@ -162,23 +96,105 @@ function OverviewTable({ color }: { color: string }) {
               <TableCell sx={{ color }}>{row.situationCount}</TableCell>
             </TableRow>
           ))}
-          <TableRow sx={{ backgroundColor: '#D9D9D9' }}>
-            <TableCell sx={{ fontWeight: 'bold' }}>Total</TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }}>55</TableCell>
-            <TableCell> </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }}>55</TableCell>
-            <TableCell> </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }}>55</TableCell>
-            <TableCell> </TableCell>
-            <TableCell sx={{ fontWeight: 'bold', color }}>55</TableCell>
-          </TableRow>
         </TableBody>
       </Table>
     </Box>
   );
 }
 
+// function TempAdminDashboardPage() {
+//   return (
+//     <Box sx={{ p: 3 }}>
+//       <DashboardHeader />
+//       <Box
+//         sx={{
+//           display: 'flex',
+//           justifyContent: 'space-between',
+//           alignItems: 'flex-end',
+//           mb: 2,
+//         }}
+//       >
+//         <Typography
+//           variant="h5"
+//           sx={{ mt: 4, mb: 2, color: '#0FA497', fontWeight: 'bold' }}
+//         >
+//           Monthly Overview of Children Served
+//         </Typography>
+//         <Typography variant="body2" color="textSecondary">
+//           Jan 1 - Jan 31, 2024
+//         </Typography>
+//       </Box>
+//       <OverviewTable color="#0FA497" />
+//       <Box
+//         sx={{
+//           display: 'flex',
+//           justifyContent: 'space-between',
+//           alignItems: 'flex-end',
+//           mb: 2,
+//         }}
+//       >
+//         <Typography
+//           variant="h5"
+//           sx={{ mt: 4, mb: 2, color: '#DF5959', fontWeight: 'bold' }}
+//         >
+//           Yearly Overview of Children Served
+//         </Typography>
+//         <Typography variant="body2" color="textSecondary">
+//           2024
+//         </Typography>
+//       </Box>
+//       <OverviewTable color="#DF5959" />
+//       <Box
+//         sx={{
+//           display: 'flex',
+//           justifyContent: 'space-between',
+//           alignItems: 'flex-end',
+//           mb: 2,
+//         }}
+//       >
+//         <Typography
+//           variant="h5"
+//           sx={{ mt: 4, mb: 2, color: '#F1CA1F', fontWeight: 'bold' }}
+//         >
+//           To Date Overview of Children Served
+//         </Typography>
+//         <Typography variant="body2" color="textSecondary">
+//           Since 2005
+//         </Typography>
+//       </Box>
+//       <OverviewTable color="#F1CA1F" />
+//     </Box>
+//   );
+// }
+
 function TempAdminDashboardPage() {
+  const [monthlyData, setMonthlyData] = useState<OverviewData[]>([]);
+
+  useEffect(() => {
+    // Fetch data from the backend
+    async function fetchMonthlyData() {
+      try {
+        const response = await axios.get('/api/requests/monthly-overview');
+        console.log('Data fetched from backend:', response.data);
+        const data = response.data.map((item: any) => ({
+          age: item.ageRange || '', // Adjust field names as necessary
+          ageCount: item.ageCount || 0,
+          race: item.race || '',
+          raceCount: item.raceCount || 0,
+          identity: item.identity || '',
+          identityCount: item.identityCount || 0,
+          situation: item.situation || '',
+          situationCount: item.situationCount || 0,
+        }));
+        setMonthlyData(data);
+      } catch (error) {
+        console.error('Error fetching monthly overview data:', error);
+      }
+    }
+
+    fetchMonthlyData();
+  }, []);
+
   return (
     <Box sx={{ p: 3 }}>
       <DashboardHeader />
@@ -200,45 +216,9 @@ function TempAdminDashboardPage() {
           Jan 1 - Jan 31, 2024
         </Typography>
       </Box>
-      <OverviewTable color="#0FA497" />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          mb: 2,
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ mt: 4, mb: 2, color: '#DF5959', fontWeight: 'bold' }}
-        >
-          Yearly Overview of Children Served
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          2024
-        </Typography>
-      </Box>
-      <OverviewTable color="#DF5959" />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          mb: 2,
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ mt: 4, mb: 2, color: '#F1CA1F', fontWeight: 'bold' }}
-        >
-          To Date Overview of Children Served
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Since 2005
-        </Typography>
-      </Box>
-      <OverviewTable color="#F1CA1F" />
+      <OverviewTable color="#0FA497" data={monthlyData} />
+
+      {/* Additional sections for yearly and to-date overviews */}
     </Box>
   );
 }
