@@ -5,13 +5,18 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  firstName: {
+  city: {
     type: String,
     required: true,
   },
-  lastName: {
+  state: {
     type: String,
     required: true,
+  },
+  isAcceptingRequests: {
+    type: Boolean,
+    required: true,
+    default: true,
   },
   email: {
     type: String,
@@ -52,8 +57,9 @@ const UserSchema = new mongoose.Schema({
 
 interface IUser extends mongoose.Document {
   _id: string;
-  firstName: string;
-  lastName: string;
+  city: string;
+  state: string;
+  isAcceptingRequests: boolean;
   email: string;
   password: string;
   verified: boolean;
