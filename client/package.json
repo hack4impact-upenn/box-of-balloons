@@ -46,6 +46,7 @@
     "react-redux": "^8.0.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-usa-map": "^1.5.0",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
@@ -53,7 +54,6 @@
     "web-vitals": "^3.0.3"
   },
   "devDependencies": {
-    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
