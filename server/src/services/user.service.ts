@@ -20,15 +20,15 @@ const removeSensitiveDataQueryKeepPassword = [
 
 /**
  * Creates a new user in the database.
- * @param firstName - string representing the first name of the user
- * @param lastName - string representing the last name of the user
+ * @param city - string representing the city of the chapter
+ * @param state - string representing the state of the chapter
  * @param email - string representing the email of the user
  * @param password - string representing the password of the user
  * @returns The created {@link User}
  */
 const createUser = async (
-  firstName: string,
-  lastName: string,
+  city: string,
+  state: string,
   email: string,
   password: string,
 ) => {
@@ -37,8 +37,8 @@ const createUser = async (
     return null;
   }
   const newUser = new User({
-    firstName,
-    lastName,
+    city,
+    state,
     email,
     password: hashedPassword,
     admin: false,
@@ -141,6 +141,13 @@ const deleteUserById = async (id: string) => {
   return user;
 };
 
+const toggleRequestByID = async (id: string) => {
+  const chapter = await User.findByIdAndUpdate(id, [
+    { $set: { isAcceptingRequests: { $not: '$isAcceptingRequests' } } },
+  ]).exec();
+  return chapter;
+};
+
 export {
   passwordHashSaltRounds,
   createUser,
@@ -152,4 +159,5 @@ export {
   getAllUsersFromDB,
   upgradeUserToAdmin,
   deleteUserById,
+  toggleRequestByID,
 };

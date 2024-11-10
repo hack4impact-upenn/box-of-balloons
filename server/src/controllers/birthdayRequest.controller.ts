@@ -11,13 +11,13 @@ import {
   deleteRequestByID,
   createBirthdayRequestByID,
 } from '../services/birthdayRequest.service.ts';
-import { getChapterById } from '../services/chapter.service.ts';
+import { getUserById } from '../services/user.service.ts';
 import {
   emailRequestUpdate,
   emailRequestDelete,
 } from '../services/mail.service.ts';
 import { IBirthdayRequest } from '../models/birthdayRequest.model.ts';
-import { IChapter } from '../models/chapter.model.ts';
+import { IUser } from '../models/user.model.ts';
 
 const getAllRequests = async (
   req: express.Request,
@@ -69,7 +69,7 @@ const updateRequestStatus = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IUser | null = await getUserById(request.chapterId);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -123,7 +123,7 @@ const deleteRequest = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IUser | null = await getUserById(request.chapterId);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -202,11 +202,11 @@ const createRequest = async (
     next(ApiError.notFound(`childAge does not exist or is invalid`));
     return;
   }
-  if (!childName || typeof childName === 'string') {
+  if (!childName || typeof childName !== 'string') {
     next(ApiError.notFound(`childName does not exist or is invalid`));
     return;
   }
-  if (!childGender || typeof childGender === 'string') {
+  if (!childGender || typeof childGender !== 'string') {
     next(ApiError.notFound(`childGender does not exist or is invalid`));
     return;
   }

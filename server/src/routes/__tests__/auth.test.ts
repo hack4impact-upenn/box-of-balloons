@@ -58,8 +58,8 @@ describe('testing authentication routes', () => {
         const user = await User.findOne({ email: testEmail });
         expect(user).toBeTruthy();
         expect(user?.email).toBe(testEmail);
-        expect(user?.firstName).toBe(testFirstName);
-        expect(user?.lastName).toBe(testLastName);
+        expect(user?.city).toBe(testFirstName);
+        expect(user?.state).toBe(testLastName);
       });
     });
 

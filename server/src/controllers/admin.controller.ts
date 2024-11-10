@@ -12,6 +12,7 @@ import {
   getUserByEmail,
   getAllUsersFromDB,
   deleteUserById,
+  createUser,
 } from '../services/user.service.ts';
 import {
   createInvite,
@@ -20,7 +21,11 @@ import {
   updateInvite,
 } from '../services/invite.service.ts';
 import { IInvite } from '../models/invite.model.ts';
-import { emailInviteLink } from '../services/mail.service.ts';
+import {
+  emailInviteLink,
+  emailVerificationLink,
+} from '../services/mail.service.ts';
+import mixpanel from '../config/configMixpanel.ts';
 
 /**
  * Get all users from the database. Upon success, send the a list of all users in the res body with 200 OK status code.
@@ -75,6 +80,89 @@ const upgradePrivilege = async (
     .catch((e) => {
       next(ApiError.internal('Unable to upgrade user to admin.'));
     });
+};
+
+/**
+ * A controller function to register a user in the database.
+ */
+const register = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { city, state, email, password } = req.body;
+  if (!city || !(typeof city === 'string')) {
+    next(ApiError.notFound(`city does not exist or is invalid`));
+    return;
+  }
+  if (!state || !(typeof state === 'string')) {
+    next(ApiError.notFound(`state does not exist or is invalid`));
+    return;
+  }
+  if (!email || !(typeof email === 'string')) {
+    next(ApiError.notFound(`email does not exist or is invalid`));
+    return;
+  }
+  if (!password || !(typeof password === 'string')) {
+    next(ApiError.notFound(`password does not exist or is invalid`));
+    return;
+  }
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+
+  const passwordRegex = /^[a-zA-Z0-9!?$%^*)(+=._-]{6,61}$/;
+
+  const nameRegex = /^[a-z ,.'-]+/i;
+
+  if (
+    !email.match(emailRegex) ||
+    !password.match(passwordRegex) ||
+    !city.match(nameRegex) ||
+    !state.match(nameRegex)
+  ) {
+    next(ApiError.badRequest('Invalid email, password, or name.'));
+    return;
+  }
+
+  if (req.isAuthenticated()) {
+    next(ApiError.badRequest('Already logged in.'));
+    return;
+  }
+  const lowercaseEmail = email.toLowerCase();
+  // Check if user exists
+  const existingUser: IUser | null = await getUserByEmail(lowercaseEmail);
+  if (existingUser) {
+    next(
+      ApiError.badRequest(
+        `An account with email ${lowercaseEmail} already exists.`,
+      ),
+    );
+    return;
+  }
+
+  // Create user and send verification email
+  try {
+    const user = await createUser(city, state, lowercaseEmail, password);
+    // Don't need verification email if testing
+    if (process.env.NODE_ENV === 'test') {
+      user!.verified = true;
+      await user?.save();
+    } else {
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+      user!.verificationToken = verificationToken;
+      await user!.save();
+      await emailVerificationLink(lowercaseEmail, verificationToken);
+    }
+    // Mixpanel Register tracking
+    mixpanel.track('Register', {
+      distinct_id: user?._id,
+      email: user?.email,
+    });
+
+    res.sendStatus(StatusCode.CREATED);
+  } catch (err) {
+    next(ApiError.internal('Unable to register user.'));
+  }
 };
 
 /**
@@ -234,4 +322,11 @@ const inviteUser = async (
   }
 };
 
-export { getAllUsers, upgradePrivilege, deleteUser, verifyToken, inviteUser };
+export {
+  getAllUsers,
+  upgradePrivilege,
+  register,
+  deleteUser,
+  verifyToken,
+  inviteUser,
+};
