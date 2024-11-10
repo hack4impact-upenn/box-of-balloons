@@ -29,6 +29,7 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
     prefix: '/api/birthdayrequest',
     router: birthdayRequestRouter,
   },
+
 ];
 
 export default prefixToRouterMap;
