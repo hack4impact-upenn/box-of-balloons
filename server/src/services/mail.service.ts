@@ -89,4 +89,49 @@ const emailInviteLink = async (email: string, token: string) => {
   await SGmail.send(mailSettings);
 };
 
-export { emailVerificationLink, emailResetPasswordLink, emailInviteLink };
+const emailRequestUpdate = async (
+  email: string,
+  newStatus: string,
+  childName: string,
+) => {
+  const mailSettings: MailDataRequired = {
+    from: {
+      email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
+      name: senderName,
+    },
+    to: email,
+    subject: 'Birthday Box Request Status Update',
+    html:
+      `<p> Your birthday box request status for ${childName} has been changed. ` +
+      `<p>The new status of your request is ${newStatus}. ` +
+      `<p>If you did not request a birthday box, ` +
+      `please ignore this message.</p>`,
+  };
+  // Send the email and propogate the error up if one exists
+  await SGmail.send(mailSettings);
+};
+
+const emailRequestDelete = async (email: string, childName: string) => {
+  const mailSettings: MailDataRequired = {
+    from: {
+      email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
+      name: senderName,
+    },
+    to: email,
+    subject: 'Birthday Box Request Deleted',
+    html:
+      `<p> Your birthday box request for ${childName} has been deleted. ` +
+      `<p>If you did not request a birthday box, ` +
+      `please ignore this message.</p>`,
+  };
+  // Send the email and propogate the error up if one exists
+  await SGmail.send(mailSettings);
+};
+
+export {
+  emailVerificationLink,
+  emailResetPasswordLink,
+  emailInviteLink,
+  emailRequestUpdate,
+  emailRequestDelete,
+};
