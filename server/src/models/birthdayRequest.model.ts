@@ -1,4 +1,58 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
+
+enum ChildGender {
+  'Boy',
+  'Girl',
+  'Transgender',
+  'Non-binary/non-conforming',
+  'Prefer not to say',
+}
+
+const childGenderOptions = [
+  'Boy',
+  'Girl',
+  'Transgender',
+  'Non-binary/non-conforming',
+  'Prefer not to say',
+];
+
+enum ChildRace {
+  'American Indian or Alaska Native',
+  'Asian',
+  'Black or African American',
+  'Hispanic or Latino',
+  'Middle Eastern or North African (MENA)',
+  'Native Hawaiian or Pacific Islander',
+  'White',
+  'Other',
+}
+
+const childRaceOptions = [
+  'American Indian or Alaska Native',
+  'Asian',
+  'Black or African American',
+  'Hispanic or Latino',
+  'Middle Eastern or North African (MENA)',
+  'Native Hawaiian or Pacific Islander',
+  'White',
+  'Other',
+];
+
+enum ChildSituation {
+  'Fostercare',
+  'Homelessness',
+  'Domestic Violence',
+  'Medical treatment',
+  'Financial insecurities',
+}
+
+const childSituationOptions = [
+  'Fostercare',
+  'Homelessness',
+  'Domestic Violence',
+  'Medical treatment',
+  'Financial insecurities',
+];
 
 const BirthdayRequestSchema = new mongoose.Schema({
   chapterId: {
@@ -14,34 +68,31 @@ const BirthdayRequestSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  childAge: {
-    type: Number,
-    required: true,
-  },
   childName: {
     type: String,
     required: true,
   },
+  childAge: {
+    type: Number,
+    required: true,
+  },
   childGender: {
     type: String,
-    enum: ['Boy', 'Girl'],
+    enum: childGenderOptions,
     required: true,
   },
   childRace: {
     type: String,
-    enum: [
-      'White',
-      'Black or African American',
-      'Hispanic or Latino',
-      'Native American or American Indian',
-      'Asian / Pacific Islander',
-      'Not Sure',
-    ],
+    enum: childRaceOptions,
     required: true,
   },
   childInterests: {
     type: String,
     required: true,
+  },
+  giftSuggestions: {
+    type: String,
+    required: false,
   },
   childAllergies: {
     type: Boolean,
@@ -51,19 +102,24 @@ const BirthdayRequestSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  giftSuggestions: {
-    type: String,
-    required: false,
-  },
   additionalInfo: {
     type: String,
     required: false,
+  },
+  childSituation: {
+    type: String,
+    enum: childSituationOptions,
+    required: true,
   },
   agencyWorkerName: {
     type: String,
     required: true,
   },
   agencyOrganization: {
+    type: String,
+    required: true,
+  },
+  agencyPhysicalAddress: {
     type: String,
     required: true,
   },
@@ -85,6 +141,10 @@ const BirthdayRequestSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  agreeLiability: {
+    type: Boolean,
+    required: true,
+  },
   requestedDate: {
     type: Date,
     required: true,
@@ -102,35 +162,36 @@ const BirthdayRequestSchema = new mongoose.Schema({
   },
 });
 
-interface IBirthdayRequest extends mongoose.Document {
+interface IBirthdayRequestFields {
   _id: string;
   chapterId: string;
   deadlineDate: Date;
   childBirthday: Date;
-  childAge: number;
   childName: string;
-  childGender: 'Boy' | 'Girl';
-  childRace:
-    | 'White'
-    | 'Black or African American'
-    | 'Hispanic or Latino'
-    | 'Native American or American Indian'
-    | 'Asian / Pacific Islander'
-    | 'Not Sure';
+  childAge: number;
+  childGender: ChildGender;
+  childRace: ChildRace;
   childInterests: string;
+  giftSuggestions: string;
   childAllergies: boolean;
   allergyDetails: string;
-  giftSuggestions: string;
   additionalInfo: string;
+  childSituation: ChildSituation;
   agencyWorkerName: string;
   agencyOrganization: string;
+  agencyPhysicalAddress: string;
   agencyWorkerPhone: string;
   agencyWorkerEmail: string;
   isFirstReferral: boolean;
   agreeFeedback: boolean;
+  agreeLiability: boolean;
   requestedDate: Date;
   status: 'Pending' | 'Approved' | 'Delivered';
   deliveryDate: Date | null;
+}
+
+interface IBirthdayRequest extends mongoose.Document, IBirthdayRequestFields {
+  _id: string;
 }
 
 const BirthdayRequest = mongoose.model<IBirthdayRequest>(
@@ -138,4 +199,14 @@ const BirthdayRequest = mongoose.model<IBirthdayRequest>(
   BirthdayRequestSchema,
 );
 
-export { IBirthdayRequest, BirthdayRequest };
+export {
+  IBirthdayRequest,
+  IBirthdayRequestFields,
+  BirthdayRequest,
+  ChildGender,
+  ChildRace,
+  ChildSituation,
+  childGenderOptions,
+  childRaceOptions,
+  childSituationOptions,
+};
