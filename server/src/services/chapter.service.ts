@@ -32,6 +32,54 @@ const getChapterById = async (id: string) => {
 const deleteChapterByID = async (id: string) => {
   const chapter = await Chapter.findByIdAndDelete(id).exec();
   return chapter;
-}
+};
 
-export { toggleRequestByID, getAllChaptersFromDB, getChapterById, deleteChapterByID };
+/**
+ * Creates a new chapter in the database.
+ * @param city - The city the chapter is located in
+ * @param state - The state the chapter is located in
+ * @param isAcceptingRequests - Whether the chapter is accepting requests
+ * @param email - The email of the chapter
+ * @param password - The password of the chapter
+ * @param verified - Whether the chapter is verified
+ * @param verificationToken - The verification token of the chapter
+ * @param resetPasswordToken - The reset password token of the chapter
+ * @param resetPasswordTokenExpiryDate - The expiry date of the reset password token
+ * @param isAdmin - Whether the chapter is an admin
+ * @returns The created {@link Chapter}
+ */
+const createChapterByID = async (
+  city: string,
+  state: string,
+  isAcceptingRequests: boolean,
+  email: string,
+  password: string,
+  verified: boolean,
+  verificationToken: string,
+  resetPasswordToken: string,
+  resetPasswordTokenExpiryDate: Date,
+  isAdmin: boolean,
+) => {
+  const newChapter = new Chapter({
+    city,
+    state,
+    isAcceptingRequests,
+    email,
+    password,
+    verified,
+    verificationToken,
+    resetPasswordToken,
+    resetPasswordTokenExpiryDate,
+    isAdmin,
+  });
+  const returnedChapter = await newChapter.save();
+  return returnedChapter;
+};
+
+export {
+  toggleRequestByID,
+  getAllChaptersFromDB,
+  getChapterById,
+  deleteChapterByID,
+  createChapterByID,
+};
