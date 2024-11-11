@@ -160,48 +160,130 @@ export default function Landing() {
   };
 
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      sx={{ minHeight: '100vh' }}
-    >
-      <Grid item xs={3}>
-        <USAMap customize={statesCustomConfig()} />
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+    <div style={{ position: 'relative' }}>
+      {/* Chapter Login Button */}
+      <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+        <button
+          style={{
+            backgroundColor: '#ec4899',
+            color: 'white',
+            paddingLeft: '1.5rem',
+            paddingRight: '1.5rem',
+            paddingTop: '0.5rem',
+            paddingBottom: '0.5rem',
+            borderRadius: '9999px',
+            fontSize: '0.875rem',
+            fontWeight: '500',
+          }}
         >
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              bgcolor: 'background.paper',
-              border: '2px solid #000',
-              boxShadow: 24,
-              p: 4,
+          CHAPTER LOGIN
+        </button>
+      </div>
+
+      {/* Logo and Welcome Section */}
+      <div style={{ paddingLeft: '40px' }}>
+        <div style={{ textAlign: 'left', marginBottom: '2rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginBottom: '1rem',
             }}
           >
-            <Typography>{chosenState}</Typography>
-            {filteredStateData.length !== 0 ? (
-              <ul>
-                {filteredStateData.map((chapter) => (
-                  <ul>{chapter.city}</ul>
-                ))}
-              </ul>
-            ) : (
-              <Typography>No chapters for {chosenState}</Typography>
-            )}
-          </Box>
-        </Modal>
+            <span style={{ color: '#2dd4bf', fontWeight: '500' }}>Box</span>
+            <span style={{ color: '#9ca3af' }}>of</span>
+            <span style={{ color: '#f472b6', fontWeight: '500' }}>
+              Balloons
+            </span>
+          </div>
+          <h1
+            style={{
+              fontSize: '1.875rem',
+              fontWeight: '700',
+              color: '#1f2937',
+              marginBottom: '0.75rem',
+            }}
+          >
+            Welcome!
+          </h1>
+          <p
+            style={{
+              color: '#14b8a6',
+              fontWeight: '500',
+              marginBottom: '1rem',
+            }}
+          >
+            Click on your state below to connect with a local chapter in your
+            area!
+          </p>
+          <p style={{ color: '#4b5563', marginBottom: '0.5rem' }}>
+            Email your Chapter Leader directly to:
+          </p>
+          <ul
+            style={{
+              color: '#4b5563',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.25rem',
+            }}
+          >
+            <li>Request a birthday box for a family in need</li>
+            <li>Sign up as a volunteer</li>
+            <li>Donate to your local chapter</li>
+            <li>Sign up for our Build-A-Box program</li>
+            <li>
+              Connect with your local chapter leader to learn more ways you can
+              support our cause
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Map Section */}
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: '100vh' }}
+      >
+        <Grid item xs={3}>
+          <USAMap customize={statesCustomConfig()} />
+          <Modal
+            open={showModal}
+            onClose={() => setShowModal(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                bgcolor: 'background.paper',
+                border: '2px solid #000',
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography>{chosenState}</Typography>
+              {filteredStateData.length !== 0 ? (
+                <ul>
+                  {filteredStateData.map((chapter) => (
+                    <ul>{chapter.city}</ul>
+                  ))}
+                </ul>
+              ) : (
+                <Typography>No chapters for {chosenState}</Typography>
+              )}
+            </Box>
+          </Modal>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
