@@ -506,7 +506,7 @@ export default function Landing() {
                 : `No Chapters in ${chosenState}`}
               </Typography>
               
-              {chosenState && CHAPTER_DATA[chosenState] ? (
+              {chosenState && CHAPTER_DATA[chosenState] && CHAPTER_DATA[chosenState].length > 0 ? (
                 CHAPTER_DATA[chosenState].map((chapter, index) => (
                   <Box 
                     key={`${chosenState}-${chapter.city}`} 
@@ -515,9 +515,9 @@ export default function Landing() {
                     <Typography variant="h6" color="primary" gutterBottom>
                       {chapter.city}
                     </Typography>
-                   <Typography 
-                     variant="subtitle1" 
-                     color="text.secondary" 
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
                       gutterBottom
                     >
                       Chapter Leader(s): {chapter.leaders}
