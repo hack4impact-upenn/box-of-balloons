@@ -19,8 +19,6 @@ const router = express.Router();
 //random change
 
 //make another change
-
-//another change in diff commit
 /**
  * A GET route to get all users. Checks first if the requestor is a
  * authenticated and is an admin.
