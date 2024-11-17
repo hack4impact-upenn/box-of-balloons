@@ -11,6 +11,7 @@ interface IUserWithPassword {
   city: string;
   state: string;
   isAcceptingRequests: boolean;
+  isActive: boolean;
   email: string;
   password?: string;
   verified: boolean;

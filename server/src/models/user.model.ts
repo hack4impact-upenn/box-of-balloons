@@ -18,6 +18,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: true,
   },
+  isActive: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   email: {
     type: String,
     match:
@@ -60,6 +65,7 @@ interface IUser extends mongoose.Document {
   city: string;
   state: string;
   isAcceptingRequests: boolean;
+  isActive: boolean;
   email: string;
   password: string;
   verified: boolean;

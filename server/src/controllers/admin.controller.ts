@@ -121,10 +121,6 @@ const register = async (
     !state.match(nameRegex)
   ) {
     next(ApiError.badRequest('Invalid email, password, or name.'));
-    return;
-  }
-
-  if (req.isAuthenticated()) {
     next(ApiError.badRequest('Already logged in.'));
     return;
   }
