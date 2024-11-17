@@ -178,7 +178,7 @@ function RegisterPage() {
                 required
                 label="State"
                 value={values.state}
-                onChange={(e) => setValue('lastName', e.target.value)}
+                onChange={(e) => setValue('state', e.target.value)}
               />
             </Grid>
           </FormRow>
