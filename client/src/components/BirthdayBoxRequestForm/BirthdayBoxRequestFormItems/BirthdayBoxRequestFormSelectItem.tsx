@@ -13,8 +13,8 @@ import React from 'react';
 import { IBirthdayBoxRequestFormItemProps } from './IBirthdayBoxRequestFormItemProps';
 
 export type BirthdayBoxRequestFormSelectItemProps =
-  IBirthdayBoxRequestFormItemProps<string> & {
-    options: { [value: string]: string };
+  IBirthdayBoxRequestFormItemProps<string | boolean> & {
+    options: { [value: string]: string | boolean };
   };
 
 function BirthdayBoxRequestFormSelectItem({
@@ -24,6 +24,10 @@ function BirthdayBoxRequestFormSelectItem({
   label,
   options,
 }: BirthdayBoxRequestFormSelectItemProps) {
+  if (!options) {
+    console.log(label);
+  }
+
   return (
     <Grid item container width="1">
       <FormControl error={errorMessage !== ''}>

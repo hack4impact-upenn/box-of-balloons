@@ -10,11 +10,19 @@ import BirthdayBoxRequestFormParagraphItem, {
 import BirthdayBoxRequestFormSelectItem, {
   BirthdayBoxRequestFormSelectItemProps,
 } from './BirthdayBoxRequestFormSelectItem';
+import BirthdayBoxRequestFormDatePickerItem, {
+  BirthdayBoxRequestFormDatePickerItemProps,
+} from './BirthdayBoxRequestFormDatePickerItem';
+import BirthdayBoxRequestFormNumberItem, {
+  BirthdayBoxRequestFormNumberItemProps,
+} from './BirthdayBoxRequestFormNumberItem';
 
 export type BirthdayBoxRequestFormItemProps = { type: string } & (
   | BirthdayBoxRequestFormParagraphItemProps
   | BirthdayBoxRequestFormDropdownItemProps
   | BirthdayBoxRequestFormSelectItemProps
+  | BirthdayBoxRequestFormDatePickerItemProps
+  | BirthdayBoxRequestFormNumberItemProps
 );
 
 function BirthdayBoxRequestFormItem(props: BirthdayBoxRequestFormItemProps) {
@@ -30,6 +38,12 @@ function BirthdayBoxRequestFormItem(props: BirthdayBoxRequestFormItemProps) {
     case 'select':
       const selectProps = props as BirthdayBoxRequestFormSelectItemProps;
       return <BirthdayBoxRequestFormSelectItem {...selectProps} />;
+    case 'date':
+      const dateProps = props as BirthdayBoxRequestFormDatePickerItemProps;
+      return <BirthdayBoxRequestFormDatePickerItem {...dateProps} />;
+    case 'number':
+      const numberProps = props as BirthdayBoxRequestFormNumberItemProps;
+      return <BirthdayBoxRequestFormNumberItem {...numberProps} />;
     default:
       throw new Error(`Invalid type: ${type}`);
   }

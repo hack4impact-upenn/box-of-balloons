@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Grid } from '@mui/material';
+import { Dayjs } from 'dayjs';
 import { BirthdayBoxRequestFormConfig } from './birthdayBoxRequestFormItemConfig';
 import BirthdayBoxRequestFormItem from './BirthdayBoxRequestFormItems/BirthdayBoxRequestFormItem';
 
 export type IBirthdayBoxRequestFormValues = {
-  [id: string]: string;
+  [id: string]: string | boolean | number | Dayjs | null;
 };
 
 interface IBirthdayBoxRequestFormContentsProps {
@@ -18,7 +19,10 @@ function BirthdayBoxRequestFormContents({
 }: IBirthdayBoxRequestFormContentsProps) {
   const [values, setValues] = useState<IBirthdayBoxRequestFormValues>({
     ...Object.fromEntries(
-      Object.keys(config).map((id) => [id, config[id].initialValue || '']),
+      Object.keys(config).map((id) => [
+        id,
+        config[id].initialValue !== undefined ? config[id].initialValue : '',
+      ]),
     ),
   });
 
@@ -31,8 +35,8 @@ function BirthdayBoxRequestFormContents({
       {Object.entries(config).map(([id, item]) => (
         <BirthdayBoxRequestFormItem
           key={id}
-          value={values[id] || ''}
-          setValue={(value) => setValues({ ...values, [id]: value })}
+          value={values[id]}
+          setValue={(value: any) => setValues({ ...values, [id]: value })}
           label={item.label}
           errorMessage={errorMessages[id] || ''}
           type={item.type}

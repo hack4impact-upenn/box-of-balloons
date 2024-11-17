@@ -1,5 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import reportWebVitals from './reportWebVitals.ts';
 import App from './App.tsx';
 import { AlertProvider } from './util/context/AlertContext.tsx';
@@ -9,7 +11,9 @@ const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 root.render(
   <AlertProvider>
-    <App />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <App />
+    </LocalizationProvider>
   </AlertProvider>,
 );
 
