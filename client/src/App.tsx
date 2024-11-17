@@ -23,6 +23,7 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage.tsx';
 import AlertPopup from './components/AlertPopup.tsx';
 import InviteRegisterPage from './Authentication/InviteRegisterPage.tsx';
 import TempAdminDashboardPage from './AdminDashboard/TempAdminDashboardPage.tsx';
+import BirthdayBoxRequestForm from './components/BirthdayBoxRequestForm/BirthdayBoxRequestForm.tsx';
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/admin" element={<TempAdminDashboardPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route
+                      path="/request-form"
+                      element={<BirthdayBoxRequestForm />}
+                    />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
