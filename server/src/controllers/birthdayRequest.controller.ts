@@ -16,8 +16,12 @@ import {
   emailRequestUpdate,
   emailRequestDelete,
 } from '../services/mail.service.ts';
-import { IBirthdayRequest } from '../models/birthdayRequest.model.ts';
-import { IUser } from '../models/user.model.ts';
+import {
+  ChildGender,
+  ChildRace,
+  ChildSituation,
+  IBirthdayRequest,
+} from '../models/birthdayRequest.model.ts';
 
 const getAllRequests = async (
   req: express.Request,
@@ -167,26 +171,31 @@ const createRequest = async (
     chapterId,
     deadlineDate,
     childBirthday,
-    childAge,
     childName,
-    childGender,
-    childRace,
+    childAge,
+    childGenderRaw,
+    childRaceRaw,
     childInterests,
+    giftSuggestions,
     childAllergies,
     allergyDetails,
-    giftSuggestions,
     additionalInfo,
+    childSituationRaw,
     agencyWorkerName,
     agencyOrganization,
     agencyWorkerPhone,
     agencyWorkerEmail,
+    agencyPhysicalAddress,
     isFirstReferral,
     agreeFeedback,
-    requestedDate,
-    status,
-    deliveryDate,
+    agreeLiability,
   } = req.body;
-  if (!chapterId || typeof chapterId === 'string') {
+
+  const childGender = childGenderRaw as ChildGender;
+  const childRace = childRaceRaw as ChildRace;
+  const childSituation = childSituationRaw as ChildSituation;
+
+  if (!chapterId || typeof chapterId !== 'string') {
     next(ApiError.notFound(`chapterId does not exist or is invalid`));
     return;
   }
@@ -198,70 +207,57 @@ const createRequest = async (
     next(ApiError.notFound(`childBirthday does not exist or is invalid`));
     return;
   }
-  if (!childAge || typeof childAge !== 'number') {
-    next(ApiError.notFound(`childAge does not exist or is invalid`));
-    return;
-  }
   if (!childName || typeof childName !== 'string') {
     next(ApiError.notFound(`childName does not exist or is invalid`));
     return;
   }
-  if (!childGender || typeof childGender !== 'string') {
-    next(ApiError.notFound(`childGender does not exist or is invalid`));
+  if (!childAge || typeof childAge !== 'number') {
+    next(ApiError.notFound(`childAge does not exist or is invalid`));
     return;
   }
-  if (childGender !== 'Boy' && childGender !== 'Girl') {
-    next(ApiError.notFound(`childGender is invalid`));
-    return;
-  }
-  if (!childRace || typeof childRace === 'string') {
-    next(ApiError.notFound(`childRace does not exist or is invalid`));
-    return;
-  }
-  if (
-    childRace !== 'White' &&
-    childRace !== 'Black or African American' &&
-    childRace !== 'Hispanic or Latino' &&
-    childRace !== 'Native American or American Indian' &&
-    childRace !== 'Asian / Pacific Islander' &&
-    childRace !== 'Not Sure'
-  ) {
-    next(ApiError.notFound(`childRace is invalid`));
-    return;
-  }
-  if (!childInterests || typeof childInterests === 'string') {
+
+  if (!childInterests || typeof childInterests !== 'string') {
     next(ApiError.notFound(`childInterests does not exist or is invalid`));
     return;
   }
-  if (childAllergies !== true && childAllergies !== false) {
-    next(ApiError.notFound(`childAllergies does not exist or is invalid`));
-    return;
-  }
-  if (!allergyDetails || typeof allergyDetails === 'string') {
-    next(ApiError.notFound(`allergyDetails does not exist or is invalid`));
-    return;
-  }
-  if (!giftSuggestions || typeof giftSuggestions === 'string') {
+  if (!giftSuggestions || typeof giftSuggestions !== 'string') {
     next(ApiError.notFound(`giftSuggestions does not exist or is invalid`));
     return;
   }
-  if (!additionalInfo || typeof additionalInfo === 'string') {
+  if (typeof childAllergies !== 'boolean') {
+    next(ApiError.notFound(`childAllergies does not exist or is invalid`));
+    return;
+  }
+  if (!allergyDetails || typeof allergyDetails !== 'string') {
+    next(ApiError.notFound(`allergyDetails does not exist or is invalid`));
+    return;
+  }
+  if (!additionalInfo || typeof additionalInfo !== 'string') {
     next(ApiError.notFound(`additionalInfo does not exist or is invalid`));
     return;
   }
-  if (!agencyWorkerName || typeof agencyWorkerName === 'string') {
+
+  if (!agencyWorkerName || typeof agencyWorkerName !== 'string') {
     next(ApiError.notFound(`agencyWorkerName does not exist or is invalid`));
     return;
   }
-  if (!agencyOrganization || typeof agencyOrganization === 'string') {
+  if (!agencyOrganization || typeof agencyOrganization !== 'string') {
     next(ApiError.notFound(`agencyOrganization does not exist or is invalid`));
     return;
   }
-  if (!agencyWorkerPhone || typeof agencyWorkerPhone === 'string') {
+
+  if (!agencyPhysicalAddress || typeof agencyPhysicalAddress !== 'string') {
+    next(
+      ApiError.notFound(`agencyPhysicalAddress does not exist or is invalid`),
+    );
+    return;
+  }
+
+  if (!agencyWorkerPhone || typeof agencyWorkerPhone !== 'string') {
     next(ApiError.notFound(`agencyWorkerPhone does not exist or is invalid`));
     return;
   }
-  if (!agencyWorkerEmail || typeof agencyWorkerEmail === 'string') {
+  if (!agencyWorkerEmail || typeof agencyWorkerEmail !== 'string') {
     next(ApiError.notFound(`agencyWorkerEmail does not exist or is invalid`));
     return;
   }
@@ -272,55 +268,44 @@ const createRequest = async (
     return;
   }
 
-  if (isFirstReferral !== true && isFirstReferral !== false) {
+  if (typeof isFirstReferral !== 'boolean') {
     next(ApiError.notFound(`isFirstReferral does not exist or is invalid`));
     return;
   }
-  if (agreeFeedback !== true && agreeFeedback !== false) {
+  if (typeof agreeFeedback !== 'boolean') {
     next(ApiError.notFound(`agreeFeedback does not exist or is invalid`));
     return;
   }
-  if (!requestedDate || !(requestedDate instanceof Date)) {
-    next(ApiError.notFound(`requestedDate does not exist or is invalid`));
+  if (typeof agreeLiability !== 'boolean') {
+    next(ApiError.notFound(`agreeLiability does not exist or is invalid`));
     return;
   }
-  if (!status || typeof status === 'string') {
-    next(ApiError.notFound(`status does not exist or is invalid`));
-    return;
-  }
-  if (status !== 'Pending' && status !== 'Approved' && status !== 'Delivered') {
-    next(ApiError.notFound(`status is invalid`));
-    return;
-  }
-  if (!deliveryDate || !(deliveryDate instanceof Date)) {
-    next(ApiError.notFound(`deliveryDate does not exist or is invalid`));
-    return;
-  }
+
   try {
-    const user = await createBirthdayRequestByID(
+    const birthdayRequest = await createBirthdayRequestByID({
       chapterId,
       deadlineDate,
       childBirthday,
-      childAge,
       childName,
+      childAge,
       childGender,
       childRace,
       childInterests,
+      giftSuggestions,
       childAllergies,
       allergyDetails,
-      giftSuggestions,
       additionalInfo,
+      childSituation,
       agencyWorkerName,
       agencyOrganization,
       agencyWorkerPhone,
       agencyWorkerEmail,
+      agencyPhysicalAddress,
       isFirstReferral,
       agreeFeedback,
-      requestedDate,
-      status,
-      deliveryDate,
-    );
-    res.sendStatus(StatusCode.CREATED);
+      agreeLiability,
+    });
+    res.sendStatus(StatusCode.CREATED).json(birthdayRequest);
   } catch (err) {
     next(ApiError.internal('Unable to register user.'));
   }
