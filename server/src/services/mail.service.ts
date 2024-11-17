@@ -128,10 +128,50 @@ const emailRequestDelete = async (email: string, childName: string) => {
   await SGmail.send(mailSettings);
 };
 
+const emailRequestCreate = async (email: string, childName: string) => {
+  const mailSettings: MailDataRequired = {
+    from: {
+      email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
+      name: 'Box of Balloons, Inc.',
+    },
+    to: email,
+    subject: 'Box of Balloons Request Received',
+    html: `
+      <p>Hello,</p>
+      
+      <p>Thank you for your request. Box of Balloons has received your request and you will receive a 
+      response when your request is either approved or denied by your local chapter leader.</p>
+      
+      <p>If you have any specific questions in the meantime, please reach out to your local chapter by 
+      finding their contact information <a href="https://www.boxofballoons.org/where-are-we-1">here</a>.</p>
+      
+      <p>We appreciate your patience as all our chapters are run 100% by volunteers so response time, 
+      while often quick, may sometimes be delayed.</p>
+      
+      <p>Thank you,</p>
+      
+      <p>Box of Balloons, Inc. - Automated response</p>
+      
+      <img src="cid:email_footnote" alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
+    `,
+    attachments: [
+      {
+        filename: 'email_footnote.png',
+        path: './photos/email_footnote.png',
+        cid: 'email_footnote'
+      }
+    ]
+  };
+
+  // Send the email and propagate the error up if one exists
+  await SGmail.send(mailSettings);
+};
+
 export {
   emailVerificationLink,
   emailResetPasswordLink,
   emailInviteLink,
   emailRequestUpdate,
   emailRequestDelete,
+  emailRequestCreate,
 };

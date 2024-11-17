@@ -15,6 +15,7 @@ import { getChapterById } from '../services/chapter.service.ts';
 import {
   emailRequestUpdate,
   emailRequestDelete,
+  emailRequestCreate,
 } from '../services/mail.service.ts';
 import {
   ChildGender,
