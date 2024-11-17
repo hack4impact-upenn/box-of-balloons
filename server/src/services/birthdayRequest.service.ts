@@ -12,7 +12,7 @@ const removeSensitiveDataQuery = [
 ];
 
 const getAllRequestsByID = async (id: string) => {
-  const requestsList = await BirthdayRequest.findOne({ id })
+  const requestsList = await BirthdayRequest.find({ chapterId: id })
     .select(removeSensitiveDataQuery)
     .exec();
   return requestsList;
