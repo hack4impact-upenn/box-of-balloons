@@ -10,6 +10,7 @@ import {
   getRequestById,
   deleteRequestByID,
   createBirthdayRequestByID,
+  getMonthlyOverviewByDate,
 } from '../services/birthdayRequest.service.ts';
 import { getChapterById } from '../services/chapter.service.ts';
 import {
@@ -312,4 +313,32 @@ const createRequest = async (
   }
 };
 
-export { getAllRequests, updateRequestStatus, deleteRequest, createRequest };
+const getMonthlyOverview = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { startDate, endDate } = req.query;
+
+  if (!startDate || !endDate) {
+    return next(ApiError.missingFields(['startDate', 'endDate']));
+  }
+
+  try {
+    const start = new Date(startDate as string);
+    const end = new Date(endDate as string);
+
+    const overview = await getMonthlyOverviewByDate(start, end);
+    res.status(StatusCode.OK).json(overview);
+  } catch (error) {
+    next(ApiError.internal('Failed to retrieve monthly overview.'));
+  }
+};
+
+export {
+  getAllRequests,
+  updateRequestStatus,
+  deleteRequest,
+  createRequest,
+  getMonthlyOverview,
+};
