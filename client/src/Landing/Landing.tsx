@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import { StateAbbreviation, StateConfig } from '../util/types/map';
 import LandingMap from './LandingMap';
 import LandingHeader from './LandingHeader';
 
@@ -8,9 +7,22 @@ export default function Landing() {
   return (
     <div style={{ position: 'relative' }}>
       <LandingHeader />
-      <Button variant="contained" sx={{ backgroundColor: '#FF3F7F' }}>
-        CHAPTER LOGIN
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: '#f28f8a',
+            width: '200px',
+            height: '50px',
+            fontSize: '17px',
+            '&:hover': {
+              backgroundColor: '#ff3f73',
+            },
+          }}
+        >
+          CHAPTER LOGIN
+        </Button>
+      </div>
       <LandingMap />
     </div>
   );

@@ -48,12 +48,23 @@ export default function LandingMap() {
     fetchChapters();
   }, []);
 
+  const colors = ['#f28f8a', '#FEE761', '#54c2b9']; // Add your desired colors
+
+  const getAlternatingColor = (state: StateAbbreviation) => {
+    if (!availableStates.has(state)) {
+      return '#eaeaea';
+    }
+    // Calculate the index for the color array based on the state's position
+    const stateIndex = Array.from(availableStates).indexOf(state);
+    return colors[stateIndex % colors.length]; // Cycle through colors
+  };
+
   const statesCustomConfig = () => {
     const statesConfig: Record<string, any> = {};
 
     getStateKeys(STATES).forEach((state) => {
       statesConfig[state] = {
-        fill: availableStates.has(state) ? '#4EC2BA' : '#D3D3D3',
+        fill: getAlternatingColor(state),
         clickHandler: availableStates.has(state)
           ? async () => {
               setChosenState(state);
@@ -77,7 +88,7 @@ export default function LandingMap() {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: '100vh' }}
+      sx={{ minHeight: '80vh' }}
     >
       <Grid item xs={3}>
         <USAMap customize={statesCustomConfig()} />
@@ -148,10 +159,16 @@ export default function LandingMap() {
                           <Button
                             variant="contained"
                             sx={{
-                              backgroundColor: '#F2F2F2',
+                              backgroundColor:
+                                chosenChapter === chapter.id
+                                  ? '#FEE761'
+                                  : '#F2F2F2',
                               color: 'black',
                               width: '100%',
                               borderRadius: '20px',
+                              '&:hover': {
+                                backgroundColor: '#FEE761',
+                              },
                             }}
                             onClick={() => displayForm(chapter.id)}
                           >
