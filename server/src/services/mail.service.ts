@@ -157,8 +157,8 @@ const emailRequestCreate = async (email: string, childName: string) => {
     attachments: [
       {
         filename: 'email_footnote.png',
-        path: './photos/email_footnote.png',
-        cid: 'email_footnote'
+        content: require('fs').readFileSync('./photos/email_footnote.png'),
+        contentId: 'email_footnote'
       }
     ]
   };
