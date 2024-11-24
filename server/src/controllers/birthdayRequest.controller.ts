@@ -53,16 +53,13 @@ const getTotalBoxesDelivered = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  return (
-    getAllBoxesDelivered()
-      .then((countDelivered) => {
-        res.status(StatusCode.OK).send(countDelivered);
-      })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch((e) => {
-        next(ApiError.internal('Unable to get total number of delivered boxes'));
-      })
-  );
+  return getAllBoxesDelivered()
+    .then((countDelivered) => {
+      res.status(StatusCode.OK).json({ count: countDelivered });
+    })
+    .catch((e) => {
+      next(ApiError.internal('Unable to get total number of delivered boxes'));
+    });
 };
 
 const updateRequestStatus = async (

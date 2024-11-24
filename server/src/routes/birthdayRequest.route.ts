@@ -15,8 +15,8 @@ const router = express.Router();
 
 router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
 
-router.get('/totalboxesdelivered', isAuthenticated, isAdmin, getTotalBoxesDelivered);
-
+router.get('/totalboxesdelivered', getTotalBoxesDelivered);
+//isAuthenticated, isAdmin,
 router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
 
 router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
