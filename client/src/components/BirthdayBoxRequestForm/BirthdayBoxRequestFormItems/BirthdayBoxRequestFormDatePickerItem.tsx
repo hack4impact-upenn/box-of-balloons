@@ -1,4 +1,4 @@
-import { FormHelperText, Grid } from '@mui/material';
+import { FormHelperText, Grid, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { Dayjs } from 'dayjs';
@@ -17,8 +17,10 @@ function BirthdayBoxRequestFormDatePickerItem({
 
   return (
     <Grid item width="1">
+      <Typography variant="body1" sx={{ marginBottom: 1 }}>
+        {label}
+      </Typography>
       <DatePicker
-        label={label}
         value={value}
         onChange={(newValue) => setValue(newValue || new Dayjs())}
       />

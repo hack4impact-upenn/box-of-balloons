@@ -15,10 +15,11 @@ import {
   Radio,
   Button,
 } from '@mui/material';
-import { Stack } from '@mui/system';
+import { Stack, ThemeProvider, createTheme } from '@mui/system';
 import { DatePicker } from '@mui/x-date-pickers';
 import { CheckBox } from '@material-ui/icons';
 import { Dayjs } from 'dayjs';
+import styled from '@emotion/styled';
 
 import React, { useState } from 'react';
 import FormCol from '../form/FormCol';
@@ -29,6 +30,7 @@ import BirthdayBoxRequestFormContents, {
   IBirthdayBoxRequestFormValues,
 } from './BirthdayBoxRequestFormContents';
 import { BirthdayBoxRequestFormConfig } from './birthdayBoxRequestFormItemConfig';
+// import logo from '../assets/Logos/BoxOfBalloonsPrimaryLogo.png';
 
 interface BirthdayBoxRequestFormValues {
   // general info
@@ -80,7 +82,7 @@ function BirthdayBoxRequestForm() {
       type: 'number',
     },
     childGender: {
-      label: 'The child identifies as:',
+      label: 'The child identifies as...',
       type: 'select',
       options: {
         Boy: 'Boy',
@@ -92,7 +94,7 @@ function BirthdayBoxRequestForm() {
       },
     },
     childRace: {
-      label: 'The child race and ethnicity are',
+      label: "The child's race/ethnicity is...",
       type: 'select',
       options: {
         'American Indian or Alaska Native': 'American Indian or Alaska Native',
@@ -133,7 +135,7 @@ function BirthdayBoxRequestForm() {
     },
     childSituation: {
       label:
-        'Please select which one of the following situations best apply to the child being served',
+        'Please select which one of the following situations best apply to the child being served.',
       type: 'select',
       options: {
         Fostercare: 'Fostercare',
@@ -144,23 +146,23 @@ function BirthdayBoxRequestForm() {
       },
     },
     agencyWorkerName: {
-      label: 'Your first and last name.',
+      label: 'Your first and last name',
       type: 'paragraph',
     },
     agencyOrganization: {
-      label: 'The name of your organization.',
+      label: 'The name of your organization',
       type: 'paragraph',
     },
     agencyAddress: {
-      label: "Your organization's physical address.",
+      label: "Your organization's physical address",
       type: 'paragraph',
     },
     agnecyWorkerPhone: {
-      label: 'Your phone number.',
+      label: 'Your phone number',
       type: 'paragraph',
     },
     agencyWorkerEmail: {
-      label: 'Your email address.',
+      label: 'Your email address',
       type: 'paragraph',
     },
     isFirstReferral: {
@@ -173,7 +175,7 @@ function BirthdayBoxRequestForm() {
     },
     agreeFeedback: {
       label:
-        "By submitting this request form you are agreeing to do your best to provide us with feedback from the child's party.* This can be done by filling out the online feedback form, emailing a short testimony from the family, submitting a picture of the child/party, etc.(when the family and child are safe and comfortable doing so) and understand that by doing so Box of Balloons, Inc. owns all rights to images, testimonials and form responses to use on social media, website promotions, email campaigns and to aid in organizational fundraising opportunities in any capacity the organization sees fit and that all names will be changed and locations are hidden to protect the child and the family being served.",
+        "By submitting this request form you are agreeing to do your best to provide us with feedback from the child's party.* This can be done by filling out the online feedback form, emailing a short testimony from the family, submitting a picture of the child/party, etc. (when the family and child are safe and comfortable doing so) and understand that by doing so Box of Balloons, Inc. owns all rights to images, testimonials and form responses to use on social media, website promotions, email campaigns and to aid in organizational fundraising opportunities in any capacity the organization sees fit and that all names will be changed and locations are hidden to protect the child and the family being served.",
       type: 'select',
       options: {
         Yes: 'Yes',
@@ -197,17 +199,68 @@ function BirthdayBoxRequestForm() {
   };
 
   return (
-    <FormGrid>
-      <FormCol>
-        <Grid item justifyContent="center" spacing={0}>
-          <Typography variant="h2">Birthday Box Request Form</Typography>
+    <Grid
+      item
+      container
+      justifyContent="center"
+      spacing="0"
+      sx={{ marginTop: 2 }}
+    >
+      {/* <Grid item container justifyContent="center">
+        <Logo src={logo} alt="Box of Balloons Logo" />
+      </Grid> */}
+      <Grid>
+        <Typography
+          variant="h1"
+          textAlign="center"
+          sx={{ fontWeight: 'bold', fontSize: '4rem' }}
+        >
+          Birthday Box Request Form
+        </Typography>
+        <Grid
+          sx={{
+            marginRight: 15,
+            marginLeft: 15,
+            marginTop: 5,
+            marginBottom: -8,
+          }}
+        >
+          <Typography variant="h5">
+            &quot;We believe each birthday should be happy and every child
+            should be celebrated!! Our birthday boxes provide customizable
+            celebrations for parents or caregivers to give their child a special
+            customized birthday party.&quot;
+            <br /> <br />
+            Each box includes{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              decorations, balloons, a party game, favors for 6 children,
+              cupcakes or cake for 10, plates, napkins, and a special gift for
+              the birthday child.
+            </span>
+            Please answer the following questions to help us create the perfect
+            birthday box.
+            <br /> <br />
+            We ask for at least{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              2 weeks&apos; notice and serve children ages 1-12
+            </span>
+            . For urgent requests, contact your local chapter leader to leader
+            to leader to leader to check availability.
+            <br /> <br />
+            Thank you for letting us be part of your child&apos;s special day!
+            <br /> <br />
+          </Typography>
         </Grid>
-        <BirthdayBoxRequestFormContents
-          config={config}
-          handleSubmit={onSubmit}
-        />
-      </FormCol>
-    </FormGrid>
+      </Grid>
+      <FormGrid>
+        <FormCol>
+          <BirthdayBoxRequestFormContents
+            config={config}
+            handleSubmit={onSubmit}
+          />
+        </FormCol>
+      </FormGrid>
+    </Grid>
   );
 }
 

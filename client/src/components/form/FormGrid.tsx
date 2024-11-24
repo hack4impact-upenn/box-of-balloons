@@ -15,7 +15,7 @@ function FormGrid({ children }: AnyChildren) {
       style={{
         margin: 0,
         padding: '5rem',
-        width: '100%',
+        width: '75%',
         height: '100%',
         display: 'flex',
         justifyContent: 'center',

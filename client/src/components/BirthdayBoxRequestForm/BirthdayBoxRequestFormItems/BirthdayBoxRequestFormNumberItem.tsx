@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { IBirthdayBoxRequestFormItemProps } from './IBirthdayBoxRequestFormItemProps';
 
@@ -13,6 +13,9 @@ function BirthdayBoxRequestFormNumberItem({
 }: BirthdayBoxRequestFormNumberItemProps) {
   return (
     <Grid item width="1">
+      <Typography variant="body1" sx={{ marginBottom: 1 }}>
+        {label}
+      </Typography>
       <TextField
         fullWidth
         error={errorMessage !== ''}
@@ -20,7 +23,6 @@ function BirthdayBoxRequestFormNumberItem({
         size="small"
         type="number"
         required
-        label={label}
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
       />
