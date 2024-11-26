@@ -23,6 +23,7 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage.tsx';
 import AlertPopup from './components/AlertPopup.tsx';
 import InviteRegisterPage from './Authentication/InviteRegisterPage.tsx';
 import Landing from './Landing/Landing.tsx';
+import LandingPage from './Home/LandingPage.tsx';
 
 function App() {
   return (
