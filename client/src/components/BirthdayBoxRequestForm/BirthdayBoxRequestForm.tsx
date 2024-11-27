@@ -22,6 +22,7 @@ import { Dayjs } from 'dayjs';
 import styled from '@emotion/styled';
 
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import FormCol from '../form/FormCol';
 import FormRow from '../form/FormRow';
 import { postData } from '../../util/api';
@@ -61,6 +62,8 @@ interface BirthdayBoxRequestFormValues {
 }
 
 function BirthdayBoxRequestForm() {
+  const { chapterId } = useParams();
+
   const [config, setConfig] = useState<BirthdayBoxRequestFormConfig>({
     deadlineDate: {
       label: 'What is the date this box is needed by?',
@@ -157,7 +160,7 @@ function BirthdayBoxRequestForm() {
       label: "Your organization's physical address",
       type: 'paragraph',
     },
-    agnecyWorkerPhone: {
+    agencyWorkerPhone: {
       label: 'Your phone number',
       type: 'paragraph',
     },
@@ -194,8 +197,17 @@ function BirthdayBoxRequestForm() {
   });
 
   const onSubmit = (values: IBirthdayBoxRequestFormValues) => {
-    const data = postData('birthday-request', values);
-    console.log(data);
+    const post = async () => {
+      const data = await postData('birthdayrequest/createrequest', {
+        ...values,
+        chapterId,
+        childAllergies: values.childAllergies === 'Yes',
+        isFirstReferral: values.isFirstReferral === 'Yes',
+        agreeFeedback: values.agreeFeedback === 'Yes',
+        liability: values.liability === 'Yes',
+      });
+    };
+    post();
   };
 
   return (

@@ -79,9 +79,6 @@ const createBirthdayRequestByID = async (
   agencyWorkerEmail: string,
   isFirstReferral: boolean,
   agreeFeedback: boolean,
-  requestedDate: Date,
-  status: string,
-  deliveryDate: Date,
 ) => {
   const newBirthdayRequest = new BirthdayRequest({
     chapterId,
@@ -102,9 +99,9 @@ const createBirthdayRequestByID = async (
     agencyWorkerEmail,
     isFirstReferral,
     agreeFeedback,
-    requestedDate,
-    status,
-    deliveryDate,
+    requestedDate: new Date(),
+    status: 'Pending',
+    deliveryDate: null,
   });
   const returnedBirthdayRequest = await newBirthdayRequest.save();
   return returnedBirthdayRequest;

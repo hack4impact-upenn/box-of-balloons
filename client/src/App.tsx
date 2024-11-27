@@ -41,7 +41,7 @@ function App() {
                     <Route path="/admin" element={<TempAdminDashboardPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
-                      path="/request-form"
+                      path="/request-form/:chapterId"
                       element={<BirthdayBoxRequestForm />}
                     />
                     <Route

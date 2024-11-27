@@ -18,6 +18,6 @@ router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
 
 router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
 
-router.post('/createrequest', isAuthenticated, isAdmin, createRequest);
+router.post('/createrequest', createRequest);
 
 export default router;

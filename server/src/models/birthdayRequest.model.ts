@@ -23,19 +23,15 @@ const BirthdayRequestSchema = new mongoose.Schema({
     required: true,
   },
   childGender: {
-    type: String,
-    enum: ['Boy', 'Girl'],
-    required: true,
-  },
-  childRace: {
-    type: String,
-    enum: [
-      'White',
+    type: [
+      'American Indian or Alaska Native',
+      'Asian',
       'Black or African American',
       'Hispanic or Latino',
-      'Native American or American Indian',
-      'Asian / Pacific Islander',
-      'Not Sure',
+      'Middle Eastern or North African (MENA)',
+      'Native Hawaiian or Pacific Islander',
+      'White',
+      'Other',
     ],
     required: true,
   },
