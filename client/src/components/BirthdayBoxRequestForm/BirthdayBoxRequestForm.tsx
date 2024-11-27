@@ -131,6 +131,10 @@ function BirthdayBoxRequestForm() {
         No: 'No',
       },
     },
+    // allergyDetails: {
+    //   label: 'Yes, please specify:',
+    //   type: 'paragraph',
+    // },
     additionalInfo: {
       label:
         'Anything else you would like us to know about the birthday child?',

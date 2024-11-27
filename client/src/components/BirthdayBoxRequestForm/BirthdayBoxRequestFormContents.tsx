@@ -68,6 +68,19 @@ function BirthdayBoxRequestFormContents({
             type={item.type}
             options={item.options}
           />
+          {values.childAllergies === 'Yes' && id === 'childAllergies' && (
+            <BirthdayBoxRequestFormItem
+              key="allergyDetails"
+              value={values.allergyDetails || ''}
+              setValue={(value: any) =>
+                setValues({ ...values, allergyDetails: value })
+              }
+              label="Yes, please specify:"
+              errorMessage={errorMessages.allergyDetails || ''}
+              type="paragraph"
+              options={item.options}
+            />
+          )}
         </>
       ))}
       <Grid item justifyContent="center">
