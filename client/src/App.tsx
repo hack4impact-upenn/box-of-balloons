@@ -38,7 +38,6 @@ function App() {
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/admin" element={<TempAdminDashboardPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
@@ -58,6 +57,7 @@ function App() {
                   />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
                   <Route element={<AdminRoutesWrapper />}>
