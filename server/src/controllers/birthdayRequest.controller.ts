@@ -22,6 +22,7 @@ import {
   ChildSituation,
   IBirthdayRequest,
 } from '../models/birthdayRequest.model.ts';
+import { IUser } from '../models/user.model.ts';
 
 const getAllRequests = async (
   req: express.Request,

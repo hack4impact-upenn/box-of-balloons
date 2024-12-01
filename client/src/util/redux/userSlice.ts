@@ -4,22 +4,22 @@ import type { RootState } from './store.ts';
 
 export interface UserState {
   email: string | null;
-  firstName: string | null;
-  lastName: string | null;
+  city: string | null;
+  state: string | null;
   admin: boolean | null;
 }
 
 interface Payload {
   email: string;
-  firstName: string;
-  lastName: string;
+  city: string;
+  state: string;
   admin: boolean;
 }
 
 const initialState = {
   email: null,
-  firstName: null,
-  lastName: null,
+  city: null,
+  state: null,
 } as UserState;
 
 /**
@@ -31,8 +31,8 @@ const userSlice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<Payload>) => {
       state.email = action.payload.email;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
+      state.city = action.payload.city;
+      state.state = action.payload.state;
       state.admin = action.payload.admin;
     },
     toggleAdmin: (state) => {
@@ -40,8 +40,8 @@ const userSlice = createSlice({
     },
     logout: (state) => {
       state.email = null;
-      state.firstName = null;
-      state.lastName = null;
+      state.city = null;
+      state.state = null;
       state.admin = null;
     },
   },

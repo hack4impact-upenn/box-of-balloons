@@ -79,6 +79,7 @@ function HomePage() {
   };
 
   const message = `Welcome to the Boilerplate, ${user.city}, ${user.state}!`;
+  console.log(user);
   return (
     <ScreenGrid>
       <Typography variant="h2">{message}</Typography>
