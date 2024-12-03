@@ -10,21 +10,6 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
-// function DashboardHeader() {
-//   return (
-//     <Box
-//       sx={{
-//         display: 'flex',
-//         justifyContent: 'space-between',
-//         alignItems: 'center',
-//         p: 2,
-//       }}
-//     >
-//       <Typography variant="h3">Admin Dashboard</Typography>
-//     </Box>
-//   );
-// }
-
 function DashboardHeader({
   activeUserCount,
   acceptingRequestsUserCount,
@@ -297,7 +282,6 @@ function TempAdminDashboardPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* <DashboardHeader /> */}
       <DashboardHeader
         activeUserCount={activeUserCount}
         acceptingRequestsUserCount={acceptingRequestsUserCount}
@@ -316,38 +300,6 @@ function TempAdminDashboardPage() {
         >
           Monthly Overview of Children Served
         </Typography>
-        {/* <Box sx={{ display: 'flex', gap: 2 }}>
-          <Box
-            sx={{
-              backgroundColor: '#DFF6F0',
-              borderRadius: 2,
-              padding: 2,
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-              Active Users
-            </Typography>
-            <Typography variant="h6">
-              {activeUserCount ?? 'Loading...'}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundColor: '#FFF5D1',
-              borderRadius: 2,
-              padding: 2,
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-              Accepting Requests
-            </Typography>
-            <Typography variant="h6">
-              {acceptingRequestsUserCount ?? 'Loading...'}
-            </Typography>
-          </Box>
-        </Box> */}
         <Typography
           variant="body2"
           sx={{ fontWeight: 'bold', color: '#0FA497' }}
