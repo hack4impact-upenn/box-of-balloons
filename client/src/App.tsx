@@ -37,7 +37,7 @@ function App() {
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/admin" element={<TempAdminDashboardPage />} />
+                    {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
