@@ -11,9 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
-    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
   },
