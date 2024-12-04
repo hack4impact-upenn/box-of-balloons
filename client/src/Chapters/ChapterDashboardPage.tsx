@@ -24,7 +24,6 @@ const theme = createTheme({
   },
 });
 
-/** 
 const bdayRequests = [
   {
     id: 1,
@@ -67,7 +66,6 @@ const bdayRequests = [
     status: 'completed',
   },
 ];
-*/
 
 function ChapterDashboardPage() {
   const [open, setOpen] = useState(false);
@@ -79,14 +77,14 @@ function ChapterDashboardPage() {
   const handleCloseDialog = () => {
     setOpen(false);
   };
-
+  /*
   const (bdayRequest, setBdayRequest) = useState<IBirthdayRequest[]>([]);
   const birthdayRequests = getData('all/67156b8f624d2639a91ee518');
   useEffect(() => {
     setBdayRequest(birthdayRequests?.data);
   }, [birthdayRequests]);
 
-
+*/
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -134,8 +132,8 @@ function ChapterDashboardPage() {
 
           {/* Pending Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {birthdayRequests
-              .filter((request) => request.status === 'Pending')
+            {bdayRequests
+              .filter((request) => request.status === 'pending')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Grid container spacing={1} alignItems="center">
@@ -182,6 +180,7 @@ function ChapterDashboardPage() {
                                   },
                                   borderRadius: 4,
                                 }}
+                                onClick={handleOpenDialog}
                               >
                                 View
                               </Button>
@@ -266,8 +265,8 @@ function ChapterDashboardPage() {
 
           {/* Active Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {birthdayRequests
-              .filter((request) => request.status === 'Approved')
+            {bdayRequests
+              .filter((request) => request.status === 'active')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Card
@@ -337,7 +336,7 @@ function ChapterDashboardPage() {
 
           {/* Completed Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {birthdayRequests
+            {bdayRequests
               .filter((request) => request.delivered)
               .map((request) => (
                 <Grid item key={request.id}>
@@ -387,6 +386,7 @@ function ChapterDashboardPage() {
                               },
                               borderRadius: 4,
                             }}
+                            onClick={handleOpenDialog}
                           >
                             View
                           </Button>
