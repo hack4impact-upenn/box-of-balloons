@@ -24,6 +24,13 @@ import { useAppSelector } from '../util/redux/hooks';
 import { selectUser } from '../util/redux/userSlice';
 import { IBirthdayRequest } from '../util/types/birthdayRequest';
 
+/*
+Things left to do:
+1. when not currently accepting users go to admin and update the chapter to not accepting users @carolineychen8
+2. when pending then move to approved and if not approved then die @aditighoshh
+3. when mark as completed move to completed @aditighoshh
+*/
+
 
 const theme = createTheme({
   typography: {
@@ -224,8 +231,8 @@ return (
           </Grid>
           {/* Pending Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {bdayRequests
-              .filter((request) => request.status === 'pending')
+            {birthdayRequests
+              .filter((request) => request.status === 'Pending')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Grid container spacing={1} alignItems="center">
@@ -272,7 +279,6 @@ return (
                                   },
                                   borderRadius: 4,
                                 }}
-                                onClick={handleOpenDialog}
                                 onClick={handleOpenDialog}
                               >
                                 View
@@ -359,8 +365,8 @@ return (
           </Grid>
           {/* Active Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {bdayRequests
-              .filter((request) => request.status === 'active')
+            {birthdayRequests
+              .filter((request) => request.status === 'Approved')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Card
@@ -483,9 +489,7 @@ return (
                               },
                               borderRadius: 4,
                             }}
-                            onClick={handleOpenDialog}
-                            onClick={handleOpenDialog}
-                          >
+                            onClick={handleOpenDialog}                          >
                             View
                           </Button>
                           <SimpleDialog
