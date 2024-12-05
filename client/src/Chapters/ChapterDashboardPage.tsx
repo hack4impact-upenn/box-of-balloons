@@ -224,8 +224,8 @@ return (
           </Grid>
           {/* Pending Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {birthdayRequests
-              .filter((request) => request.status === 'Pending')
+            {bdayRequests
+              .filter((request) => request.status === 'pending')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Grid container spacing={1} alignItems="center">
@@ -272,6 +272,7 @@ return (
                                   },
                                   borderRadius: 4,
                                 }}
+                                onClick={handleOpenDialog}
                                 onClick={handleOpenDialog}
                               >
                                 View
@@ -358,8 +359,8 @@ return (
           </Grid>
           {/* Active Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
-            {birthdayRequests
-              .filter((request) => request.status === 'Approved')
+            {bdayRequests
+              .filter((request) => request.status === 'active')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Card
@@ -482,6 +483,7 @@ return (
                               },
                               borderRadius: 4,
                             }}
+                            onClick={handleOpenDialog}
                             onClick={handleOpenDialog}
                           >
                             View
