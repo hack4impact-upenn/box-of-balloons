@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Grid,
@@ -7,24 +7,31 @@ import {
   CardContent,
   Box,
   Checkbox,
+  Switch,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
-import { getData } from '../util/api';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useData, getData } from '../util/api';
+import { useAppSelector } from '../util/redux/hooks';
+import { selectUser } from '../util/redux/userSlice';
 import { IBirthdayRequest } from '../util/types/birthdayRequest';
+
 
 const theme = createTheme({
   typography: {
     fontFamily: "'Comic Sans MS', sans-serif",
   },
 });
-
-/** 
+/*
+// hard coded data for table populating
 const bdayRequests = [
   {
     id: 1,
@@ -69,25 +76,98 @@ const bdayRequests = [
 ];
 */
 
+export interface SimpleDialogProps {
+  open: boolean;
+  selectedValue: string;
+  onClose: (value: string) => void;
+}
+
+
+
 function ChapterDashboardPage() {
+  const { email } = useAppSelector(selectUser); // Get the email from the Redux store
+  const [birthdayRequests, setBirthdayRequests] = useState<IBirthdayRequest[]>(
+    [],
+  ); // State to hold fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState<string | null>(null); // Error handling
+  const [chapterId] = useState<string>('67156b8f624d2639a91ee518'); // Hardcoded chapterId for testing
+  // dialog stuff
   const [open, setOpen] = useState(false);
+
+
+
+  function SimpleDialog (props: SimpleDialogProps){
+    const { onClose, selectedValue, open } = props;
+  
+    const handleClose = () => {
+      onClose(selectedValue);
+    };
+
+    let  data = {};
+
+    for(let i = 0; i < birthdayRequests.length; i++) {
+      if (birthdayRequests[i].id === selectedValue) {
+        data = birthdayRequests[i];
+        break;
+      }
+    }
+
+    console.log(data);
+
+  
+    return (
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>Birthday Request</DialogTitle>
+        <List sx = {{pt : 0}}>
+          {Object.entries(data).map(([key, value]) => (
+            <ListItem key={key}>
+              <ListItemText primary={key} secondary={value?.toString()} />
+            </ListItem>
+          ))}
+          </List>
+          </Dialog>
+        )
+  
+  }
 
   const handleOpenDialog = () => {
     setOpen(true);
+   
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleCloseDialog = () => {
     setOpen(false);
   };
 
-  const (bdayRequest, setBdayRequest) = useState<IBirthdayRequest[]>([]);
-  const birthdayRequests = getData('all/67156b8f624d2639a91ee518');
+
+
+  const response = useData('birthdayRequest/all/' + chapterId); 
+  console.log(response?.data);
   useEffect(() => {
-    setBdayRequest(birthdayRequests?.data);
-  }, [birthdayRequests]);
+    if (response?.data) {
+      setLoading(false);
+      if(!Array.isArray(response?.data)) {
+        setBirthdayRequests([response?.data]);
+      } 
+      else {
+      setBirthdayRequests(response?.data);
+      }
+    }
+  }, [response]);
+
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
 
 
-  return (
+return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{ padding: 2, width: '100%', maxWidth: '900px', margin: 'auto' }}
@@ -102,14 +182,25 @@ function ChapterDashboardPage() {
           <Typography variant="h4" fontWeight="bold" mb={1}>
             Welcome California!
           </Typography>
-        </Box>
 
+        <FormControlLabel
+        control={
+          <Switch
+            checked={checked}
+            onChange={handleChange}
+            color="primary" 
+          />
+        }
+        label={checked ? 'Currently Accepting Requests' : 'Not curently accepting requests'}
+      />
+
+
+        </Box>
         {/* Pending Requests */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" fontWeight="bold" mb={1}>
             Pending Requests
           </Typography>
-
           {/* Pending Header */}
           <Grid container spacing={2} sx={{ mb: 2 }}>
             <Grid item xs={3}>
@@ -131,7 +222,6 @@ function ChapterDashboardPage() {
               {/* Empty for View Button */}
             </Grid>
           </Grid>
-
           {/* Pending Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
             {birthdayRequests
@@ -159,13 +249,13 @@ function ChapterDashboardPage() {
                             {/* Birthday */}
                             <Grid item xs={3.5}>
                               <Typography variant="body1">
-                                {request.birthday}
+                                {request.childBirthday.toString()}
                               </Typography>
                             </Grid>
                             {/* Agency Name */}
                             <Grid item xs={3}>
                               <Typography variant="body1">
-                                {request.agency}
+                                {request.agencyOrganization}
                               </Typography>
                             </Grid>
                             {/* View Button */}
@@ -178,19 +268,24 @@ function ChapterDashboardPage() {
                                   color: '#000000', // Black text
                                   border: '1px solid #ccc', // Optional border
                                   '&:hover': {
-                                    backgroundColor: '#f0f0f0', // Slightly darker on hover
+                                    backgroundColor: '#F0F0F0', // Slightly darker on hover
                                   },
                                   borderRadius: 4,
                                 }}
+                                onClick={handleOpenDialog}
                               >
                                 View
                               </Button>
+                              <SimpleDialog
+                                selectedValue={request.id}
+                                open={open}
+                                onClose={handleClose}
+                              />
                             </Grid>
                           </Grid>
                         </CardContent>
                       </Card>
                     </Grid>
-
                     {/* Approve/Deny Card */}
                     <Grid item xs={3}>
                       <Box>
@@ -201,7 +296,7 @@ function ChapterDashboardPage() {
                               variant="contained"
                               size="small"
                               sx={{
-                                backgroundColor: 'green',
+                                backgroundColor: '#AEFAA0',
                                 color: 'white',
                                 borderRadius: 6,
                               }}
@@ -214,7 +309,7 @@ function ChapterDashboardPage() {
                               variant="contained"
                               size="small"
                               sx={{
-                                backgroundColor: 'red',
+                                backgroundColor: '#FC6A6A',
                                 color: 'white',
                                 borderRadius: 6,
                               }}
@@ -230,13 +325,11 @@ function ChapterDashboardPage() {
               ))}
           </Grid>
         </Box>
-
         {/* Active Requests */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" fontWeight="bold" mb={1}>
             Active Requests
           </Typography>
-
           {/* Active Header */}
           <Grid container spacing={2} sx={{ mb: 2 }}>
             <Grid item xs={3}>
@@ -263,7 +356,6 @@ function ChapterDashboardPage() {
               {/* Empty for View Button */}
             </Grid>
           </Grid>
-
           {/* Active Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
             {birthdayRequests
@@ -285,13 +377,13 @@ function ChapterDashboardPage() {
                         {/* Birthday */}
                         <Grid item xs={3}>
                           <Typography variant="body1">
-                            {request.birthday}
+                            {request.childBirthday.toString()}
                           </Typography>
                         </Grid>
                         {/* Agency Name */}
                         <Grid item xs={3}>
                           <Typography variant="body1">
-                            {request.agency}
+                            {request.agencyOrganization}
                           </Typography>
                         </Grid>
                         {/* Mark Completed */}
@@ -312,7 +404,7 @@ function ChapterDashboardPage() {
                               color: '#000000', // Black text
                               border: '1px solid #ccc', // Optional border
                               '&:hover': {
-                                backgroundColor: '#f0f0f0', // Slightly darker on hover
+                                backgroundColor: '#F0F0F0', // Slightly darker on hover
                               },
                               borderRadius: 4,
                             }}
@@ -320,6 +412,11 @@ function ChapterDashboardPage() {
                           >
                             View
                           </Button>
+                          <SimpleDialog
+                            selectedValue={request.id}
+                            open={open}
+                            onClose={handleClose}
+                          />
                         </Grid>
                       </Grid>
                     </CardContent>
@@ -328,17 +425,15 @@ function ChapterDashboardPage() {
               ))}
           </Grid>
         </Box>
-
-        {/* Completed Requests */}
+{/* Completed Requests */}
         <Box>
           <Typography variant="h6" fontWeight="bold" mb={1}>
             Completed Requests
           </Typography>
-
           {/* Completed Requests Rows */}
           <Grid container direction="column" spacing={0.5}>
             {birthdayRequests
-              .filter((request) => request.delivered)
+              .filter((request) => request.status === 'Delivered')
               .map((request) => (
                 <Grid item key={request.id}>
                   <Card
@@ -356,13 +451,13 @@ function ChapterDashboardPage() {
                         {/* Birthday */}
                         <Grid item xs={3}>
                           <Typography variant="body1">
-                            {request.birthday}
+                            {request.childBirthday.toString()}
                           </Typography>
                         </Grid>
                         {/* Agency Name */}
                         <Grid item xs={3}>
                           <Typography variant="body1">
-                            {request.agency}
+                            {request.agencyOrganization}
                           </Typography>
                         </Grid>
                         <Grid item xs={2} textAlign="center">
@@ -383,13 +478,19 @@ function ChapterDashboardPage() {
                               color: '#000000', // Black text
                               border: '1px solid #ccc', // Optional border
                               '&:hover': {
-                                backgroundColor: '#f0f0f0', // Slightly darker on hover
+                                backgroundColor: '#F0F0F0', // Slightly darker on hover
                               },
                               borderRadius: 4,
                             }}
+                            onClick={handleOpenDialog}
                           >
                             View
                           </Button>
+                          <SimpleDialog
+                            selectedValue={request.id}
+                            open={open}
+                            onClose={handleClose}
+                            />
                         </Grid>
                       </Grid>
                     </CardContent>
@@ -398,16 +499,8 @@ function ChapterDashboardPage() {
               ))}
           </Grid>
         </Box>
-        <Dialog open={open} onClose={handleCloseDialog}>
-          <DialogTitle>Dialog Title!!</DialogTitle>
-          <DialogContent>{/* Dialog content here */}</DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Ok</Button>
-          </DialogActions>
-        </Dialog>
       </Box>
     </ThemeProvider>
   );
 }
-
 export default ChapterDashboardPage;
