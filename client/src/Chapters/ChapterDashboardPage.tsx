@@ -168,7 +168,6 @@ function ChapterDashboardPage() {
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
     const response = await putData(`chapter/toggleRequests/${chapterId}`);
-    console.log('TOGGLED');
   };
 
   return (
