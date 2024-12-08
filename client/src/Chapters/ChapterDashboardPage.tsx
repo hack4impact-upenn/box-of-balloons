@@ -164,10 +164,19 @@ function ChapterDashboardPage() {
   }, [response]);
 
   const [checked, setChecked] = useState(false);
+  const [checkboxCheck, setCheckboxCheck] = useState(false);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
     const response = await putData(`chapter/toggleRequests/${chapterId}`);
+  };
+
+  const handleCheckboxChange = async (id: string) => {
+    setCheckboxCheck(true);
+    const response = await putData(`birthdayRequest/updateStatus/${id}`, {
+      updatedValue: 'Delivered',
+    });
+    console.log('CHANGED');
   };
 
   return (
@@ -397,6 +406,8 @@ function ChapterDashboardPage() {
                             color="primary"
                             size="small"
                             inputProps={{ 'aria-label': 'Mark Completed' }}
+                            onChange={() => handleCheckboxChange(request.id)}
+                            checked={checkboxCheck}
                           />
                         </Grid>
                         {/* View Button */}
