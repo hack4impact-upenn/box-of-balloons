@@ -65,7 +65,10 @@ function App() {
                     <Route path="/users" element={<AdminDashboardPage />} />
                   </Route>
 
-                  <Route path="/chapterDash" element={<ChapterDashboardPage />} />
+                  <Route
+                    path="/chapterDash/:chapterId"
+                    element={<ChapterDashboardPage />}
+                  />
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
