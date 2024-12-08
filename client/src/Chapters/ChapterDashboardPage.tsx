@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prefer-template */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
@@ -19,7 +23,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useData, getData } from '../util/api';
+import { useParams } from 'react-router-dom';
+import { useData, getData, putData } from '../util/api';
 import { useAppSelector } from '../util/redux/hooks';
 import { selectUser } from '../util/redux/userSlice';
 import { IBirthdayRequest } from '../util/types/birthdayRequest';
@@ -30,7 +35,6 @@ Things left to do:
 2. when pending then move to approved and if not approved then die @aditighoshh
 3. when mark as completed move to completed @aditighoshh
 */
-
 
 const theme = createTheme({
   typography: {
@@ -89,7 +93,9 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-
+interface ChapterDashboardPageProps {
+  chapterId: string;
+}
 
 function ChapterDashboardPage() {
   const { email } = useAppSelector(selectUser); // Get the email from the Redux store
@@ -98,49 +104,43 @@ function ChapterDashboardPage() {
   ); // State to hold fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error handling
-  const [chapterId] = useState<string>('67156b8f624d2639a91ee518'); // Hardcoded chapterId for testing
+  // const [chapterId] = useState<string>('67156b8f624d2639a91ee518'); // Hardcoded chapterId for testing
+  const { chapterId } = useParams();
   // dialog stuff
   const [open, setOpen] = useState(false);
 
-
-
-  function SimpleDialog (props: SimpleDialogProps){
+  function SimpleDialog(props: SimpleDialogProps) {
     const { onClose, selectedValue, open } = props;
-  
+
     const handleClose = () => {
       onClose(selectedValue);
     };
 
-    let  data = {};
+    let data = {};
 
-    for(let i = 0; i < birthdayRequests.length; i++) {
+    for (let i = 0; i < birthdayRequests.length; i += 1) {
       if (birthdayRequests[i].id === selectedValue) {
         data = birthdayRequests[i];
         break;
       }
     }
 
-    console.log(data);
-
-  
     return (
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>Birthday Request</DialogTitle>
-        <List sx = {{pt : 0}}>
+        <List sx={{ pt: 0 }}>
           {Object.entries(data).map(([key, value]) => (
             <ListItem key={key}>
               <ListItemText primary={key} secondary={value?.toString()} />
             </ListItem>
           ))}
-          </List>
-          </Dialog>
-        )
-  
+        </List>
+      </Dialog>
+    );
   }
 
   const handleOpenDialog = () => {
     setOpen(true);
-   
   };
 
   const handleClose = () => {
@@ -151,30 +151,27 @@ function ChapterDashboardPage() {
     setOpen(false);
   };
 
-
-
-  const response = useData('birthdayRequest/all/' + chapterId); 
-  console.log(response?.data);
+  const response = useData('birthdayRequest/all/' + chapterId);
   useEffect(() => {
     if (response?.data) {
       setLoading(false);
-      if(!Array.isArray(response?.data)) {
+      if (!Array.isArray(response?.data)) {
         setBirthdayRequests([response?.data]);
-      } 
-      else {
-      setBirthdayRequests(response?.data);
+      } else {
+        setBirthdayRequests(response?.data);
       }
     }
   }, [response]);
 
   const [checked, setChecked] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
+    const response = await putData(`chapter/toggleRequests/${chapterId}`);
+    console.log('TOGGLED');
   };
 
-
-return (
+  return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{ padding: 2, width: '100%', maxWidth: '900px', margin: 'auto' }}
@@ -190,18 +187,20 @@ return (
             Welcome California!
           </Typography>
 
-        <FormControlLabel
-        control={
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            color="primary" 
+          <FormControlLabel
+            control={
+              <Switch
+                checked={checked}
+                onChange={handleChange}
+                color="primary"
+              />
+            }
+            label={
+              checked
+                ? 'Currently Accepting Requests'
+                : 'Not curently accepting requests'
+            }
           />
-        }
-        label={checked ? 'Currently Accepting Requests' : 'Not curently accepting requests'}
-      />
-
-
         </Box>
         {/* Pending Requests */}
         <Box sx={{ mb: 3 }}>
@@ -432,7 +431,7 @@ return (
               ))}
           </Grid>
         </Box>
-{/* Completed Requests */}
+        {/* Completed Requests */}
         <Box>
           <Typography variant="h6" fontWeight="bold" mb={1}>
             Completed Requests
@@ -489,14 +488,15 @@ return (
                               },
                               borderRadius: 4,
                             }}
-                            onClick={handleOpenDialog}                          >
+                            onClick={handleOpenDialog}
+                          >
                             View
                           </Button>
                           <SimpleDialog
                             selectedValue={request.id}
                             open={open}
                             onClose={handleClose}
-                            />
+                          />
                         </Grid>
                       </Grid>
                     </CardContent>
