@@ -148,6 +148,16 @@ const toggleRequestByID = async (id: string) => {
   return chapter;
 };
 
+const countActiveUsers = async () => {
+  const activeUserCount = await User.countDocuments({ isActive: true }).exec();
+  return activeUserCount;
+};
+
+const countAcceptingRequestsUsers = async () => {
+  const acceptingRequestsUserCount = await User.countDocuments({ isAcceptingRequests: true }).exec();
+  return acceptingRequestsUserCount;
+};
+
 export {
   passwordHashSaltRounds,
   createUser,
@@ -160,4 +170,6 @@ export {
   upgradeUserToAdmin,
   deleteUserById,
   toggleRequestByID,
+  countActiveUsers,
+  countAcceptingRequestsUsers
 };

@@ -2,7 +2,11 @@
 import express from 'express';
 import ApiError from '../util/apiError.ts';
 import StatusCode from '../util/statusCode.ts';
-import { toggleRequestByID } from '../services/user.service.ts';
+import {
+  toggleRequestByID,
+  countActiveUsers,
+  countAcceptingRequestsUsers
+} from '../services/user.service.ts';
 
 const toggleRequest = async (
   req: express.Request,
@@ -25,4 +29,30 @@ const toggleRequest = async (
     });
 };
 
-export { toggleRequest };
+const getActiveUserCount = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const count = await countActiveUsers();
+    res.status(StatusCode.OK).json({ activeUserCount: count });
+  } catch (e) {
+    next(ApiError.internal('Unable to get active user count.'));
+  }
+};
+
+const getAcceptingRequestsUserCount = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  try {
+    const count = await countAcceptingRequestsUsers();
+    res.status(StatusCode.OK).json({ acceptingRequestsUserCount: count });
+  } catch (e) {
+    next(ApiError.internal('Unable to get accepting requests user count.'));
+  }
+};
+
+export { toggleRequest, getActiveUserCount, getAcceptingRequestsUserCount };

@@ -6,6 +6,7 @@ import {
   updateRequestStatus,
   deleteRequest,
   createRequest,
+  getMonthlyOverview,
 } from '../controllers/birthdayRequest.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import 'dotenv/config';
@@ -19,5 +20,7 @@ router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
 router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
 
 router.post('/createrequest', isAuthenticated, isAdmin, createRequest);
+
+router.get('/monthly-overview', isAuthenticated, isAdmin, getMonthlyOverview);
 
 export default router;
