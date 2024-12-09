@@ -347,10 +347,12 @@ const createRequest = async (
           birthdayRequest,
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(ApiError.internal('Failed to send confirmation email.'));
       });
   } catch (err) {
+    console.log(err)
     next(ApiError.internal('Unable to register user.'));
   }
 };

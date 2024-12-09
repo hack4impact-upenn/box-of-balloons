@@ -3,6 +3,8 @@
  */
 import 'dotenv/config';
 import SGmail, { MailDataRequired } from '@sendgrid/mail';
+// @ts-ignore
+import footnote from '../../photos/email_footnote.txt';
 
 const appName = 'Boilerplate'; // Replace with a relevant project name
 const senderName = 'Hack4Impact UPenn'; // Replace with a relevant project sender
@@ -151,17 +153,10 @@ const emailRequestCreate = async (email: string, childName: string) => {
       <p>Thank you,</p>
       
       <p>Box of Balloons, Inc. - Automated response</p>
-      
-      <img src="cid:email_footnote" alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
     `,
-    attachments: [
-      {
-        filename: 'email_footnote.png',
-        content: require('fs').readFileSync('./photos/email_footnote.png'),
-        contentId: 'email_footnote'
-      }
-    ]
   };
+
+  //<img src='data:image/png;base64,${footnote}' alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
 
   // Send the email and propagate the error up if one exists
   await SGmail.send(mailSettings);
