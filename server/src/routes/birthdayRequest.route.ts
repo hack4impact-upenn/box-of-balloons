@@ -17,7 +17,9 @@ router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
 
 router.get('/totalboxesdelivered', getTotalBoxesDelivered);
 //isAuthenticated, isAdmin,
-router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
+
+router.put('/updatestatus/:id', updateRequestStatus);
+//isAuthenticated, isAdmin,
 
 router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
 

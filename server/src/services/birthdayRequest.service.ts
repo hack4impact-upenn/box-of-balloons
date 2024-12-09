@@ -28,6 +28,7 @@ const updateRequestStatusByID = async (id: string, updatedValue: string) => {
     { $set: { status: updatedValue } },
     // { $eq: [updatedValue, '$status'] }
   ]).exec();
+  //console.log(updatedRequest)
   return updatedRequest;
 };
 

@@ -17,6 +17,9 @@ import {
   emailRequestUpdate,
   emailRequestDelete,
   emailRequestCreate,
+  emailRequestApproved,
+  emailRequestDelivered,
+  emailRequestDenied,
 } from '../services/mail.service.ts';
 import {
   ChildGender,
@@ -102,7 +105,23 @@ const updateRequestStatus = async (
   return (
     updateRequestStatusByID(id, updatedValue)
       .then(() => {
-        emailRequestUpdate(agencyEmail, updatedValue, request.childName)
+        let emailFunction;
+        switch (updatedValue) {
+          case 'Approved':
+            emailFunction = emailRequestApproved;
+            break;
+          case 'Delivered':
+            emailFunction = emailRequestDelivered;
+            break;
+          case 'Denied':
+            emailFunction = emailRequestDenied;
+            break;
+          default:
+            next(ApiError.internal('Invalid status'));
+            return;
+        }
+        console.log(emailFunction);
+        emailFunction(agencyEmail, request.childName)
           .then(() => {
             emailRequestUpdate(chapterEmail, updatedValue, request.childName)
               .then(() =>
@@ -118,10 +137,10 @@ const updateRequestStatus = async (
             next(ApiError.internal('Failed to send agency update email.'));
           });
       })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
         next(ApiError.internal('Unable to retrieve all requests'));
       })
+
   );
 };
 
