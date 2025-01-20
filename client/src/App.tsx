@@ -39,7 +39,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
-                    <Route path="/register" element={<RegisterPage />} />
+                    {/* <Route path="/register" element={<RegisterPage />} /> */}
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
