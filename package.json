@@ -1,0 +1,13 @@
+{
+    "name": "box-of-balloons",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": ["client", "server"],
+    "scripts": {
+      "dev": "concurrently \"yarn --cwd client start\" \"yarn --cwd server start\""
+    },
+    "devDependencies": {
+      "concurrently": "^8.0.1"
+    }
+  }
+  
