@@ -247,7 +247,7 @@ const emailRequestDelivered = async (email: string, childName: string) => {
       <p>If it is safe to do so and the family assisted is comfortable doing so, we ask that these small but large displays of gratitude be emailed 
       to: <a href="boxofballoons@gmail.com">boxofballoons@gmail.com</a> or mailed to P.O. Box 28, Sun Prairie WI. 53590.</p>
 
-      <p>Please note any pictures received will be used to advance our fundraising efforts, if a child’s identity needs to be hidden please note so 
+      <p>Please note any pictures received will be used to advance our fundraising efforts, if a child's identity needs to be hidden please note so 
       in the email or letter and an emoji will be used to protect the family and child/ren served.</p>
 
       <p>Thank you again for everything you do to make our community a better place for children and families in need. We are in this together!</p>
@@ -264,6 +264,29 @@ const emailRequestDelivered = async (email: string, childName: string) => {
   await SGmail.send(mailSettings);
 };
 
+const emailChapterRequestCreate = async (email: string, childName: string) => {
+  const mailSettings: MailDataRequired = {
+    from: {
+      email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
+      name: 'Box of Balloons, Inc.',
+    },
+    to: email,
+    subject: 'New Birthday Box Request Received',
+    html: `
+      <p>Hello,</p>
+      
+      <p>A new birthday box request has been submitted for ${childName}. Please review this request 
+      in your dashboard and either approve or deny it.</p>
+      
+      <p>Thank you for your dedication to making birthdays special!</p>
+      
+      <p>Box of Balloons, Inc. - Automated response</p>
+    `,
+  };
+
+  await SGmail.send(mailSettings);
+};
+
 export {
   emailVerificationLink,
   emailResetPasswordLink,
@@ -274,4 +297,5 @@ export {
   emailRequestApproved,
   emailRequestDenied,
   emailRequestDelivered,
+  emailChapterRequestCreate,
 };

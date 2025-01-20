@@ -20,6 +20,7 @@ import {
   emailRequestApproved,
   emailRequestDelivered,
   emailRequestDenied,
+  emailChapterRequestCreate,
 } from '../services/mail.service.ts';
 import {
   ChildGender,
@@ -359,16 +360,27 @@ const createRequest = async (
       agreeLiability,
     });
 
-    emailRequestCreate(agencyWorkerEmail, childName)
+    // Get chapter email
+    const chapter = await getChapterById(chapterId);
+    if (!chapter) {
+      next(ApiError.notFound(`Chapter does not exist`));
+      return;
+    }
+
+    // Send emails to both agency worker and chapter
+    Promise.all([
+      emailRequestCreate(agencyWorkerEmail, childName),
+      emailChapterRequestCreate(chapter.email, childName)
+    ])
       .then(() => {
         res.status(StatusCode.CREATED).send({
-          message: `Request created and email has been sent.`,
+          message: `Request created and emails have been sent.`,
           birthdayRequest,
         });
       })
       .catch((err) => {
         console.log(err);
-        next(ApiError.internal('Failed to send confirmation email.'));
+        next(ApiError.internal('Failed to send confirmation emails.'));
       });
   } catch (err) {
     console.log(err)
