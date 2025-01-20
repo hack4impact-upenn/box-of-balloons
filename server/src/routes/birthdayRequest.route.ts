@@ -6,6 +6,7 @@ import {
   updateRequestStatus,
   deleteRequest,
   createRequest,
+  getTotalBoxesDelivered,
   getMonthlyOverview,
 } from '../controllers/birthdayRequest.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
@@ -15,11 +16,16 @@ const router = express.Router();
 
 router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
 
-router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
+router.get('/totalboxesdelivered', getTotalBoxesDelivered);
+//isAuthenticated, isAdmin,
+
+router.put('/updatestatus/:id', updateRequestStatus);
+//isAuthenticated, isAdmin,
 
 router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
 
-router.post('/createrequest', isAuthenticated, isAdmin, createRequest);
+router.post('/createrequest', createRequest);
+//isAuthenticated, isAdmin,
 
 router.get('/monthly-overview', isAuthenticated, isAdmin, getMonthlyOverview);
 

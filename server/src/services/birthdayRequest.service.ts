@@ -18,11 +18,17 @@ const getAllRequestsByID = async (id: string) => {
   return requestsList;
 };
 
+const getAllBoxesDelivered = async () => {
+  const countDelivered = await BirthdayRequest.countDocuments({ status: 'Delivered' }).exec();
+  return countDelivered;
+};
+
 const updateRequestStatusByID = async (id: string, updatedValue: string) => {
   const updatedRequest = await BirthdayRequest.findByIdAndUpdate(id, [
     { $set: { status: updatedValue } },
     // { $eq: [updatedValue, '$status'] }
   ]).exec();
+  //console.log(updatedRequest)
   return updatedRequest;
 };
 
@@ -253,5 +259,6 @@ export {
   getRequestById,
   deleteRequestByID,
   createBirthdayRequestByID,
+  getAllBoxesDelivered,
   getMonthlyOverviewByDate,
 };
