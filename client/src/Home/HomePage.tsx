@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { Typography, Grid } from '@mui/material';
+import {
+  NavigateFunction,
+  useNavigate,
+  Link as RouterLink,
+} from 'react-router-dom';
+import { Link, Typography, Grid } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../util/redux/hooks.ts';
 import {
   logout as logoutAction,
@@ -37,12 +41,17 @@ function PromoteButton({
       Promote self to admin
     </PrimaryButton>
   ) : (
-    <PrimaryButton
-      variant="contained"
-      onClick={() => navigator('/users', { replace: true })}
-    >
-      View all users
-    </PrimaryButton>
+    <div>
+      <PrimaryButton
+        variant="contained"
+        onClick={() => navigator('/users', { replace: true })}
+      >
+        View all users
+      </PrimaryButton>
+      <Link component={RouterLink} to="/register" color="secondary">
+        Register a New Chapter
+      </Link>
+    </div>
   );
 }
 /**
@@ -69,7 +78,8 @@ function HomePage() {
     }
   };
 
-  const message = `Welcome to the Boilerplate, ${user.firstName} ${user.lastName}!`;
+  const message = `Welcome to the Boilerplate, ${user.city}, ${user.state}!`;
+  console.log(user);
   return (
     <ScreenGrid>
       <Typography variant="h2">{message}</Typography>

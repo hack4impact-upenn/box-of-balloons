@@ -10,6 +10,7 @@ import {
   deleteUser,
   inviteUser,
   verifyToken,
+  register,
 } from '../controllers/admin.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import { approve } from '../controllers/auth.controller.ts';
@@ -64,5 +65,14 @@ router.post('/invite', isAuthenticated, isAdmin, inviteUser);
  * A GET route to verify the user invite is valid
  */
 router.get('/invite/:token', verifyToken);
+
+/**
+ * A POST route to register a user (can only be done by admin). Expects a JSON body with the following fields:
+ * - city (string) - The first name of the user
+ * - state (string) - The last name of the user
+ * - email (string) - The email of the user
+ * - password (string) - The password of the user
+ */
+router.post('/register', isAuthenticated, isAdmin, register);
 
 export default router;

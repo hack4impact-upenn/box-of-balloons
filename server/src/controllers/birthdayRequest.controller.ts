@@ -11,8 +11,9 @@ import {
   deleteRequestByID,
   createBirthdayRequestByID,
   getAllBoxesDelivered,
+  getMonthlyOverviewByDate,
 } from '../services/birthdayRequest.service.ts';
-import { getChapterById } from '../services/chapter.service.ts';
+import { getUserById } from '../services/user.service.ts';
 import {
   emailRequestUpdate,
   emailRequestDelete,
@@ -28,7 +29,7 @@ import {
   ChildSituation,
   IBirthdayRequest,
 } from '../models/birthdayRequest.model.ts';
-import { IChapter } from '../models/chapter.model.ts';
+import { IUser } from '../models/user.model.ts';
 
 const getAllRequests = async (
   req: express.Request,
@@ -94,7 +95,7 @@ const updateRequestStatus = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IUser | null = await getUserById(request.chapterId);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -164,7 +165,7 @@ const deleteRequest = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IUser | null = await getUserById(request.chapterId);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -388,4 +389,33 @@ const createRequest = async (
   }
 };
 
-export { getAllRequests, updateRequestStatus, deleteRequest, createRequest, getTotalBoxesDelivered };
+const getMonthlyOverview = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { startDate, endDate } = req.query;
+
+  if (!startDate || !endDate) {
+    return next(ApiError.missingFields(['startDate', 'endDate']));
+  }
+
+  try {
+    const start = new Date(startDate as string);
+    const end = new Date(endDate as string);
+
+    const overview = await getMonthlyOverviewByDate(start, end);
+    res.status(StatusCode.OK).json(overview);
+  } catch (error) {
+    next(ApiError.internal('Failed to retrieve monthly overview.'));
+  }
+};
+
+export {
+  getAllRequests,
+  updateRequestStatus,
+  deleteRequest,
+  createRequest,
+  getTotalBoxesDelivered
+  getMonthlyOverview,
+};

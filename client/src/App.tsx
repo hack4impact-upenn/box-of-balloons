@@ -37,7 +37,8 @@ function App() {
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/admin" element={<TempAdminDashboardPage />} />
+                    {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
+                    {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
                       path="/verify-account/:token"
@@ -58,10 +59,12 @@ function App() {
                   />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
                   <Route element={<AdminRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
+                    <Route path="/admin" element={<TempAdminDashboardPage />} />
                   </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}

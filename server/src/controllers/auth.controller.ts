@@ -11,21 +11,12 @@ import { IUser } from '../models/user.model.ts';
 import StatusCode from '../util/statusCode.ts';
 import {
   passwordHashSaltRounds,
-  createUser,
   getUserByEmail,
   getUserByResetPasswordToken,
   getUserByVerificationToken,
 } from '../services/user.service.ts';
-import {
-  emailResetPasswordLink,
-  emailVerificationLink,
-} from '../services/mail.service.ts';
+import { emailResetPasswordLink } from '../services/mail.service.ts';
 import ApiError from '../util/apiError.ts';
-import {
-  getInviteByToken,
-  removeInviteByToken,
-} from '../services/invite.service.ts';
-import { IInvite } from '../models/invite.model.ts';
 import mixpanel from '../config/configMixpanel.ts';
 
 /**
@@ -116,84 +107,6 @@ const logout = async (
       email: req.user ? (req.user as IUser).email : undefined,
     });
   });
-};
-
-/**
- * A controller function to register a user in the database.
- */
-const register = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) => {
-  const { firstName, lastName, email, password } = req.body;
-  if (!firstName || !lastName || !email || !password) {
-    next(
-      ApiError.missingFields(['firstName', 'lastName', 'email', 'password']),
-    );
-    return;
-  }
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-
-  const passwordRegex = /^[a-zA-Z0-9!?$%^*)(+=._-]{6,61}$/;
-
-  const nameRegex = /^[a-z ,.'-]+/i;
-
-  if (
-    !email.match(emailRegex) ||
-    !password.match(passwordRegex) ||
-    !firstName.match(nameRegex) ||
-    !lastName.match(nameRegex)
-  ) {
-    next(ApiError.badRequest('Invalid email, password, or name.'));
-    return;
-  }
-
-  if (req.isAuthenticated()) {
-    next(ApiError.badRequest('Already logged in.'));
-    return;
-  }
-  const lowercaseEmail = email.toLowerCase();
-  // Check if user exists
-  const existingUser: IUser | null = await getUserByEmail(lowercaseEmail);
-  if (existingUser) {
-    next(
-      ApiError.badRequest(
-        `An account with email ${lowercaseEmail} already exists.`,
-      ),
-    );
-    return;
-  }
-
-  // Create user and send verification email
-  try {
-    const user = await createUser(
-      firstName,
-      lastName,
-      lowercaseEmail,
-      password,
-    );
-    // Don't need verification email if testing
-    if (process.env.NODE_ENV === 'test') {
-      user!.verified = true;
-      await user?.save();
-    } else {
-      const verificationToken = crypto.randomBytes(32).toString('hex');
-      user!.verificationToken = verificationToken;
-      await user!.save();
-      await emailVerificationLink(lowercaseEmail, verificationToken);
-    }
-    // Mixpanel Register tracking
-    mixpanel.track('Register', {
-      distinct_id: user?._id,
-      email: user?.email,
-    });
-
-    res.sendStatus(StatusCode.CREATED);
-  } catch (err) {
-    next(ApiError.internal('Unable to register user.'));
-  }
 };
 
 /**
@@ -325,89 +238,11 @@ const resetPassword = async (
   }
 };
 
-const registerInvite = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) => {
-  const { firstName, lastName, email, password, inviteToken } = req.body;
-  if (!firstName || !lastName || !email || !password) {
-    next(
-      ApiError.missingFields([
-        'firstName',
-        'lastName',
-        'email',
-        'password',
-        'inviteToken',
-      ]),
-    );
-    return;
-  }
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-
-  const passwordRegex = /^[a-zA-Z0-9!?$%^*)(+=._-]{6,61}$/;
-
-  const nameRegex = /^[a-z ,.'-]+/i;
-
-  if (
-    !email.match(emailRegex) ||
-    !password.match(passwordRegex) ||
-    !firstName.match(nameRegex) ||
-    !lastName.match(nameRegex)
-  ) {
-    next(ApiError.badRequest('Invalid email, password, or name.'));
-    return;
-  }
-
-  if (req.isAuthenticated()) {
-    next(ApiError.badRequest('Already logged in.'));
-    return;
-  }
-
-  // Check if invite exists
-  const invite: IInvite | null = await getInviteByToken(inviteToken);
-  if (!invite || invite.email !== email) {
-    next(ApiError.badRequest(`Invalid invite`));
-    return;
-  }
-
-  const lowercaseEmail = email.toLowerCase();
-  // Check if user exists
-  const existingUser: IUser | null = await getUserByEmail(lowercaseEmail);
-  if (existingUser) {
-    next(
-      ApiError.badRequest(
-        `An account with email ${lowercaseEmail} already exists.`,
-      ),
-    );
-    return;
-  }
-
-  // Create user
-  try {
-    const user = await createUser(
-      firstName,
-      lastName,
-      lowercaseEmail,
-      password,
-    );
-    user!.verified = true;
-    await user?.save();
-    await removeInviteByToken(inviteToken);
-    res.sendStatus(StatusCode.CREATED);
-  } catch (err) {
-    next(ApiError.internal('Unable to register user.'));
-  }
-};
-
 export {
   login,
   logout,
-  register,
   approve,
   verifyAccount,
   sendResetPasswordEmail,
   resetPassword,
-  registerInvite,
 };

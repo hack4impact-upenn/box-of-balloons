@@ -153,11 +153,11 @@ function LoginPage() {
   const dispatch = useAppDispatch();
   function dispatchUser(
     userEmail: string,
-    firstName: string,
-    lastName: string,
+    city: string,
+    state: string,
     admin: boolean,
   ) {
-    dispatch(loginRedux({ email: userEmail, firstName, lastName, admin }));
+    dispatch(loginRedux({ email: userEmail, city, state, admin }));
   }
 
   const clearErrorMessages = () => {
@@ -197,12 +197,7 @@ function LoginPage() {
       loginUser(values.email, values.password)
         .then((user) => {
           console.log('navigating to home!');
-          dispatchUser(
-            user.email!,
-            user.firstName!,
-            user.lastName!,
-            user.admin!,
-          );
+          dispatchUser(user.email!, user.city!, user.state!, user.admin!);
           navigate('/home');
         })
         .catch((e) => {
@@ -268,11 +263,6 @@ function LoginPage() {
                   color="secondary"
                 >
                   Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link component={RouterLink} to="/register" color="secondary">
-                  Sign up
                 </Link>
               </Grid>
             </FormRow>
