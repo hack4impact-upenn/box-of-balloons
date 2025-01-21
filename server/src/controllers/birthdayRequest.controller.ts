@@ -362,7 +362,7 @@ const createRequest = async (
     });
 
     // Get chapter email
-    const chapter = await getChapterById(chapterId);
+    const chapter: IUser | null = await getUserById(chapterId);
     if (!chapter) {
       next(ApiError.notFound(`Chapter does not exist`));
       return;
@@ -416,6 +416,6 @@ export {
   updateRequestStatus,
   deleteRequest,
   createRequest,
-  getTotalBoxesDelivered
+  getTotalBoxesDelivered,
   getMonthlyOverview,
 };
