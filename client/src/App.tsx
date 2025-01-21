@@ -24,6 +24,7 @@ import AlertPopup from './components/AlertPopup.tsx';
 import InviteRegisterPage from './Authentication/InviteRegisterPage.tsx';
 import TempAdminDashboardPage from './AdminDashboard/TempAdminDashboardPage.tsx';
 import BirthdayBoxRequestForm from './components/BirthdayBoxRequestForm/BirthdayBoxRequestForm.tsx';
+import SuccessPage from './components/BirthdayBoxRequestForm/SuccessPage.tsx';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                       path="/request-form/:chapterId"
                       element={<BirthdayBoxRequestForm />}
                     />
+                    <Route path="/success" element={<SuccessPage />} />
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}

@@ -44,17 +44,20 @@ const deleteRequestByID = async (id: string) => {
  * @param childName - TBD
  * @param childGender - TBD
  * @param childRace - TBD
+ * @param childSituation - TBD
  * @param childInterests - TBD
  * @param childAllergies - TBD
  * @param allergyDetails - TBD
  * @param giftSuggestions - TBD
  * @param additionalInfo - TBD
  * @param agencyWorkerName - TBD
+ * @param agencyAddress - TBD
  * @param agencyOrganization - TBD
  * @param agencyWorkerPhone - TBD
  * @param agencyWorkerEmail - TBD
  * @param isFirstReferral - TBD
  * @param agreeFeedback - TBD
+ * @param liability - TBD
  * @param requestedDate - TBD
  * @param status - TBD
  * @param deliveryDate - TBD
@@ -66,6 +69,7 @@ const createBirthdayRequestByID = async (
   childBirthday: Date,
   childAge: number,
   childName: string,
+  childSituation: string,
   childGender: string,
   childRace: string,
   childInterests: string,
@@ -74,11 +78,13 @@ const createBirthdayRequestByID = async (
   giftSuggestions: string,
   additionalInfo: string,
   agencyWorkerName: string,
+  agencyAddress: string,
   agencyOrganization: string,
   agencyWorkerPhone: string,
   agencyWorkerEmail: string,
   isFirstReferral: boolean,
-  agreeFeedback: boolean,
+  agreeFeedback: any,
+  liability: any,
 ) => {
   const newBirthdayRequest = new BirthdayRequest({
     chapterId,
@@ -88,6 +94,7 @@ const createBirthdayRequestByID = async (
     childName,
     childGender,
     childRace,
+    childSituation,
     childInterests,
     childAllergies,
     allergyDetails,
@@ -96,9 +103,11 @@ const createBirthdayRequestByID = async (
     agencyWorkerName,
     agencyOrganization,
     agencyWorkerPhone,
+    agencyAddress,
     agencyWorkerEmail,
     isFirstReferral,
     agreeFeedback,
+    liability,
     requestedDate: new Date(),
     status: 'Pending',
     deliveryDate: null,

@@ -35,6 +35,16 @@ const BirthdayRequestSchema = new mongoose.Schema({
     ],
     required: true,
   },
+  childSituation: {
+    type: [
+      'Fostercare',
+      'Homelessness',
+      'Domestic Violence',
+      'Medical Treatment',
+      'Financial Insecurities',
+    ],
+    required: true,
+  },
   childInterests: {
     type: String,
     required: true,
@@ -67,6 +77,10 @@ const BirthdayRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  agencyAddress: {
+    type: String,
+    required: true,
+  },
   agencyWorkerEmail: {
     type: String,
     required: true,
@@ -78,6 +92,10 @@ const BirthdayRequestSchema = new mongoose.Schema({
     required: true,
   },
   agreeFeedback: {
+    type: Boolean,
+    required: true,
+  },
+  liability: {
     type: Boolean,
     required: true,
   },
@@ -113,6 +131,12 @@ interface IBirthdayRequest extends mongoose.Document {
     | 'Native American or American Indian'
     | 'Asian / Pacific Islander'
     | 'Not Sure';
+  childSituation:
+    | 'Fostercare'
+    | 'Homelessness'
+    | 'Domestic Violence'
+    | 'Medical Treatment'
+    | 'Financial Insecurities'
   childInterests: string;
   childAllergies: boolean;
   allergyDetails: string;
@@ -121,10 +145,12 @@ interface IBirthdayRequest extends mongoose.Document {
   agencyWorkerName: string;
   agencyOrganization: string;
   agencyWorkerPhone: string;
+  agencyAddress: string;
   agencyWorkerEmail: string;
   isFirstReferral: boolean;
   agreeFeedback: boolean;
   requestedDate: Date;
+  liability: boolean,
   status: 'Pending' | 'Approved' | 'Delivered';
   deliveryDate: Date | null;
 }

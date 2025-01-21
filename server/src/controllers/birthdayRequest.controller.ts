@@ -173,6 +173,7 @@ const createRequest = async (
     childName,
     childGender,
     childRace,
+    childSituation,
     childInterests,
     childAllergies,
     allergyDetails,
@@ -180,121 +181,157 @@ const createRequest = async (
     additionalInfo,
     agencyWorkerName,
     agencyOrganization,
+    agencyAddress,
     agencyWorkerPhone,
     agencyWorkerEmail,
     isFirstReferral,
     agreeFeedback,
+    liability,
   } = req.body;
 
-  const missingFields: string[] = [];
+  const user = await createBirthdayRequestByID(
+    chapterId,
+    deadlineDateStr,
+    childBirthdayStr,
+    childAge,
+    childName,
+    childGender,
+    childRace,
+    childSituation,
+    childInterests,
+    childAllergies,
+    allergyDetails,
+    giftSuggestions,
+    additionalInfo,
+    agencyWorkerName,
+    agencyOrganization,
+    agencyAddress,
+    agencyWorkerPhone,
+    agencyWorkerEmail,
+    isFirstReferral,
+    agreeFeedback,
+    liability,
+  );
+  res.sendStatus(StatusCode.CREATED);
+  console.log('creating: ');
+  console.log(req.body);
 
-  if (!chapterId || typeof chapterId !== 'string') {
-    missingFields.push('chapterId');
-  }
+  // const missingFields: string[] = [];
 
-  const deadlineDate = new Date(deadlineDateStr) ?? undefined;
+  // if (!chapterId || typeof chapterId !== 'string') {
+  //   missingFields.push('chapterId');
+  // }
 
-  if (!deadlineDate || !(deadlineDate instanceof Date)) {
-    missingFields.push('deadlineDate');
-  }
+  // const deadlineDate = new Date(deadlineDateStr) ?? undefined;
 
-  const childBirthday = new Date(childBirthdayStr) ?? undefined;
+  // if (!deadlineDate || !(deadlineDate instanceof Date)) {
+  //   missingFields.push('deadlineDate');
+  // }
 
-  if (!childBirthday || !(childBirthday instanceof Date)) {
-    missingFields.push('childBirthday');
-  }
+  // const childBirthday = new Date(childBirthdayStr) ?? undefined;
 
-  if (!childAge || typeof childAge !== 'number') {
-    missingFields.push('childAge');
-  }
-  if (!childName || typeof childName !== 'string') {
-    missingFields.push('childName');
-  }
-  if (!childGender || typeof childGender !== 'string') {
-    missingFields.push('childGender');
-  }
-  if (childGender !== 'Boy' && childGender !== 'Girl') {
-    missingFields.push('childGender');
-  }
-  if (!childRace || typeof childRace !== 'string') {
-    missingFields.push('childRace');
-  }
+  // if (!childBirthday || !(childBirthday instanceof Date)) {
+  //   missingFields.push('childBirthday');
+  // }
 
-  if (!childInterests || typeof childInterests !== 'string') {
-    missingFields.push('childInterests');
-  }
-  if (childAllergies !== true && childAllergies !== false) {
-    missingFields.push('childAllergies');
-  }
+  // if (!childAge || typeof childAge !== 'number') {
+  //   missingFields.push('childAge');
+  // }
+  // if (!childName || typeof childName !== 'string') {
+  //   missingFields.push('childName');
+  // }
+  // if (!childGender || typeof childGender !== 'string') {
+  //   missingFields.push('childGender');
+  // }
+  // if (childGender !== 'Boy' && childGender !== 'Girl') {
+  //   missingFields.push('childGender');
+  // }
+  // if (!childRace || typeof childRace !== 'string') {
+  //   missingFields.push('childRace');
+  // }
 
-  if (
-    childAllergies &&
-    (!allergyDetails || typeof allergyDetails !== 'string')
-  ) {
-    missingFields.push('allergyDetails');
-  }
-  if (!giftSuggestions || typeof giftSuggestions !== 'string') {
-    missingFields.push('giftSuggestions');
-  }
-  if (!additionalInfo || typeof additionalInfo !== 'string') {
-    missingFields.push('additionalInfo');
-  }
-  if (!agencyWorkerName || typeof agencyWorkerName !== 'string') {
-    missingFields.push('agencyWorkerName');
-  }
-  if (!agencyOrganization || typeof agencyOrganization !== 'string') {
-    missingFields.push('agencyOrganization');
-  }
-  if (!agencyWorkerPhone || typeof agencyWorkerPhone !== 'string') {
-    missingFields.push('agencyWorkerPhone');
-  }
+  // if (!childInterests || typeof childInterests !== 'string') {
+  //   missingFields.push('childInterests');
+  // }
+  // if (childAllergies !== true && childAllergies !== false) {
+  //   missingFields.push('childAllergies');
+  // }
 
-  if (!agencyWorkerEmail || typeof agencyWorkerEmail !== 'string') {
-    missingFields.push('agencyWorkerEmail');
-  }
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-  if (!agencyWorkerEmail.match(emailRegex)) {
-    missingFields.push('agencyWorkerEmail');
-  }
+  // if (
+  //   childAllergies &&
+  //   (!allergyDetails || typeof allergyDetails !== 'string')
+  // ) {
+  //   missingFields.push('allergyDetails');
+  // }
+  // if (!giftSuggestions || typeof giftSuggestions !== 'string') {
+  //   missingFields.push('giftSuggestions');
+  // }
+  // if (!additionalInfo || typeof additionalInfo !== 'string') {
+  //   missingFields.push('additionalInfo');
+  // }
+  // if (!agencyWorkerName || typeof agencyWorkerName !== 'string') {
+  //   missingFields.push('agencyWorkerName');
+  // }
+  // if (!agencyOrganization || typeof agencyOrganization !== 'string') {
+  //   missingFields.push('agencyOrganization');
+  // }
+  // if (!agencyWorkerPhone || typeof agencyWorkerPhone !== 'string') {
+  //   missingFields.push('agencyWorkerPhone');
+  // }
 
-  if (isFirstReferral !== true && isFirstReferral !== false) {
-    missingFields.push('isFirstReferral');
-  }
-  if (agreeFeedback !== true && agreeFeedback !== false) {
-    missingFields.push('agreeFeedback');
-  }
+  // if (!agencyWorkerEmail || typeof agencyWorkerEmail !== 'string') {
+  //   missingFields.push('agencyWorkerEmail');
+  // }
+  // const emailRegex =
+  //   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+  // if (!agencyWorkerEmail.match(emailRegex)) {
+  //   missingFields.push('agencyWorkerEmail');
+  // }
 
-  if (missingFields.length > 0) {
-    next(ApiError.missingFields(missingFields));
-    return;
-  }
+  // if (isFirstReferral !== true && isFirstReferral !== false) {
+  //   missingFields.push('isFirstReferral');
+  // }
+  // if (agreeFeedback !== true && agreeFeedback !== false) {
+  //   missingFields.push('agreeFeedback');
+  // }
 
-  try {
-    const user = await createBirthdayRequestByID(
-      chapterId,
-      deadlineDate,
-      childBirthday,
-      childAge,
-      childName,
-      childGender,
-      childRace,
-      childInterests,
-      childAllergies,
-      allergyDetails,
-      giftSuggestions,
-      additionalInfo,
-      agencyWorkerName,
-      agencyOrganization,
-      agencyWorkerPhone,
-      agencyWorkerEmail,
-      isFirstReferral,
-      agreeFeedback,
-    );
-    res.sendStatus(StatusCode.CREATED);
-  } catch (err) {
-    next(ApiError.internal('Unable to register user.'));
-  }
+  // if (missingFields.length > 0) {
+  //   next(ApiError.missingFields(missingFields));
+  //   return;
+  // }
+
+  // try {
+  //   const user = await createBirthdayRequestByID(
+  //     chapterId,
+  //     deadlineDate,
+  //     childBirthday,
+  //     childAge,
+  //     childName,
+  //     childGender,
+  //     childRace,
+  //     childSituation,
+  //     childInterests,
+  //     childAllergies,
+  //     allergyDetails,
+  //     giftSuggestions,
+  //     additionalInfo,
+  //     agencyWorkerName,
+  //     agencyOrganization,
+  //     agencyAddress,
+  //     agencyWorkerPhone,
+  //     agencyWorkerEmail,
+  //     isFirstReferral,
+  //     agreeFeedback,
+  //     liability,
+  //   );
+  //   res.sendStatus(StatusCode.CREATED);
+  //   console.log('creating: ');
+  //   console.log(req.body);
+  // } catch (err) {
+  //   console.log('error: ');
+  //   console.log(req.body);
+  //   next(ApiError.internal('Unable to register user.'));
+  // }
 };
 
 export { getAllRequests, updateRequestStatus, deleteRequest, createRequest };

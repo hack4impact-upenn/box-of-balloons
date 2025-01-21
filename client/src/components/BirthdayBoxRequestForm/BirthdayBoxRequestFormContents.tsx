@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, FormHelperText, Grid, Typography } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import { BirthdayBoxRequestFormConfig } from './birthdayBoxRequestFormItemConfig';
 import BirthdayBoxRequestFormItem from './BirthdayBoxRequestFormItems/BirthdayBoxRequestFormItem';
@@ -11,11 +11,13 @@ export type IBirthdayBoxRequestFormValues = {
 interface IBirthdayBoxRequestFormContentsProps {
   config: BirthdayBoxRequestFormConfig;
   handleSubmit: (values: IBirthdayBoxRequestFormValues) => void;
+  errorMessages: Record<string, string>;
 }
 
 function BirthdayBoxRequestFormContents({
   config,
   handleSubmit,
+  errorMessages,
 }: IBirthdayBoxRequestFormContentsProps) {
   const [values, setValues] = useState<IBirthdayBoxRequestFormValues>({
     ...Object.fromEntries(
@@ -25,10 +27,6 @@ function BirthdayBoxRequestFormContents({
       ]),
     ),
   });
-
-  const [errorMessages, setErrorMessages] = useState<{ [id: string]: string }>(
-    {},
-  );
 
   const typographyConfig: Record<string, { label: string; color: string }> = {
     deadlineDate: { label: 'Child Information', color: '#54C2B9' },
