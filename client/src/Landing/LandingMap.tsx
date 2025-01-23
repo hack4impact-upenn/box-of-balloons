@@ -35,8 +35,8 @@ export default function LandingMap() {
   useEffect(() => {
     async function fetchChapters() {
       try {
-        const res = await fetch('http://localhost:4000/api/chapters');
-        const data = await res.json();
+        // const res = await fetch('http://localhost:4000/api/chapters');
+        // const data = await res.json();
         setStateData(CHAPTER_DATA); // replace with fetched data
         setAvailableStates(
           new Set(CHAPTER_DATA.map((chapter) => chapter.state)),
