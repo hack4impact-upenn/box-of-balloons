@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import LandingMap from './LandingMap';
-import LandingHeader from './LandingHeader';
+import LandingMap from './LandingMap.tsx';
+import LandingHeader from './LandingHeader.tsx';
 
 export default function Landing() {
   return (

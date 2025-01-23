@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import USAMap from 'react-usa-map';
 import { Modal, Box, Grid, Typography, Button } from '@mui/material';
-import { Chapter, StateAbbreviation } from '../util/types/map';
+import { Chapter, StateAbbreviation } from '../util/types/map.ts';
 import {
   CHAPTER_DATA,
   StateAbbreviationToState,
   STATES,
-} from '../util/constants/map';
+} from '../util/constants/map.ts';
 
 export default function LandingMap() {
   const [stateData, setStateData] = useState<Chapter[] | null>(null);
