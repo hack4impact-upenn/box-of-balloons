@@ -236,8 +236,8 @@ function RegisterPage() {
           </Grid>
           <FormRow>
             <Grid container justifyContent="center">
-              <Link component={RouterLink} to="../">
-                Back to Login
+              <Link component={RouterLink} to="/home">
+                Back to Home
               </Link>
             </Grid>
           </FormRow>

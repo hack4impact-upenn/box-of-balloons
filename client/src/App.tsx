@@ -35,9 +35,9 @@ function App() {
               <CssBaseline>
                 <AlertPopup />
                 <Routes>
+                  <Route path="/" element={<Landing />} />
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LoginPage />} />
                     {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
