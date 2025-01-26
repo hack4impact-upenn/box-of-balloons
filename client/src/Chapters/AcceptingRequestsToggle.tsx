@@ -1,11 +1,11 @@
 import { FormControlLabel, Switch, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import IChapter from '../util/types/chapter';
-import { putData } from '../util/api';
+import IUser from '../util/types/chapter.ts';
+import { putData } from '../util/api.ts';
 
 interface IAcceptingRequestsToggleProps {
-  chapter: IChapter;
+  chapter: IUser;
 }
 
 function AcceptingRequestsToggle({ chapter }: IAcceptingRequestsToggleProps) {

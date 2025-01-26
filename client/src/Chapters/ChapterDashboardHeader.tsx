@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import Logo from './Logo';
-import IChapter from '../util/types/chapter';
+import Logo from './Logo.tsx';
+import IUser from '../util/types/chapter.ts';
 
 interface IChapterDashboardHeaderProps {
-  chapter: IChapter;
+  chapter: IUser;
 }
 
 function ChapterDashboardHeader({ chapter }: IChapterDashboardHeaderProps) {

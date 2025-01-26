@@ -5,7 +5,8 @@ import StatusCode from '../util/statusCode.ts';
 import {
   toggleRequestByID,
   countActiveUsers,
-  countAcceptingRequestsUsers
+  countAcceptingRequestsUsers,
+  getUserById,
 } from '../services/user.service.ts';
 
 const toggleRequest = async (
@@ -55,4 +56,28 @@ const getAcceptingRequestsUserCount = async (
   }
 };
 
-export { toggleRequest, getActiveUserCount, getAcceptingRequestsUserCount };
+const getUser = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+  if (!id) {
+    next(ApiError.missingFields(['id']));
+    return;
+  }
+
+  try {
+    const user = await getUserById(id);
+    res.status(StatusCode.OK).json(user);
+  } catch (e) {
+    next(ApiError.internal('Unable to get user.'));
+  }
+};
+
+export {
+  toggleRequest,
+  getActiveUserCount,
+  getAcceptingRequestsUserCount,
+  getUser,
+};

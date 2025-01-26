@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import { useData } from './api.tsx';
+import { useData } from './api.ts';
 
 interface IDynamicElementProps {
   unAuthPath: string;

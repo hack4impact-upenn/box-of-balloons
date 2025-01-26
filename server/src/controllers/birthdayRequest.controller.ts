@@ -13,7 +13,6 @@ import {
   getAllBoxesDelivered,
   getMonthlyOverviewByDate,
 } from '../services/birthdayRequest.service.ts';
-import { getChapterByIdFromDB } from '../services/chapter.service.ts';
 import { getUserById } from '../services/user.service.ts';
 import {
   emailRequestUpdate,

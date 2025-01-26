@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Checkbox,
   FormControlLabel,
-  Select,
   Switch,
   Table,
   TableBody,
@@ -13,10 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import IBirthdayRequest from '../util/types/birthdayRequest';
-import { formatDate } from '../util/date';
-import RequestDetailDialog from './RequestDetailDialog';
-import { putData } from '../util/api';
+import { formatDate } from '../util/date.ts';
+import IBirthdayRequest from '../util/types/birthdayRequest.ts';
+import RequestDetailDialog from './RequestDetailDialog.tsx';
 
 interface ICompletedRequestsTableProps {
   completedRequests: IBirthdayRequest[];

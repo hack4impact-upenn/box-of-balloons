@@ -1,49 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prefer-template */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react/no-unstable-nested-components */
-import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  Grid,
-  Button,
-  Card,
-  CardContent,
-  Box,
-  Checkbox,
-  Switch,
-  FormControlLabel,
-  List,
-  ListItem,
-  ListItemText,
-  CircularProgress,
-  Stack,
-} from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
-import { useData, getData, putData, deleteData } from '../util/api';
-import { useAppSelector } from '../util/redux/hooks';
-import { selectUser } from '../util/redux/userSlice';
-import IBirthdayRequest from '../util/types/birthdayRequest';
-import Logo from './Logo';
-import IChapter from '../util/types/chapter';
-import ChapterDashboardHeader from './ChapterDashboardHeader';
-import AcceptingRequestsToggle from './AcceptingRequestsToggle';
-import PendingRequestsTable from './PendingRequestsTable';
-import ActiveRequestsTable from './ActiveRequestsTable';
-import CompletedRequestsTable from './CompletedRequestsTable';
-
-/*
-Things left to do:
-1. when not currently accepting users go to admin and update the chapter to not accepting users @carolineychen8
-2. when pending then move to approved and if not approved then die @aditighoshh
-3. when mark as completed move to completed @aditighoshh
-*/
+import { deleteData, putData, useData } from '../util/api.ts';
+import IBirthdayRequest from '../util/types/birthdayRequest.ts';
+import IUser from '../util/types/user.ts';
+import AcceptingRequestsToggle from './AcceptingRequestsToggle.tsx';
+import ActiveRequestsTable from './ActiveRequestsTable.tsx';
+import ChapterDashboardHeader from './ChapterDashboardHeader.tsx';
+import CompletedRequestsTable from './CompletedRequestsTable.tsx';
+import PendingRequestsTable from './PendingRequestsTable.tsx';
 
 const theme = createTheme({
   typography: {
@@ -58,19 +25,19 @@ export interface SimpleDialogProps {
 }
 
 function ChapterDashboardPage() {
-  const { chapterId } = useParams();
+  const { chapterId: userId } = useParams();
 
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error handling
 
-  const chapterResponse = useData('chapter/query/' + chapterId);
+  const chapterResponse = useData(`user/query/${userId}`);
   const { data: rawChapter, error: chapterError } = chapterResponse ?? {};
-  const chapter = {
+  const user = {
     ...rawChapter,
-    id: chapterId,
-  } as IChapter;
+    id: userId,
+  } as IUser;
 
-  const birthdayRequestsResponse = useData('birthdayRequest/all/' + chapterId);
+  const birthdayRequestsResponse = useData(`birthdayRequest/all/${userId}`);
   const { data: rawBirthdayRequests, error: birthdayRequestsError } =
     birthdayRequestsResponse ?? {};
 
@@ -125,15 +92,15 @@ function ChapterDashboardPage() {
     request: IBirthdayRequest,
     newStatus: string,
   ) => {
-    const { error } = await putData(
+    const { error: updateStatusError } = await putData(
       `birthdayRequest/updatestatus/${request.id}`,
       {
         updatedValue: newStatus,
       },
     );
 
-    if (error) {
-      setError(error);
+    if (updateStatusError) {
+      setError(updateStatusError);
       return;
     }
 
@@ -154,12 +121,12 @@ function ChapterDashboardPage() {
   };
 
   const deleteRequest = async (requestId: string) => {
-    const { error } = await deleteData(
+    const { error: deleteError } = await deleteData(
       `birthdayRequest/deleterequest/${requestId}`,
     );
 
-    if (error) {
-      setError(error);
+    if (deleteError) {
+      setError(deleteError);
       return;
     }
 
@@ -187,8 +154,8 @@ function ChapterDashboardPage() {
         sx={{ padding: 2, width: '100%', maxWidth: '900px', margin: 'auto' }}
         spacing={2}
       >
-        <ChapterDashboardHeader chapter={chapter} />
-        <AcceptingRequestsToggle chapter={chapter} />
+        <ChapterDashboardHeader chapter={user} />
+        <AcceptingRequestsToggle chapter={user} />
         <PendingRequestsTable
           pendingRequests={pendingRequests}
           approveRequest={(request) => updateRequestStatus(request, 'Approved')}

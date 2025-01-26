@@ -1,14 +1,8 @@
+import { Dialog, List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material';
-import IBirthdayRequest from '../util/types/birthdayRequest';
-import { formatDate } from '../util/date';
-import { camelCaseToTitleCase } from '../util/string';
+import { formatDate } from '../util/date.ts';
+import { camelCaseToTitleCase } from '../util/string.ts';
+import IBirthdayRequest from '../util/types/birthdayRequest.ts';
 
 const keysToIgnore = ['_id', 'id', 'chapterId', '__v'];
 const datesToFormat = ['deadlineDate', 'childBirthday', 'requestedDate'];
