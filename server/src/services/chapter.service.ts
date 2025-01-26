@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { Chapter } from '../models/chapter.model.ts';
+import { Chapter, IChapter } from '../models/chapter.model.ts';
 
 const removeSensitiveDataQuery = [
   '-password',
@@ -15,14 +15,14 @@ const toggleRequestByID = async (id: string) => {
   return chapter;
 };
 
-const getAllChaptersFromDB = async () => {
+const getAllChaptersFromDB = async (): Promise<IChapter[]> => {
   const userList = await Chapter.find({})
     .select(removeSensitiveDataQuery)
     .exec();
   return userList;
 };
 
-const getChapterById = async (id: string) => {
+const getChapterByIdFromDB = async (id: string): Promise<IChapter | null> => {
   const chapter = await Chapter.findById(id)
     .select(removeSensitiveDataQuery)
     .exec();
@@ -79,7 +79,7 @@ const createChapterByID = async (
 export {
   toggleRequestByID,
   getAllChaptersFromDB,
-  getChapterById,
+  getChapterByIdFromDB,
   deleteChapterByID,
   createChapterByID,
 };

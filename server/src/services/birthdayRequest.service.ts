@@ -11,8 +11,8 @@ const removeSensitiveDataQuery = [
   '-resetPasswordTokenExpiryDate',
 ];
 
-const getAllRequestsByID = async (id: string) => {
-  const requestsList = await BirthdayRequest.findOne({ id })
+const getAllRequestsByID = async (chapterId: string) => {
+  const requestsList = await BirthdayRequest.find({ chapterId })
     .select(removeSensitiveDataQuery)
     .exec();
   return requestsList;

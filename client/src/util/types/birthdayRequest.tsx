@@ -1,10 +1,8 @@
-import mongoose from 'mongoose';
-
-interface IBirthdayRequest extends mongoose.Document {
-  _id: string;
+interface IBirthdayRequest {
+  id: string;
   chapterId: string;
-  deadlineDate: Date;
-  childBirthday: Date;
+  deadlineDate: string;
+  childBirthday: string;
   childAge: number;
   childName: string;
   childGender: 'Boy' | 'Girl';
@@ -26,9 +24,9 @@ interface IBirthdayRequest extends mongoose.Document {
   agencyWorkerEmail: string;
   isFirstReferral: boolean;
   agreeFeedback: boolean;
-  requestedDate: Date;
+  requestedDate: string;
   status: 'Pending' | 'Approved' | 'Delivered';
   deliveryDate: Date | null;
 }
 
-export type { IBirthdayRequest };
+export default IBirthdayRequest;

@@ -5,9 +5,9 @@ import StatusCode from '../util/statusCode.ts';
 import {
   toggleRequestByID,
   getAllChaptersFromDB,
-  getChapterById,
   deleteChapterByID,
   createChapterByID,
+  getChapterByIdFromDB,
 } from '../services/chapter.service.ts';
 import { IChapter } from '../models/chapter.model.ts';
 
@@ -26,6 +26,31 @@ const getAllChapters = async (
         next(ApiError.internal('Unable to retrieve all users'));
       })
   );
+};
+
+const getChapterById = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+  if (!id) {
+    next(ApiError.missingFields(['id']));
+    return;
+  }
+
+  getChapterByIdFromDB(id)
+    .then((chapter) => {
+      if (!chapter) {
+        next(ApiError.notFound('Chapter not found'));
+        return;
+      }
+      res.status(StatusCode.OK).send(chapter);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to retrieve chapter'));
+    });
 };
 
 const toggleRequest = async (
@@ -61,7 +86,7 @@ const deleteChapter = async (
     return;
   }
   // get chapter by chapter ID
-  const chapter: IChapter | null = await getChapterById(id);
+  const chapter: IChapter | null = await getChapterByIdFromDB(id);
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -195,4 +220,10 @@ const createChapter = async (
   }
 };
 
-export { toggleRequest, getAllChapters, deleteChapter, createChapter };
+export {
+  toggleRequest,
+  getAllChapters,
+  getChapterById,
+  deleteChapter,
+  createChapter,
+};

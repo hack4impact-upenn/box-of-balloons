@@ -11,7 +11,7 @@ import {
   deleteRequestByID,
   createBirthdayRequestByID,
 } from '../services/birthdayRequest.service.ts';
-import { getChapterById } from '../services/chapter.service.ts';
+import { getChapterByIdFromDB } from '../services/chapter.service.ts';
 import {
   emailRequestUpdate,
   emailRequestDelete,
@@ -74,7 +74,9 @@ const updateRequestStatus = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IChapter | null = await getChapterByIdFromDB(
+    request.chapterId,
+  );
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
@@ -128,7 +130,9 @@ const deleteRequest = async (
     return;
   }
   // get chapter email by chapter ID
-  const chapter: IChapter | null = await getChapterById(request.chapterId);
+  const chapter: IChapter | null = await getChapterByIdFromDB(
+    request.chapterId,
+  );
   if (!chapter) {
     next(ApiError.notFound(`Chapter does not exist`));
     return;
