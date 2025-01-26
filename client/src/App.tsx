@@ -22,6 +22,7 @@ import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage.tsx'
 import ResetPasswordPage from './Authentication/ResetPasswordPage.tsx';
 import AlertPopup from './components/AlertPopup.tsx';
 import InviteRegisterPage from './Authentication/InviteRegisterPage.tsx';
+import Landing from './Landing/Landing.tsx';
 import TempAdminDashboardPage from './AdminDashboard/TempAdminDashboardPage.tsx';
 import ChapterDashboardPage from './Chapters/ChapterDashboardPage.tsx';
 
@@ -35,11 +36,12 @@ function App() {
               <CssBaseline>
                 <AlertPopup />
                 <Routes>
+                  <Route path="/" element={<Landing />} />
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/admin" element={<TempAdminDashboardPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
+                    {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
+                    {/* <Route path="/admin" element={<TempAdminDashboardPage />} /> */}
                     <Route
                       path="/verify-account/:token"
                       element={<VerifyAccountPage />}
@@ -59,10 +61,12 @@ function App() {
                   />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage />} />
                   </Route>
                   <Route element={<AdminRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
+                    <Route path="/admin" element={<TempAdminDashboardPage />} />
                   </Route>
 
                   <Route
