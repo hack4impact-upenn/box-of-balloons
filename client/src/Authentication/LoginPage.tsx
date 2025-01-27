@@ -152,12 +152,13 @@ function LoginPage() {
 
   const dispatch = useAppDispatch();
   function dispatchUser(
+    id: string,
     userEmail: string,
     city: string,
     state: string,
     admin: boolean,
   ) {
-    dispatch(loginRedux({ email: userEmail, city, state, admin }));
+    dispatch(loginRedux({ id, email: userEmail, city, state, admin }));
   }
 
   const clearErrorMessages = () => {
@@ -197,8 +198,16 @@ function LoginPage() {
       loginUser(values.email, values.password)
         .then((user) => {
           console.log('navigating to home!');
-          dispatchUser(user.email!, user.city!, user.state!, user.admin!);
-          navigate('/home');
+          dispatchUser(
+            // eslint-disable-next-line no-underscore-dangle
+            user._id!,
+            user.email!,
+            user.city!,
+            user.state!,
+            user.admin!,
+          );
+          // eslint-disable-next-line no-underscore-dangle
+          navigate(`/chapterDash/${user._id!}`, { replace: true });
         })
         .catch((e) => {
           console.log('failed to login...');
