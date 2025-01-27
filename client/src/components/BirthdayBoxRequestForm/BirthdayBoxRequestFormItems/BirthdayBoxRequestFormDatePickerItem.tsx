@@ -24,7 +24,11 @@ function BirthdayBoxRequestFormDatePickerItem({
         value={value}
         onChange={(newValue) => setValue(newValue || new Dayjs())}
       />
-      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
+      {errorMessage && (
+        <FormHelperText
+          sx={{ color: 'red' }}
+        >{`*${errorMessage}`}</FormHelperText>
+      )}
     </Grid>
   );
 }

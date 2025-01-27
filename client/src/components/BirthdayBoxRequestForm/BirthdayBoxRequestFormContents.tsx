@@ -39,48 +39,50 @@ function BirthdayBoxRequestFormContents({
 
   return (
     <>
-      {Object.entries(config).map(([id, item]) => (
-        <>
-          <React.Fragment key={id}>
-            {typographyConfig[id] && (
-              <Grid container justifyContent="center">
-                <Typography
-                  variant="h2"
-                  sx={{
-                    color: typographyConfig[id].color,
-                    fontWeight: 'bold',
-                    marginTop: 2,
-                  }}
-                >
-                  {typographyConfig[id].label}
-                </Typography>
-              </Grid>
-            )}
-          </React.Fragment>
-          <BirthdayBoxRequestFormItem
-            key={id}
-            value={values[id]}
-            setValue={(value: any) => setValues({ ...values, [id]: value })}
-            label={item.label}
-            errorMessage={errorMessages[id] || ''}
-            type={item.type}
-            options={item.options}
-          />
-          {values.childAllergies === 'Yes' && id === 'childAllergies' && (
+      {Object.entries(config).map(([id, item]) => {
+        return (
+          <>
+            <React.Fragment key={id}>
+              {typographyConfig[id] && (
+                <Grid container justifyContent="center">
+                  <Typography
+                    variant="h2"
+                    sx={{
+                      color: typographyConfig[id].color,
+                      fontWeight: 'bold',
+                      marginTop: 2,
+                    }}
+                  >
+                    {typographyConfig[id].label}
+                  </Typography>
+                </Grid>
+              )}
+            </React.Fragment>
             <BirthdayBoxRequestFormItem
-              key="allergyDetails"
-              value={values.allergyDetails || ''}
-              setValue={(value: any) =>
-                setValues({ ...values, allergyDetails: value })
-              }
-              label="Yes, please specify:"
-              errorMessage={errorMessages.allergyDetails || ''}
-              type="paragraph"
+              key={id}
+              value={values[id]}
+              setValue={(value: any) => setValues({ ...values, [id]: value })}
+              label={item.label}
+              errorMessage={errorMessages[id] || ''}
+              type={item.type}
               options={item.options}
             />
-          )}
-        </>
-      ))}
+            {values.childAllergies === 'Yes' && id === 'childAllergies' && (
+              <BirthdayBoxRequestFormItem
+                key="allergyDetails"
+                value={values.allergyDetails || ''}
+                setValue={(value: any) =>
+                  setValues({ ...values, allergyDetails: value })
+                }
+                label="Yes, please specify:"
+                errorMessage={errorMessages.allergyDetails || ''}
+                type="paragraph"
+                options={item.options}
+              />
+            )}
+          </>
+        );
+      })}
       <Grid item justifyContent="center">
         <Button
           onClick={() => handleSubmit(values)}

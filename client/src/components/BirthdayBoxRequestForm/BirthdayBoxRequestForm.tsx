@@ -65,9 +65,7 @@ interface BirthdayBoxRequestFormValues {
 function BirthdayBoxRequestForm() {
   const { chapterId } = useParams();
   const navigate = useNavigate();
-  const [errorMessages, setErrorMessages] = useState<Record<string, string>>(
-    {},
-  );
+  const [errorMessages, setErrorMessages] = useState<object>({});
 
   const [config, setConfig] = useState<BirthdayBoxRequestFormConfig>({
     deadlineDate: {
@@ -203,32 +201,46 @@ function BirthdayBoxRequestForm() {
   });
 
   const onSubmit = async (values: IBirthdayBoxRequestFormValues) => {
-    const newErrorMessages = [];
-
+    let newErrorMessages = {};
     if (!chapterId || typeof chapterId !== 'string') {
-      newErrorMessages.push('chapterId');
+      // TODO: tbh idk what this check is for
     }
 
     const deadlineDate = new Date(values.deadlineDate) ?? undefined;
 
     if (!values.deadlineDate || Number.isNaN(deadlineDate.getTime())) {
-      newErrorMessages.push('Deadline Date Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        deadlineDate: 'Deadline Date Required',
+      };
     }
 
     const childBirthday = new Date(values.childBirthday) ?? undefined;
 
     if (!values.childBirthday || Number.isNaN(childBirthday.getTime())) {
-      newErrorMessages.push('Child Birthday Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childBirthday: 'Child Birthday Required',
+      };
     }
 
     if (!values.childAge || typeof values.childAge !== 'number') {
-      newErrorMessages.push('Child Age Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childAge: 'Child Age Required',
+      };
     }
     if (!values.childName || typeof values.childName !== 'string') {
-      newErrorMessages.push('Child Name Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childName: 'Child Name Required',
+      };
     }
     if (!values.childGender || typeof values.childGender !== 'string') {
-      newErrorMessages.push('Child Gender Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childGender: 'Child Gender Required',
+      };
     }
     if (
       values.childGender &&
@@ -238,10 +250,16 @@ function BirthdayBoxRequestForm() {
       values.childGender !== 'Prefer not to say' &&
       values.childGender !== 'Other'
     ) {
-      newErrorMessages.push('Child Gender Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childGender: 'Child Gender Invalid',
+      };
     }
     if (!values.childRace || typeof values.childRace !== 'string') {
-      newErrorMessages.push('Child Race Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childRace: 'Child Race Required',
+      };
     }
     if (
       values.childRace &&
@@ -254,10 +272,16 @@ function BirthdayBoxRequestForm() {
       values.childRace !== 'White' &&
       values.childRace !== 'Other'
     ) {
-      newErrorMessages.push('Child Race Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childRace: 'Child Race Invalid',
+      };
     }
     if (!values.childSituation || typeof values.childSituation !== 'string') {
-      newErrorMessages.push('Child Situation Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childSituation: 'Child Situation Required',
+      };
     }
     if (
       values.childSituation &&
@@ -267,22 +291,37 @@ function BirthdayBoxRequestForm() {
       values.childSituation !== 'Medical Treatment' &&
       values.childSituation !== 'Financial Insecurities'
     ) {
-      newErrorMessages.push('Child Situation Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childSituation: 'Child Situation Invalid',
+      };
     }
     if (!values.childInterests || typeof values.childInterests !== 'string') {
-      newErrorMessages.push('Child Interests Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childInterests: 'Child Interests Required',
+      };
     }
     if (values.childAllergies !== 'Yes' && values.childAllergies !== 'No') {
-      newErrorMessages.push('Child Allergies Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        childAllergies: 'Child Allergies Required',
+      };
     }
     if (
       values.childAllergies === 'Yes' &&
       (!values.allergyDetails || typeof values.allergyDetails !== 'string')
     ) {
-      newErrorMessages.push('Allergy Details Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        allergyDetails: 'Allergy Details Required',
+      };
     }
     if (!values.giftSuggestions || typeof values.giftSuggestions !== 'string') {
-      newErrorMessages.push('Gift Suggestions Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        giftSuggestions: 'Gift Suggestions Required',
+      };
     }
     // if (!values.additionalInfo || typeof values.additionalInfo !== 'string') {
     //   newErrorMessages.push('Additional Info Required');
@@ -291,39 +330,60 @@ function BirthdayBoxRequestForm() {
       !values.agencyWorkerName ||
       typeof values.agencyWorkerName !== 'string'
     ) {
-      newErrorMessages.push('Agency Worker Name Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyWorkerName: 'Agency Worker Name Required',
+      };
     }
     if (
       !values.agencyOrganization ||
       typeof values.agencyOrganization !== 'string'
     ) {
-      newErrorMessages.push('Agency Organization Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyOrganization: 'Agency Organization Required',
+      };
     }
 
     const addressRegex = /^[a-zA-Z0-9\s,'-]{3,}$/;
     if (!values.agencyAddress) {
-      newErrorMessages.push('Agency Address Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyAddress: 'Agency Address Required',
+      };
     }
     if (values.agencyAddress && !addressRegex.test(values.agencyAddress)) {
-      newErrorMessages.push('Agency Address Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyAddress: 'Agency Address Invalid',
+      };
     }
 
     const phoneNumberRegex = /^\d{10}$/;
     if (!values.agencyWorkerPhone) {
-      newErrorMessages.push('Agency Worker Phone Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyWorkerPhone: 'Agency Worker Phone Required',
+      };
     }
     if (
       values.agencyWorkerPhone &&
       !phoneNumberRegex.test(values.agencyWorkerPhone)
     ) {
-      newErrorMessages.push('Agency Worker Phone Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyWorkerPhone: 'Agency Worker Phone Invalid',
+      };
     }
 
     if (
       !values.agencyWorkerEmail ||
       typeof values.agencyWorkerEmail !== 'string'
     ) {
-      newErrorMessages.push('Agency Worker Email Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyWorkerEmail: 'Agency Worker Email Required',
+      };
     }
     const emailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
@@ -331,47 +391,59 @@ function BirthdayBoxRequestForm() {
       values.agencyWorkerEmail &&
       !values.agencyWorkerEmail.match(emailRegex)
     ) {
-      newErrorMessages.push('Agency Worker Email Invalid');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agencyWorkerEmail: 'Agency Worker Email Invalid',
+      };
     }
 
     if (values.isFirstReferral !== 'Yes') {
-      newErrorMessages.push('Referral Required');
+      newErrorMessages = {
+        ...newErrorMessages,
+        isFirstReferral: 'Referral Required',
+      };
     }
     if (values.agreeFeedback !== 'Yes') {
-      newErrorMessages.push('Must Agree to Feedback');
+      newErrorMessages = {
+        ...newErrorMessages,
+        agreeFeedback: 'Must Agree to Feedback',
+      };
     }
     if (values.liability !== 'Yes') {
-      newErrorMessages.push('Must Agree to Liability');
+      newErrorMessages = {
+        ...newErrorMessages,
+        liability: 'Must Agree to Liability',
+      };
     }
-    if (newErrorMessages.length > 0) {
-      // next(ApiError.missingFields(missingFields));
-      setErrorMessages(newErrorMessages);
-      return;
+    const errors = Object.entries(newErrorMessages).some(
+      ([_, value]) => value && value !== '',
+    );
+    if (!errors) {
+      // Make the request to save the data
+      try {
+        const cleanChapterId = chapterId.startsWith(':')
+          ? chapterId.slice(1)
+          : chapterId;
+        const data = await postData('birthdayrequest/createrequest', {
+          ...values,
+          chapterId: cleanChapterId,
+          childAllergies: values.childAllergies === 'Yes', // Ensure this is a boolean
+          isFirstReferral: values.isFirstReferral === 'Yes',
+          agreeFeedback: values.agreeFeedback === 'Yes',
+          liability: values.liability === 'Yes',
+        });
+
+        console.log('Data being posted:', data);
+        navigate('/success');
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        // eslint-disable-next-line no-return-assign
+      }
     }
 
-    // Make the request to save the data
-    try {
-      const cleanChapterId = chapterId.startsWith(':')
-        ? chapterId.slice(1)
-        : chapterId;
-      const data = await postData('birthdayrequest/createrequest', {
-        ...values,
-        chapterId: cleanChapterId,
-        childAllergies: values.childAllergies === 'Yes', // Ensure this is a boolean
-        isFirstReferral: values.isFirstReferral === 'Yes',
-        agreeFeedback: values.agreeFeedback === 'Yes',
-        liability: values.liability === 'Yes',
-      });
-
-      console.log('Data being posted:', data);
-      navigate('/success');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      const errors = {};
-      // eslint-disable-next-line no-return-assign
-      newErrorMessages.forEach((msg) => (errors[msg] = msg));
-      setErrorMessages(errors);
-    }
+    setErrorMessages(newErrorMessages);
+    console.log('error msgs');
+    console.log(newErrorMessages);
   };
 
   return (
@@ -387,9 +459,9 @@ function BirthdayBoxRequestForm() {
       </Grid> */}
       <Grid>
         <Typography
-          variant="h1"
+          variant="h2"
           textAlign="center"
-          sx={{ fontWeight: 'bold', fontSize: '4rem' }}
+          sx={{ fontWeight: 'bold', fontSize: '5rem' }}
         >
           Birthday Box Request Form
         </Typography>
@@ -401,7 +473,7 @@ function BirthdayBoxRequestForm() {
             marginBottom: -8,
           }}
         >
-          <Typography variant="h5">
+          <Typography variant="h5" sx={{ fontSize: '1.2rem' }}>
             &quot;We believe each birthday should be happy and every child
             should be celebrated!! Our birthday boxes provide customizable
             celebrations for parents or caregivers to give their child a special
@@ -426,10 +498,12 @@ function BirthdayBoxRequestForm() {
             Thank you for letting us be part of your child&apos;s special day!
             <br /> <br />
           </Typography>
+          <hr />
         </Grid>
       </Grid>
       <FormGrid>
         <FormCol>
+          <hr />
           {/* {errorMessages.length > 0 && (
             <div style={{ color: 'red', marginBottom: '1em' }}>
               {errorMessages.map((msg, index) => (
@@ -443,13 +517,23 @@ function BirthdayBoxRequestForm() {
             errorMessages={errorMessages}
           />
         </FormCol>
-        {Object.keys(errorMessages).length > 0 && (
+        {Object.entries(errorMessages).some(
+          ([_, value]) => value && value !== '',
+        ) && (
+          <div>
+            <p style={{ color: 'red', marginBottom: '1em' }}>
+              Unable to submit. Field(s) not filled out or not correctly filled
+              out!
+            </p>
+          </div>
+        )}
+        {/* {Object.keys(errorMessages).length > 0 && (
           <div style={{ color: 'red', marginBottom: '1em' }}>
             {Object.entries(errorMessages).map(([field, message]) => (
               <p key={field}>{message}</p>
             ))}
           </div>
-        )}
+        )} */}
       </FormGrid>
     </Grid>
   );

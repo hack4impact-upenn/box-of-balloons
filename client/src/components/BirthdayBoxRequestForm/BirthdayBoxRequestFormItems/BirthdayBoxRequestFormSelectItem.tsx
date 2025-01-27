@@ -8,6 +8,8 @@ import {
   RadioGroup,
   Radio,
   Select,
+  Container,
+  Box,
 } from '@mui/material';
 import React from 'react';
 import { IBirthdayBoxRequestFormItemProps } from './IBirthdayBoxRequestFormItemProps';
@@ -30,7 +32,7 @@ function BirthdayBoxRequestFormSelectItem({
 
   return (
     <Grid item container width="1">
-      <FormControl error={errorMessage !== ''}>
+      <FormControl>
         <FormLabel>{label}</FormLabel>
         <RadioGroup value={value} onChange={(e) => setValue(e.target.value)}>
           {Object.entries(options).map(([optionValue, optionLabel]) => (
@@ -43,7 +45,13 @@ function BirthdayBoxRequestFormSelectItem({
           ))}
         </RadioGroup>
       </FormControl>
-      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
+      <Container disableGutters sx={{ margin: 0 }}>
+        {errorMessage && (
+          <FormHelperText
+            sx={{ color: 'red' }}
+          >{`*${errorMessage}`}</FormHelperText>
+        )}
+      </Container>
     </Grid>
   );
 }

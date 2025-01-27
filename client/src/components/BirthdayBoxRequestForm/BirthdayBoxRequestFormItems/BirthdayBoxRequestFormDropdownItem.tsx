@@ -25,7 +25,6 @@ function BirthdayBoxRequestFormDropdownItem({
       <FormLabel id="chapter-name-label">{label}</FormLabel>
       <Select
         fullWidth
-        error={errorMessage !== ''}
         size="small"
         required
         value={value}
@@ -37,7 +36,9 @@ function BirthdayBoxRequestFormDropdownItem({
           </MenuItem>
         ))}
       </Select>
-      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
+      {errorMessage && (
+        <FormHelperText sx={{ color: 'red' }}>{errorMessage}</FormHelperText>
+      )}
     </Grid>
   );
 }
