@@ -12,7 +12,7 @@ import 'dotenv/config';
 
 const router = express.Router();
 
-router.put('/toggleRequests/:id', isAuthenticated, isAdmin, toggleRequest);
+router.put('/toggleRequests/:id', isAuthenticated, toggleRequest);
 
 router.get('/activeUserCount', isAuthenticated, isAdmin, getActiveUserCount);
 
@@ -23,6 +23,6 @@ router.get(
   getAcceptingRequestsUserCount,
 );
 
-router.get('/query/:id', isAuthenticated, isAdmin, getUser);
+router.get('/query/:id', isAuthenticated, getUser);
 
 export default router;

@@ -14,7 +14,7 @@ import 'dotenv/config';
 
 const router = express.Router();
 
-router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
+router.get('/all/:id', isAuthenticated, getAllRequests);
 
 router.get('/totalboxesdelivered', getTotalBoxesDelivered);
 //isAuthenticated, isAdmin,
