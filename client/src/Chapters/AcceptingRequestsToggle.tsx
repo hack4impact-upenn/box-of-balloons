@@ -1,7 +1,7 @@
 import { FormControlLabel, Switch, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import IUser from '../util/types/chapter.ts';
+import IUser from '../util/types/user.ts';
 import { putData } from '../util/api.ts';
 
 interface IAcceptingRequestsToggleProps {
@@ -14,10 +14,10 @@ function AcceptingRequestsToggle({ chapter }: IAcceptingRequestsToggleProps) {
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    const response = await putData(`chapter/toggleRequests/${chapter.id}`, {});
+    const response = await putData(`user/toggleRequests/${chapter.id}`, {});
 
     if (response.error) {
-      setError(response.error);
+      setError(response.error.message || 'An error occurred');
     }
   };
 
