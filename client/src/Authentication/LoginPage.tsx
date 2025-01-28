@@ -152,12 +152,13 @@ function LoginPage() {
 
   const dispatch = useAppDispatch();
   function dispatchUser(
+    id: string,
     userEmail: string,
-    firstName: string,
-    lastName: string,
+    city: string,
+    state: string,
     admin: boolean,
   ) {
-    dispatch(loginRedux({ email: userEmail, firstName, lastName, admin }));
+    dispatch(loginRedux({ id, email: userEmail, city, state, admin }));
   }
 
   const clearErrorMessages = () => {
@@ -198,12 +199,15 @@ function LoginPage() {
         .then((user) => {
           console.log('navigating to home!');
           dispatchUser(
+            // eslint-disable-next-line no-underscore-dangle
+            user._id!,
             user.email!,
-            user.firstName!,
-            user.lastName!,
+            user.city!,
+            user.state!,
             user.admin!,
           );
-          navigate('/home');
+          // eslint-disable-next-line no-underscore-dangle
+          navigate(`/chapterDash/${user._id!}`, { replace: true });
         })
         .catch((e) => {
           console.log('failed to login...');
@@ -268,11 +272,6 @@ function LoginPage() {
                   color="secondary"
                 >
                   Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link component={RouterLink} to="/register" color="secondary">
-                  Sign up
                 </Link>
               </Grid>
             </FormRow>

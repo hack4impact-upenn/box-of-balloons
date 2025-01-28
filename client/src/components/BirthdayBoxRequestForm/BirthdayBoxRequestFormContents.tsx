@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, FormHelperText, Grid, Typography } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import { BirthdayBoxRequestFormConfig } from './birthdayBoxRequestFormItemConfig';
-import BirthdayBoxRequestFormItem from './BirthdayBoxRequestFormItems/BirthdayBoxRequestFormItem';
+import BirthdayBoxRequestFormItem from './BirthdayBoxRequestFormItems/BirthdayBoxRequestFormItem.tsx';
 
 export type IBirthdayBoxRequestFormValues = {
   [id: string]: string | boolean | number | Dayjs | null;

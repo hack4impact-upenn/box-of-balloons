@@ -6,18 +6,24 @@ import {
   updateRequestStatus,
   deleteRequest,
   createRequest,
+  getTotalBoxesDelivered,
+  getMonthlyOverview,
 } from '../controllers/birthdayRequest.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import 'dotenv/config';
 
 const router = express.Router();
 
-router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
+router.get('/all/:id', isAuthenticated, getAllRequests);
 
-router.put('/updatestatus/:id', isAuthenticated, isAdmin, updateRequestStatus);
+router.get('/totalboxesdelivered', getTotalBoxesDelivered);
 
-router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
+router.put('/updatestatus/:id', updateRequestStatus);
+
+router.delete('/deleterequest/:id', isAuthenticated, deleteRequest);
 
 router.post('/createrequest', createRequest);
+
+router.get('/monthly-overview', isAuthenticated, isAdmin, getMonthlyOverview);
 
 export default router;

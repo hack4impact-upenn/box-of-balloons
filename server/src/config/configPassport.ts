@@ -8,8 +8,10 @@ import {
 
 interface IUserWithPassword {
   _id: string;
-  firstName: string;
-  lastName: string;
+  city: string;
+  state: string;
+  isAcceptingRequests: boolean;
+  isActive: boolean;
   email: string;
   password?: string;
   verified: boolean;

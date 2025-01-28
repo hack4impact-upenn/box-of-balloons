@@ -4,18 +4,19 @@
  */
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { LocationCity } from '@material-ui/icons';
 import { PaginationTable, TColumn } from '../components/PaginationTable.tsx';
 import DeleteUserButton from './DeleteUserButton.tsx';
 import PromoteUserButton from './PromoteUserButton.tsx';
-import { useData } from '../util/api.tsx';
+import { useData } from '../util/api.ts';
 import { useAppSelector } from '../util/redux/hooks.ts';
 import { selectUser } from '../util/redux/userSlice.ts';
 import IUser from '../util/types/user.ts';
 
 interface AdminDashboardRow {
   key: string;
-  first: string;
-  last: string;
+  city: string;
+  state: string;
   email: string;
   promote: React.ReactElement;
   remove: React.ReactElement;
@@ -28,8 +29,8 @@ interface AdminDashboardRow {
 function UserTable() {
   // define columns for the table
   const columns: TColumn[] = [
-    { id: 'first', label: 'First Name' },
-    { id: 'last', label: 'Last Name' },
+    { id: 'city', label: 'City' },
+    { id: 'state', label: 'State' },
     { id: 'email', label: 'Email' },
     { id: 'promote', label: 'Promote to Admin' },
     { id: 'remove', label: 'Remove User' },
@@ -41,11 +42,11 @@ function UserTable() {
     promote: React.ReactElement,
     remove: React.ReactElement,
   ): AdminDashboardRow {
-    const { _id, firstName, lastName, email } = user;
+    const { _id, city, state, email } = user;
     return {
       key: _id,
-      first: firstName,
-      last: lastName,
+      city,
+      state,
       email,
       promote,
       remove,

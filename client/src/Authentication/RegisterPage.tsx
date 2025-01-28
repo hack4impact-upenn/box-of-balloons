@@ -24,23 +24,23 @@ function RegisterPage() {
 
   // Default values for state
   const defaultValues = {
-    firstName: '',
-    lastName: '',
+    city: '',
+    state: '',
     email: '',
     password: '',
     confirmPassword: '',
   };
   const defaultShowErrors = {
-    firstName: false,
-    lastName: false,
+    city: false,
+    state: false,
     email: false,
     password: false,
     confirmPassword: false,
     alert: false,
   };
   const defaultErrorMessages = {
-    firstName: '',
-    lastName: '',
+    city: '',
+    state: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -101,14 +101,14 @@ function RegisterPage() {
       }
     }
 
-    if (!values.firstName.match(nameRegex)) {
-      setErrorMessage('firstName', InputErrorMessage.INVALID_NAME);
-      setShowError('firstName', true);
+    if (!values.city.match(nameRegex)) {
+      setErrorMessage('city', InputErrorMessage.INVALID_NAME);
+      setShowError('city', true);
       isValid = false;
     }
-    if (!values.lastName.match(nameRegex)) {
-      setErrorMessage('lastName', InputErrorMessage.INVALID_NAME);
-      setShowError('lastName', true);
+    if (!values.state.match(nameRegex)) {
+      setErrorMessage('state', InputErrorMessage.INVALID_NAME);
+      setShowError('state', true);
       isValid = false;
     }
     if (!values.email.match(emailRegex)) {
@@ -132,7 +132,7 @@ function RegisterPage() {
 
   async function handleSubmit() {
     if (validateInputs()) {
-      register(values.firstName, values.lastName, values.email, values.password)
+      register(values.city, values.state, values.email, values.password)
         .then(() => {
           setShowError('alert', true);
           setAlertTitle('');
@@ -158,27 +158,27 @@ function RegisterPage() {
             <Grid item width=".5">
               <TextField
                 fullWidth
-                error={showError.firstName}
-                helperText={errorMessage.firstName}
+                error={showError.city}
+                helperText={errorMessage.city}
                 size="small"
                 type="text"
                 required
-                label="First Name"
-                value={values.firstName}
-                onChange={(e) => setValue('firstName', e.target.value)}
+                label="City"
+                value={values.city}
+                onChange={(e) => setValue('city', e.target.value)}
               />
             </Grid>
             <Grid item width=".5">
               <TextField
                 fullWidth
-                error={showError.lastName}
-                helperText={errorMessage.lastName}
+                error={showError.state}
+                helperText={errorMessage.state}
                 size="small"
                 type="text"
                 required
-                label="Last Name"
-                value={values.lastName}
-                onChange={(e) => setValue('lastName', e.target.value)}
+                label="State"
+                value={values.state}
+                onChange={(e) => setValue('state', e.target.value)}
               />
             </Grid>
           </FormRow>
@@ -236,8 +236,8 @@ function RegisterPage() {
           </Grid>
           <FormRow>
             <Grid container justifyContent="center">
-              <Link component={RouterLink} to="../">
-                Back to Login
+              <Link component={RouterLink} to="/home">
+                Back to Home
               </Link>
             </Grid>
           </FormRow>

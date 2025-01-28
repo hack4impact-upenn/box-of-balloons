@@ -23,13 +23,13 @@ import styled from '@emotion/styled';
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import FormCol from '../form/FormCol';
-import FormRow from '../form/FormRow';
-import { postData } from '../../util/api';
-import FormGrid from '../form/FormGrid';
+import FormCol from '../form/FormCol.tsx';
+import FormRow from '../form/FormRow.tsx';
+import { postData } from '../../util/api.ts';
+import FormGrid from '../form/FormGrid.tsx';
 import BirthdayBoxRequestFormContents, {
   IBirthdayBoxRequestFormValues,
-} from './BirthdayBoxRequestFormContents';
+} from './BirthdayBoxRequestFormContents.tsx';
 import { BirthdayBoxRequestFormConfig } from './birthdayBoxRequestFormItemConfig';
 // import logo from '../assets/Logos/BoxOfBalloonsPrimaryLogo.png';
 

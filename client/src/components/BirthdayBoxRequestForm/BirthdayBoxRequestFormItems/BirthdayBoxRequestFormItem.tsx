@@ -3,19 +3,19 @@
 import React from 'react';
 import BirthdayBoxRequestFormDropdownItem, {
   BirthdayBoxRequestFormDropdownItemProps,
-} from './BirthdayBoxRequestFormDropdownItem';
+} from './BirthdayBoxRequestFormDropdownItem.tsx';
 import BirthdayBoxRequestFormParagraphItem, {
   BirthdayBoxRequestFormParagraphItemProps,
-} from './BirthdayBoxRequestFormParagraphItem';
+} from './BirthdayBoxRequestFormParagraphItem.tsx';
 import BirthdayBoxRequestFormSelectItem, {
   BirthdayBoxRequestFormSelectItemProps,
-} from './BirthdayBoxRequestFormSelectItem';
+} from './BirthdayBoxRequestFormSelectItem.tsx';
 import BirthdayBoxRequestFormDatePickerItem, {
   BirthdayBoxRequestFormDatePickerItemProps,
-} from './BirthdayBoxRequestFormDatePickerItem';
+} from './BirthdayBoxRequestFormDatePickerItem.tsx';
 import BirthdayBoxRequestFormNumberItem, {
   BirthdayBoxRequestFormNumberItemProps,
-} from './BirthdayBoxRequestFormNumberItem';
+} from './BirthdayBoxRequestFormNumberItem.tsx';
 
 export type BirthdayBoxRequestFormItemProps = { type: string } & (
   | BirthdayBoxRequestFormParagraphItemProps

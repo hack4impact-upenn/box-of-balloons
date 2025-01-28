@@ -3,23 +3,26 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store.ts';
 
 export interface UserState {
+  id: string | null;
   email: string | null;
-  firstName: string | null;
-  lastName: string | null;
+  city: string | null;
+  state: string | null;
   admin: boolean | null;
 }
 
 interface Payload {
+  id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  city: string;
+  state: string;
   admin: boolean;
 }
 
 const initialState = {
+  id: null,
   email: null,
-  firstName: null,
-  lastName: null,
+  city: null,
+  state: null,
 } as UserState;
 
 /**
@@ -30,18 +33,20 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<Payload>) => {
+      state.id = action.payload.id;
       state.email = action.payload.email;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
+      state.city = action.payload.city;
+      state.state = action.payload.state;
       state.admin = action.payload.admin;
     },
     toggleAdmin: (state) => {
       state.admin = !state.admin;
     },
     logout: (state) => {
+      state.id = null;
       state.email = null;
-      state.firstName = null;
-      state.lastName = null;
+      state.city = null;
+      state.state = null;
       state.admin = null;
     },
   },

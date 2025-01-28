@@ -2,7 +2,7 @@
  * A file for defining functions used to interact with the backend server
  * for authentication purposes.
  */
-import { postData } from '../util/api.tsx';
+import { postData } from '../util/api.ts';
 
 /**
  * Sends a request to the server to log in a user
@@ -38,22 +38,22 @@ async function verifyAccount(verificationToken: string) {
 
 /**
  * Sends a request to the server to register a user for an account
- * @param firstName
- * @param lastName
+ * @param city
+ * @param state
  * @param email
  * @param password
  * @throws An {@link Error} with a `messsage` field describing the issue in verifying
  */
 async function register(
-  firstName: string,
-  lastName: string,
+  city: string,
+  state: string,
   email: string,
   password: string,
 ) {
   const lowercaseEmail = email.toLowerCase();
-  const res = await postData('auth/register', {
-    firstName,
-    lastName,
+  const res = await postData('admin/register', {
+    city,
+    state,
     email: lowercaseEmail,
     password,
   });
@@ -94,8 +94,8 @@ async function resetPassword(password: string, token: string) {
 
 /**
  * Sends a request to the server to register a new user via an invite
- * @param firstName
- * @param lastName
+ * @param city
+ * @param state
  * @param email
  * @param password
  * @param inviteToken
@@ -103,16 +103,16 @@ async function resetPassword(password: string, token: string) {
  * resetting the password
  */
 async function registerInvite(
-  firstName: string,
-  lastName: string,
+  city: string,
+  state: string,
   email: string,
   password: string,
   inviteToken: string,
 ) {
   const lowercaseEmail = email.toLowerCase();
   const res = await postData('auth/register-invite', {
-    firstName,
-    lastName,
+    city,
+    state,
     email: lowercaseEmail,
     password,
     inviteToken,
