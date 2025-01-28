@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import Logo from './Logo.tsx';
-import IUser from '../util/types/chapter.ts';
+import IUser from '../util/types/user.ts';
 
 interface IChapterDashboardHeaderProps {
   chapter: IUser;
