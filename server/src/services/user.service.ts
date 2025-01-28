@@ -154,7 +154,9 @@ const countActiveUsers = async () => {
 };
 
 const countAcceptingRequestsUsers = async () => {
-  const acceptingRequestsUserCount = await User.countDocuments({ isAcceptingRequests: true }).exec();
+  const acceptingRequestsUserCount = await User.countDocuments({
+    isAcceptingRequests: true,
+  }).exec();
   return acceptingRequestsUserCount;
 };
 
@@ -171,5 +173,5 @@ export {
   deleteUserById,
   toggleRequestByID,
   countActiveUsers,
-  countAcceptingRequestsUsers
+  countAcceptingRequestsUsers,
 };

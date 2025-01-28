@@ -46,7 +46,7 @@ const deleteRequestByID = async (id: string) => {
   return request;
 };
 
-type CreateBirthdayRequestByIDParams = Omit<
+type _CreateBirthdayRequestByIDParams = Omit<
   IBirthdayRequestFields,
   '_id' | 'requestedDate' | 'status' | 'deliveryDate'
 >;
