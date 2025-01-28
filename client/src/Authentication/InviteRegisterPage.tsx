@@ -14,7 +14,7 @@ import PrimaryButton from '../components/buttons/PrimaryButton.tsx';
 import ScreenGrid from '../components/ScreenGrid.tsx';
 import FormRow from '../components/form/FormRow.tsx';
 import FormGrid from '../components/form/FormGrid.tsx';
-import { useData } from '../util/api.tsx';
+import { useData } from '../util/api.ts';
 
 /**
  * A page users visit to be able to register for a new account by inputting

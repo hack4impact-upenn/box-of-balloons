@@ -5,12 +5,15 @@ import LandingMap from './LandingMap.tsx';
 import LandingHeader from './LandingHeader.tsx';
 import { useAppSelector } from '../util/redux/hooks.ts';
 import { selectUser } from '../util/redux/userSlice.ts';
+import { useData } from '../util/api.ts';
 
 export default function Landing() {
-  const user = useAppSelector(selectUser);
   // Check if user has an email, which indicates they're logged in
-  const isLoggedIn = Boolean(user.email);
-  const loginPath = isLoggedIn ? '/home' : '/login';
+  const isLoggedIn = useData('auth/authstatus');
+
+  const user = useAppSelector(selectUser);
+
+  const loginPath = isLoggedIn?.data ? `/chapterDash/${user.id}` : '/login';
 
   return (
     <div style={{ position: 'relative' }}>

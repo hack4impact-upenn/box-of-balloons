@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import { deleteUser } from './api.tsx';
+import { deleteUser } from './api.ts';
 import LoadingButton from '../components/buttons/LoadingButton.tsx';
 import ConfirmationModal from '../components/ConfirmationModal.tsx';
 import AlertType from '../util/types/alert.ts';

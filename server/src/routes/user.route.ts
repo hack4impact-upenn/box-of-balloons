@@ -4,17 +4,25 @@ import { isAdmin } from '../controllers/admin.middleware.ts';
 import {
   toggleRequest,
   getActiveUserCount,
-  getAcceptingRequestsUserCount
+  getAcceptingRequestsUserCount,
+  getUser,
 } from '../controllers/user.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import 'dotenv/config';
 
 const router = express.Router();
 
-router.put('/toggleRequests/:id', isAuthenticated, isAdmin, toggleRequest);
+router.put('/toggleRequests/:id', isAuthenticated, toggleRequest);
 
 router.get('/activeUserCount', isAuthenticated, isAdmin, getActiveUserCount);
 
-router.get('/acceptingRequestsUserCount', isAuthenticated, isAdmin, getAcceptingRequestsUserCount);
+router.get(
+  '/acceptingRequestsUserCount',
+  isAuthenticated,
+  isAdmin,
+  getAcceptingRequestsUserCount,
+);
+
+router.get('/query/:id', isAuthenticated, getUser);
 
 export default router;

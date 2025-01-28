@@ -14,18 +14,15 @@ import 'dotenv/config';
 
 const router = express.Router();
 
-router.get('/all/:id', isAuthenticated, isAdmin, getAllRequests);
+router.get('/all/:id', isAuthenticated, getAllRequests);
 
 router.get('/totalboxesdelivered', getTotalBoxesDelivered);
-//isAuthenticated, isAdmin,
 
 router.put('/updatestatus/:id', updateRequestStatus);
-//isAuthenticated, isAdmin,
 
-router.delete('/deleterequest/:id', isAuthenticated, isAdmin, deleteRequest);
+router.delete('/deleterequest/:id', isAuthenticated, deleteRequest);
 
 router.post('/createrequest', createRequest);
-//isAuthenticated, isAdmin,
 
 router.get('/monthly-overview', isAuthenticated, isAdmin, getMonthlyOverview);
 

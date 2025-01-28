@@ -104,46 +104,43 @@ const updateRequestStatus = async (
   const agencyEmail = request.agencyWorkerEmail;
   const chapterEmail = chapter.email;
 
-  return (
-    updateRequestStatusByID(id, updatedValue)
-      .then(() => {
-        let emailFunction;
-        switch (updatedValue) {
-          case 'Approved':
-            emailFunction = emailRequestApproved;
-            break;
-          case 'Delivered':
-            emailFunction = emailRequestDelivered;
-            break;
-          case 'Denied':
-            emailFunction = emailRequestDenied;
-            break;
-          default:
-            next(ApiError.internal('Invalid status'));
-            return;
-        }
-        console.log(emailFunction);
-        emailFunction(agencyEmail, request.childName)
-          .then(() => {
-            emailRequestUpdate(chapterEmail, updatedValue, request.childName)
-              .then(() =>
-                res.status(StatusCode.CREATED).send({
-                  message: `Email has been sent to all parties.`,
-                }),
-              )
-              .catch(() => {
-                next(ApiError.internal('Failed to send chapter email.'));
-              });
-          })
-          .catch(() => {
-            next(ApiError.internal('Failed to send agency update email.'));
-          });
-      })
-      .catch((e) => {
-        next(ApiError.internal('Unable to retrieve all requests'));
-      })
-
-  );
+  return updateRequestStatusByID(id, updatedValue)
+    .then(() => {
+      let emailFunction;
+      switch (updatedValue) {
+        case 'Approved':
+          emailFunction = emailRequestApproved;
+          break;
+        case 'Delivered':
+          emailFunction = emailRequestDelivered;
+          break;
+        case 'Denied':
+          emailFunction = emailRequestDenied;
+          break;
+        default:
+          next(ApiError.internal('Invalid status'));
+          return;
+      }
+      console.log(emailFunction);
+      emailFunction(agencyEmail, request.childName)
+        .then(() => {
+          emailRequestUpdate(chapterEmail, updatedValue, request.childName)
+            .then(() =>
+              res.status(StatusCode.CREATED).send({
+                message: `Email has been sent to all parties.`,
+              }),
+            )
+            .catch(() => {
+              next(ApiError.internal('Failed to send chapter email.'));
+            });
+        })
+        .catch(() => {
+          next(ApiError.internal('Failed to send agency update email.'));
+        });
+    })
+    .catch((e) => {
+      next(ApiError.internal('Unable to retrieve all requests'));
+    });
 };
 
 const deleteRequest = async (
@@ -245,7 +242,11 @@ const createRequest = async (
         throw new Error('Invalid date');
       }
     } catch (e) {
-      next(ApiError.notFound(`deadlineDate must be a valid date string, null, or undefined`));
+      next(
+        ApiError.notFound(
+          `deadlineDate must be a valid date string, null, or undefined`,
+        ),
+      );
       return;
     }
   }
@@ -257,7 +258,11 @@ const createRequest = async (
         throw new Error('Invalid date');
       }
     } catch (e) {
-      next(ApiError.notFound(`childBirthday must be a valid date string, null, or undefined`));
+      next(
+        ApiError.notFound(
+          `childBirthday must be a valid date string, null, or undefined`,
+        ),
+      );
       return;
     }
   }
@@ -371,7 +376,7 @@ const createRequest = async (
     // Send emails to both agency worker and chapter
     Promise.all([
       emailRequestCreate(agencyWorkerEmail, childName),
-      emailChapterRequestCreate(chapter.email, childName)
+      emailChapterRequestCreate(chapter.email, childName),
     ])
       .then(() => {
         res.status(StatusCode.CREATED).send({
@@ -384,7 +389,7 @@ const createRequest = async (
         next(ApiError.internal('Failed to send confirmation emails.'));
       });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     next(ApiError.internal('Unable to register user.'));
   }
 };

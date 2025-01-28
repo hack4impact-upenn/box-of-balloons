@@ -5,3 +5,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.light-gray-card {
+  background-color: #f5f5f5;  /* Light gray */
+  margin: 10px;
+  padding: 10px;
+}
+
+.dark-gray-card {
+  background-color: #424242;  /* Dark gray */
+  color: white;               /* Ensure text is visible */
+  margin: 10px;
+  padding: 10px;
+}

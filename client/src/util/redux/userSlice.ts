@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store.ts';
 
 export interface UserState {
+  id: string | null;
   email: string | null;
   city: string | null;
   state: string | null;
@@ -10,6 +11,7 @@ export interface UserState {
 }
 
 interface Payload {
+  id: string;
   email: string;
   city: string;
   state: string;
@@ -17,6 +19,7 @@ interface Payload {
 }
 
 const initialState = {
+  id: null,
   email: null,
   city: null,
   state: null,
@@ -30,6 +33,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<Payload>) => {
+      state.id = action.payload.id;
       state.email = action.payload.email;
       state.city = action.payload.city;
       state.state = action.payload.state;
@@ -39,6 +43,7 @@ const userSlice = createSlice({
       state.admin = !state.admin;
     },
     logout: (state) => {
+      state.id = null;
       state.email = null;
       state.city = null;
       state.state = null;

@@ -19,7 +19,9 @@ const getAllRequestsByID = async (id: string) => {
 };
 
 const getAllBoxesDelivered = async () => {
-  const countDelivered = await BirthdayRequest.countDocuments({ status: 'Delivered' }).exec();
+  const countDelivered = await BirthdayRequest.countDocuments({
+    status: 'Delivered',
+  }).exec();
   return countDelivered;
 };
 
@@ -28,7 +30,7 @@ const updateRequestStatusByID = async (id: string, updatedValue: string) => {
     { $set: { status: updatedValue } },
     // { $eq: [updatedValue, '$status'] }
   ]).exec();
-  //console.log(updatedRequest)
+  // console.log(updatedRequest)
   return updatedRequest;
 };
 
