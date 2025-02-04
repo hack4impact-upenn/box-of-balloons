@@ -202,14 +202,17 @@ const createRequest = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
+  console.log('got request');
+
   const {
     chapterId,
-    deadlineDate,
-    childBirthday,
-    childName,
+    deadlineDate: deadlineDateStr,
+    childBirthday: childBirthdayStr,
     childAge,
-    childGenderRaw,
-    childRaceRaw,
+    childName,
+    childGender,
+    childRace,
+    childSituation,
     childInterests,
     giftSuggestions,
     childAllergies,
@@ -218,180 +221,158 @@ const createRequest = async (
     childSituationRaw,
     agencyWorkerName,
     agencyOrganization,
+    agencyAddress,
     agencyWorkerPhone,
     agencyWorkerEmail,
     agencyPhysicalAddress,
     isFirstReferral,
     agreeFeedback,
-    agreeLiability,
+    liability,
   } = req.body;
 
-  const childGender = childGenderRaw as ChildGender;
-  const childRace = childRaceRaw as ChildRace;
-  const childSituation = childSituationRaw as ChildSituation;
+  const user = await createBirthdayRequestByID(
+    chapterId,
+    deadlineDateStr,
+    childBirthdayStr,
+    childAge,
+    childName,
+    childGender,
+    childRace,
+    childSituation,
+    childInterests,
+    childAllergies,
+    allergyDetails,
+    giftSuggestions,
+    additionalInfo,
+    agencyWorkerName,
+    agencyOrganization,
+    agencyAddress,
+    agencyWorkerPhone,
+    agencyWorkerEmail,
+    isFirstReferral,
+    agreeFeedback,
+    liability,
+  );
+  res.sendStatus(StatusCode.CREATED);
+  console.log('creating: ');
+  console.log(req.body);
 
-  if (!chapterId || typeof chapterId !== 'string') {
-    next(ApiError.notFound(`chapterId does not exist or is invalid`));
-    return;
-  }
+  // const missingFields: string[] = [];
 
-  if (deadlineDate !== undefined && deadlineDate !== null) {
-    try {
-      req.body.deadlineDate = new Date(deadlineDate);
-      if (isNaN(req.body.deadlineDate.getTime())) {
-        throw new Error('Invalid date');
-      }
-    } catch (e) {
-      next(
-        ApiError.notFound(
-          `deadlineDate must be a valid date string, null, or undefined`,
-        ),
-      );
-      return;
-    }
-  }
+  // if (!chapterId || typeof chapterId !== 'string') {
+  //   missingFields.push('chapterId');
+  // }
 
-  if (childBirthday !== undefined && childBirthday !== null) {
-    try {
-      req.body.childBirthday = new Date(childBirthday);
-      if (isNaN(req.body.childBirthday.getTime())) {
-        throw new Error('Invalid date');
-      }
-    } catch (e) {
-      next(
-        ApiError.notFound(
-          `childBirthday must be a valid date string, null, or undefined`,
-        ),
-      );
-      return;
-    }
-  }
+  // const deadlineDate = new Date(deadlineDateStr) ?? undefined;
 
-  if (!childName || typeof childName !== 'string') {
-    next(ApiError.notFound(`childName does not exist or is invalid`));
-    return;
-  }
-  if (!childAge || typeof childAge !== 'number') {
-    next(ApiError.notFound(`childAge does not exist or is invalid`));
-    return;
-  }
+  // if (!deadlineDate || !(deadlineDate instanceof Date)) {
+  //   missingFields.push('deadlineDate');
+  // }
 
-  if (!childInterests || typeof childInterests !== 'string') {
-    next(ApiError.notFound(`childInterests does not exist or is invalid`));
-    return;
-  }
-  if (!giftSuggestions || typeof giftSuggestions !== 'string') {
-    next(ApiError.notFound(`giftSuggestions does not exist or is invalid`));
-    return;
-  }
-  if (typeof childAllergies !== 'boolean') {
-    next(ApiError.notFound(`childAllergies does not exist or is invalid`));
-    return;
-  }
-  if (!allergyDetails || typeof allergyDetails !== 'string') {
-    next(ApiError.notFound(`allergyDetails does not exist or is invalid`));
-    return;
-  }
-  if (!additionalInfo || typeof additionalInfo !== 'string') {
-    next(ApiError.notFound(`additionalInfo does not exist or is invalid`));
-    return;
-  }
+  // const childBirthday = new Date(childBirthdayStr) ?? undefined;
 
-  if (!agencyWorkerName || typeof agencyWorkerName !== 'string') {
-    next(ApiError.notFound(`agencyWorkerName does not exist or is invalid`));
-    return;
-  }
-  if (!agencyOrganization || typeof agencyOrganization !== 'string') {
-    next(ApiError.notFound(`agencyOrganization does not exist or is invalid`));
-    return;
-  }
+  // if (!childBirthday || !(childBirthday instanceof Date)) {
+  //   missingFields.push('childBirthday');
+  // }
 
-  if (!agencyPhysicalAddress || typeof agencyPhysicalAddress !== 'string') {
-    next(
-      ApiError.notFound(`agencyPhysicalAddress does not exist or is invalid`),
-    );
-    return;
-  }
+  // if (!childAge || typeof childAge !== 'number') {
+  //   missingFields.push('childAge');
+  // }
+  // if (!childName || typeof childName !== 'string') {
+  //   missingFields.push('childName');
+  // }
+  // if (!childGender || typeof childGender !== 'string') {
+  //   missingFields.push('childGender');
+  // }
+  // if (childGender !== 'Boy' && childGender !== 'Girl') {
+  //   missingFields.push('childGender');
+  // }
+  // if (!childRace || typeof childRace !== 'string') {
+  //   missingFields.push('childRace');
+  // }
 
-  if (!agencyWorkerPhone || typeof agencyWorkerPhone !== 'string') {
-    next(ApiError.notFound(`agencyWorkerPhone does not exist or is invalid`));
-    return;
-  }
-  if (!agencyWorkerEmail || typeof agencyWorkerEmail !== 'string') {
-    next(ApiError.notFound(`agencyWorkerEmail does not exist or is invalid`));
-    return;
-  }
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-  if (!agencyWorkerEmail.match(emailRegex)) {
-    next(ApiError.badRequest('Invalid email'));
-    return;
-  }
+  // if (!childInterests || typeof childInterests !== 'string') {
+  //   missingFields.push('childInterests');
+  // }
+  // if (childAllergies !== true && childAllergies !== false) {
+  //   missingFields.push('childAllergies');
+  // }
 
-  if (typeof isFirstReferral !== 'boolean') {
-    next(ApiError.notFound(`isFirstReferral does not exist or is invalid`));
-    return;
-  }
-  if (typeof agreeFeedback !== 'boolean') {
-    next(ApiError.notFound(`agreeFeedback does not exist or is invalid`));
-    return;
-  }
-  if (typeof agreeLiability !== 'boolean') {
-    next(ApiError.notFound(`agreeLiability does not exist or is invalid`));
-    return;
-  }
+  // if (
+  //   childAllergies &&
+  //   (!allergyDetails || typeof allergyDetails !== 'string')
+  // ) {
+  //   missingFields.push('allergyDetails');
+  // }
+  // if (!giftSuggestions || typeof giftSuggestions !== 'string') {
+  //   missingFields.push('giftSuggestions');
+  // }
+  // if (!additionalInfo || typeof additionalInfo !== 'string') {
+  //   missingFields.push('additionalInfo');
+  // }
+  // if (!agencyWorkerName || typeof agencyWorkerName !== 'string') {
+  //   missingFields.push('agencyWorkerName');
+  // }
+  // if (!agencyOrganization || typeof agencyOrganization !== 'string') {
+  //   missingFields.push('agencyOrganization');
+  // }
+  // if (!agencyWorkerPhone || typeof agencyWorkerPhone !== 'string') {
+  //   missingFields.push('agencyWorkerPhone');
+  // }
 
-  try {
-    const birthdayRequest = await createBirthdayRequestByID({
-      chapterId,
-      deadlineDate,
-      childBirthday,
-      childName,
-      childAge,
-      childGender,
-      childRace,
-      childInterests,
-      giftSuggestions,
-      childAllergies,
-      allergyDetails,
-      additionalInfo,
-      childSituation,
-      agencyWorkerName,
-      agencyOrganization,
-      agencyWorkerPhone,
-      agencyWorkerEmail,
-      agencyPhysicalAddress,
-      isFirstReferral,
-      agreeFeedback,
-      agreeLiability,
-    });
+  // if (!agencyWorkerEmail || typeof agencyWorkerEmail !== 'string') {
+  //   missingFields.push('agencyWorkerEmail');
+  // }
+  // const emailRegex =
+  //   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+  // if (!agencyWorkerEmail.match(emailRegex)) {
+  //   missingFields.push('agencyWorkerEmail');
+  // }
 
-    // Get chapter email
-    const chapter: IUser | null = await getUserById(chapterId);
-    if (!chapter) {
-      next(ApiError.notFound(`Chapter does not exist`));
-      return;
-    }
+  // if (isFirstReferral !== true && isFirstReferral !== false) {
+  //   missingFields.push('isFirstReferral');
+  // }
+  // if (agreeFeedback !== true && agreeFeedback !== false) {
+  //   missingFields.push('agreeFeedback');
+  // }
 
-    // Send emails to both agency worker and chapter
-    Promise.all([
-      emailRequestCreate(agencyWorkerEmail, childName),
-      emailChapterRequestCreate(chapter.email, childName),
-    ])
-      .then(() => {
-        res.status(StatusCode.CREATED).send({
-          message: `Request created and emails have been sent.`,
-          birthdayRequest,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        next(ApiError.internal('Failed to send confirmation emails.'));
-      });
-  } catch (err) {
-    console.log(err);
-    next(ApiError.internal('Unable to register user.'));
-  }
+  // if (missingFields.length > 0) {
+  //   next(ApiError.missingFields(missingFields));
+  //   return;
+  // }
+
+  // try {
+  //   const user = await createBirthdayRequestByID(
+  //     chapterId,
+  //     deadlineDate,
+  //     childBirthday,
+  //     childAge,
+  //     childName,
+  //     childGender,
+  //     childRace,
+  //     childSituation,
+  //     childInterests,
+  //     childAllergies,
+  //     allergyDetails,
+  //     giftSuggestions,
+  //     additionalInfo,
+  //     agencyWorkerName,
+  //     agencyOrganization,
+  //     agencyAddress,
+  //     agencyWorkerPhone,
+  //     agencyWorkerEmail,
+  //     isFirstReferral,
+  //     agreeFeedback,
+  //     liability,
+  //   );
+  //   res.sendStatus(StatusCode.CREATED);
+  //   console.log('creating: ');
+  //   console.log(req.body);
+  // } catch (err) {
+  //   console.log('error: ');
+  //   console.log(req.body);
+  //   next(ApiError.internal('Unable to register user.'));
+  // }
 };
 
 const getMonthlyOverview = async (

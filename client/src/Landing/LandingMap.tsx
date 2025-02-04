@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import USAMap from 'react-usa-map';
@@ -11,6 +12,7 @@ import {
 } from '../util/constants/map.ts';
 
 export default function LandingMap() {
+  const navigate = useNavigate();
   const [stateData, setStateData] = useState<Chapter[] | null>(null);
   const [chosenState, setChosenState] = useState<StateAbbreviation | null>(
     null,
@@ -192,11 +194,9 @@ export default function LandingMap() {
                                     width: '100px',
                                     borderRadius: '20px',
                                   }}
-                                  onClick={() =>
-                                    console.log(
-                                      `redirecting to ${chapter.city}'s form`,
-                                    )
-                                  }
+                                  onClick={() => {
+                                    navigate(`/request-form/${chapter.id}`);
+                                  }}
                                 >
                                   VIEW FORM
                                 </Button>

@@ -3,8 +3,7 @@
  */
 import 'dotenv/config';
 import SGmail, { MailDataRequired } from '@sendgrid/mail';
-// @ts-ignore
-import footnote from '../../photos/email_footnote.txt';
+// import _footnote from '../../photos/email_footnote.txt';
 
 const appName = 'Boilerplate'; // Replace with a relevant project name
 const senderName = 'Hack4Impact UPenn'; // Replace with a relevant project sender
@@ -94,7 +93,7 @@ const emailInviteLink = async (email: string, token: string) => {
 const emailRequestUpdate = async (
   email: string,
   newStatus: string,
-  childName: string,
+  _childName: string,
 ) => {
   const mailSettings: MailDataRequired = {
     from: {
@@ -104,7 +103,7 @@ const emailRequestUpdate = async (
     to: email,
     subject: 'Birthday Box Request Status Update',
     html:
-      `<p> Your birthday box request status for ${childName} has been changed. ` +
+      `<p> Your birthday box request status for ${_childName} has been changed. ` +
       `<p>The new status of your request is ${newStatus}. ` +
       `<p>If you did not request a birthday box, ` +
       `please ignore this message.</p>`,
@@ -113,7 +112,7 @@ const emailRequestUpdate = async (
   await SGmail.send(mailSettings);
 };
 
-const emailRequestDelete = async (email: string, childName: string) => {
+const emailRequestDelete = async (email: string, _childName: string) => {
   const mailSettings: MailDataRequired = {
     from: {
       email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
@@ -122,7 +121,7 @@ const emailRequestDelete = async (email: string, childName: string) => {
     to: email,
     subject: 'Birthday Box Request Deleted',
     html:
-      `<p> Your birthday box request for ${childName} has been deleted. ` +
+      `<p> Your birthday box request for ${_childName} has been deleted. ` +
       `<p>If you did not request a birthday box, ` +
       `please ignore this message.</p>`,
   };
@@ -130,7 +129,7 @@ const emailRequestDelete = async (email: string, childName: string) => {
   await SGmail.send(mailSettings);
 };
 
-const emailRequestCreate = async (email: string, childName: string) => {
+const emailRequestCreate = async (email: string, _childName: string) => {
   const mailSettings: MailDataRequired = {
     from: {
       email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
@@ -156,13 +155,13 @@ const emailRequestCreate = async (email: string, childName: string) => {
     `,
   };
 
-  //<img src='data:image/png;base64,${footnote}' alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
+  // <img src='data:image/png;base64,${footnote}' alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
 
   // Send the email and propagate the error up if one exists
   await SGmail.send(mailSettings);
 };
 
-const emailRequestApproved = async (email: string, childName: string) => {
+const emailRequestApproved = async (email: string, _childName: string) => {
   const mailSettings: MailDataRequired = {
     from: {
       email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
@@ -190,7 +189,7 @@ const emailRequestApproved = async (email: string, childName: string) => {
   await SGmail.send(mailSettings);
 };
 
-const emailRequestDenied = async (email: string, childName: string) => {
+const emailRequestDenied = async (email: string, _childName: string) => {
   const mailSettings: MailDataRequired = {
     from: {
       email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
@@ -218,7 +217,7 @@ const emailRequestDenied = async (email: string, childName: string) => {
   await SGmail.send(mailSettings);
 };
 
-const emailRequestDelivered = async (email: string, childName: string) => {
+const emailRequestDelivered = async (email: string, _childName: string) => {
   const mailSettings: MailDataRequired = {
     from: {
       email: process.env.SENDGRID_EMAIL_ADDRESS || 'missing@mail.com',
@@ -258,7 +257,7 @@ const emailRequestDelivered = async (email: string, childName: string) => {
     `,
   };
 
-  //<img src='data:image/png;base64,${footnote}' alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
+  // <img src='data:image/png;base64,${footnote}' alt="Box of Balloons Logo" style="max-width: 100%; height: auto;"/>
 
   // Send the email and propagate the error up if one exists
   await SGmail.send(mailSettings);

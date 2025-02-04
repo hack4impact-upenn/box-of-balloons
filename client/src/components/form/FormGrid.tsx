@@ -11,16 +11,27 @@ import { AnyChildren } from '../../util/types/generic.ts';
  */
 function FormGrid({ children }: AnyChildren) {
   return (
-    <Grid
-      item
-      container
-      direction="column"
-      rowSpacing={3}
-      xs={4}
-      fontSize="0.75em"
+    <div
+      style={{
+        margin: 0,
+        padding: '5rem',
+        width: '75%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
-      {children}
-    </Grid>
+      <Grid
+        container
+        direction="column"
+        rowSpacing={3}
+        xs={8}
+        fontSize="0.75em"
+      >
+        {children}
+      </Grid>
+    </div>
   );
 }
 
