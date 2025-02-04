@@ -86,6 +86,7 @@ const getUserByVerificationToken = async (verificationToken: string) => {
   return user;
 };
 
+
 /**
  * Gets a user from the database by their id but doesn't include the
  * password in the returned user.
@@ -160,6 +161,20 @@ const countAcceptingRequestsUsers = async () => {
   return acceptingRequestsUserCount;
 };
 
+/**
+ * Gets all users from the database by their state but doesn't include
+ * sensitive data in the returned users.
+ * @param state The state to query for
+ * @returns An array of {@link User}s or empty array if no users were found
+ */
+const getUsersByState = async (state: string) => {
+  const users = await User.find({ state })
+    .select(removeSensitiveDataQuery)
+    .exec();
+  return users;
+};
+
+
 export {
   passwordHashSaltRounds,
   createUser,
@@ -174,4 +189,5 @@ export {
   toggleRequestByID,
   countActiveUsers,
   countAcceptingRequestsUsers,
+  getUsersByState
 };
