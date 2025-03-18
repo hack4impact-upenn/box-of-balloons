@@ -7,6 +7,7 @@ import {
   countActiveUsers,
   countAcceptingRequestsUsers,
   getUserById,
+  getUsersByState,
 } from '../services/user.service.ts';
 
 const toggleRequest = async (
@@ -75,9 +76,28 @@ const getUser = async (
   }
 };
 
+const getUsersByStateHandler = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { state } = req.params;
+    if (!state) {
+      return res.status(400).json({ message: 'State parameter is required' });
+    }
+
+    const users = await getUsersByState(state);
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error('Error getting users by state:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 export {
   toggleRequest,
   getActiveUserCount,
   getAcceptingRequestsUserCount,
   getUser,
+  getUsersByStateHandler,
 };

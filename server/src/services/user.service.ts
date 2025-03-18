@@ -154,8 +154,23 @@ const countActiveUsers = async () => {
 };
 
 const countAcceptingRequestsUsers = async () => {
-  const acceptingRequestsUserCount = await User.countDocuments({ isAcceptingRequests: true }).exec();
+  const acceptingRequestsUserCount = await User.countDocuments({
+    isAcceptingRequests: true,
+  }).exec();
   return acceptingRequestsUserCount;
+};
+
+/**
+ * Gets all users from the database by their state but doesn't include
+ * sensitive data in the returned users.
+ * @param state The state to query for
+ * @returns An array of {@link User}s or empty array if no users were found
+ */
+const getUsersByState = async (state: string) => {
+  const users = await User.find({ state })
+    .select(removeSensitiveDataQuery)
+    .exec();
+  return users;
 };
 
 export {
@@ -171,5 +186,6 @@ export {
   deleteUserById,
   toggleRequestByID,
   countActiveUsers,
-  countAcceptingRequestsUsers
+  countAcceptingRequestsUsers,
+  getUsersByState,
 };

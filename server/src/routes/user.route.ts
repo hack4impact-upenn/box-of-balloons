@@ -6,6 +6,7 @@ import {
   getActiveUserCount,
   getAcceptingRequestsUserCount,
   getUser,
+  getUsersByStateHandler,
 } from '../controllers/user.controller.ts';
 import { isAuthenticated } from '../controllers/auth.middleware.ts';
 import 'dotenv/config';
@@ -24,5 +25,7 @@ router.get(
 );
 
 router.get('/query/:id', isAuthenticated, getUser);
+
+router.get('/state/:state', getUsersByStateHandler);
 
 export default router;

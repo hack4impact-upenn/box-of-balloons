@@ -46,19 +46,88 @@ const deleteRequestByID = async (id: string) => {
   return request;
 };
 
-type CreateBirthdayRequestByIDParams = Omit<
+type _CreateBirthdayRequestByIDParams = Omit<
   IBirthdayRequestFields,
   '_id' | 'requestedDate' | 'status' | 'deliveryDate'
 >;
 
 /**
  * Creates a new birthdayrequest in the database.
+ * @param chapterId - id representing the chapter the bithdayrequest is associated with
+ * @param deadlineDate - TBD
+ * @param childBirthday - TBD
+ * @param childAge - TBD
+ * @param childName - TBD
+ * @param childGender - TBD
+ * @param childRace - TBD
+ * @param childSituation - TBD
+ * @param childInterests - TBD
+ * @param childAllergies - TBD
+ * @param allergyDetails - TBD
+ * @param giftSuggestions - TBD
+ * @param additionalInfo - TBD
+ * @param agencyWorkerName - TBD
+ * @param agencyAddress - TBD
+ * @param agencyOrganization - TBD
+ * @param agencyWorkerPhone - TBD
+ * @param agencyWorkerEmail - TBD
+ * @param isFirstReferral - TBD
+ * @param agreeFeedback - TBD
+ * @param liability - TBD
+ * @param requestedDate - TBD
+ * @param status - TBD
+ * @param deliveryDate - TBD
  * @returns The created {@link BirthdayRequest}
  */
 const createBirthdayRequestByID = async (
-  params: CreateBirthdayRequestByIDParams,
+  chapterId: string,
+  deadlineDate: Date,
+  childBirthday: Date,
+  childAge: number,
+  childName: string,
+  childGender: string,
+  childRace: string,
+  childSituation: string,
+  childInterests: string,
+  childAllergies: boolean,
+  allergyDetails: string,
+  giftSuggestions: string,
+  additionalInfo: string,
+  agencyWorkerName: string,
+  agencyAddress: string,
+  agencyOrganization: string,
+  agencyWorkerPhone: string,
+  agencyWorkerEmail: string,
+  isFirstReferral: boolean,
+  agreeFeedback: any,
+  liability: any,
 ) => {
-  const newBirthdayRequest = new BirthdayRequest(params);
+  const newBirthdayRequest = new BirthdayRequest({
+    chapterId,
+    deadlineDate,
+    childBirthday,
+    childAge,
+    childName,
+    childGender,
+    childRace,
+    childSituation,
+    childInterests,
+    childAllergies,
+    allergyDetails,
+    giftSuggestions,
+    additionalInfo,
+    agencyWorkerName,
+    agencyOrganization,
+    agencyWorkerPhone,
+    agencyPhysicalAddress: agencyAddress,
+    agencyWorkerEmail,
+    isFirstReferral,
+    agreeFeedback,
+    agreeLiability: liability,
+    requestedDate: new Date(),
+    status: 'Pending',
+    deliveryDate: null,
+  });
   const returnedBirthdayRequest = await newBirthdayRequest.save();
   return returnedBirthdayRequest;
 };

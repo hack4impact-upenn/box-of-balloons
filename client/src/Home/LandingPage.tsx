@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Dialog,
@@ -113,7 +114,7 @@ const stateChapters: StateChapters = {
     acceptingRequests: true,
     chapters: [
       { city: 'Columbia County', id: 'wi-1' },
-      { city: 'DeForest', id: 'wi-2' },
+      { city: 'DeForest', id: '67156b8f624d2639a91ee518' },
       { city: 'Madison', id: 'wi-3' },
       { city: 'Sun Prairie', id: 'wi-4' },
       { city: 'Poynette', id: 'wi-5' },
@@ -124,6 +125,7 @@ const stateChapters: StateChapters = {
 export default function LandingPage() {
   const [selectedState, setSelectedState] = useState<StateData | null>(null);
   const [hoveredChapter, setHoveredChapter] = useState<Chapter | null>(null);
+  const navigate = useNavigate();
 
   const mapHandler = (event: any) => {
     const stateData = stateChapters[event.target.dataset.name];
@@ -147,7 +149,7 @@ export default function LandingPage() {
   };
 
   const handleRequestClick = (chapter: Chapter): void => {
-    console.log('Navigate to request form for:', chapter);
+    navigate(`/request-form/${chapter.id}`);
   };
 
   const handleClose = (): void => {

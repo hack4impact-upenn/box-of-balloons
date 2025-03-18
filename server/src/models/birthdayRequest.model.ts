@@ -7,7 +7,6 @@ enum ChildGender {
   'Non-binary/non-conforming',
   'Prefer not to say',
 }
-
 const childGenderOptions = [
   'Boy',
   'Girl',
@@ -15,7 +14,6 @@ const childGenderOptions = [
   'Non-binary/non-conforming',
   'Prefer not to say',
 ];
-
 enum ChildRace {
   'American Indian or Alaska Native',
   'Asian',
@@ -26,7 +24,6 @@ enum ChildRace {
   'White',
   'Other',
 }
-
 const childRaceOptions = [
   'American Indian or Alaska Native',
   'Asian',
@@ -37,7 +34,6 @@ const childRaceOptions = [
   'White',
   'Other',
 ];
-
 enum ChildSituation {
   'Fostercare',
   'Homelessness',
@@ -45,7 +41,6 @@ enum ChildSituation {
   'Medical treatment',
   'Financial insecurities',
 }
-
 const childSituationOptions = [
   'Fostercare',
   'Homelessness',
@@ -53,7 +48,6 @@ const childSituationOptions = [
   'Medical treatment',
   'Financial insecurities',
 ];
-
 const BirthdayRequestSchema = new mongoose.Schema({
   chapterId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -161,7 +155,6 @@ const BirthdayRequestSchema = new mongoose.Schema({
     required: false,
   },
 });
-
 interface IBirthdayRequestFields {
   _id: string;
   chapterId: string;
@@ -189,16 +182,13 @@ interface IBirthdayRequestFields {
   status: 'Pending' | 'Approved' | 'Delivered';
   deliveryDate: Date | null;
 }
-
 interface IBirthdayRequest extends mongoose.Document, IBirthdayRequestFields {
   _id: string;
 }
-
 const BirthdayRequest = mongoose.model<IBirthdayRequest>(
   'BirthdayRequest',
   BirthdayRequestSchema,
 );
-
 export {
   IBirthdayRequest,
   IBirthdayRequestFields,
