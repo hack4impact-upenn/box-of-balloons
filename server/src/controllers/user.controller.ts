@@ -99,5 +99,5 @@ export {
   getActiveUserCount,
   getAcceptingRequestsUserCount,
   getUser,
-  getUsersByStateHandler
+  getUsersByStateHandler,
 };

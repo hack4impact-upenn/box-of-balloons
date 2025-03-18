@@ -86,7 +86,6 @@ const getUserByVerificationToken = async (verificationToken: string) => {
   return user;
 };
 
-
 /**
  * Gets a user from the database by their id but doesn't include the
  * password in the returned user.
@@ -174,7 +173,6 @@ const getUsersByState = async (state: string) => {
   return users;
 };
 
-
 export {
   passwordHashSaltRounds,
   createUser,
@@ -189,5 +187,5 @@ export {
   toggleRequestByID,
   countActiveUsers,
   countAcceptingRequestsUsers,
-  getUsersByState
+  getUsersByState,
 };

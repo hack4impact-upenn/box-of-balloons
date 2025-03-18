@@ -272,8 +272,7 @@ export default function LandingPage() {
                                 bgcolor: '#DB2777',
                               },
                             }}
-                            onClick={() => 
-                              handleRequestClick(chapter)}
+                            onClick={() => handleRequestClick(chapter)}
                           >
                             Request Form
                           </Button>
